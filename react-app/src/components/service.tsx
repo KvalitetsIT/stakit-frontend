@@ -58,11 +58,11 @@ export function ServicePreview(props: { service: Service, showActions?: boolean,
                 <ListItemButton dense>
                     <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={"/services/" + props.service.id}>
 
-                        <ListItemAvatar>
+                        {/* <ListItemAvatar>
                             <Avatar>
                                 <StatusIcon status={props.service.status} ></StatusIcon>
                             </Avatar>
-                        </ListItemAvatar>
+                        </ListItemAvatar> */}
 
                         <ListItemText
                             primary={<Header {...props} />}

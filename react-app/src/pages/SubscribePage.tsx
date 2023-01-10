@@ -4,16 +4,20 @@ import { t } from "i18next";
 import { toast } from "react-toastify";
 import { SubscriptionForm } from "../components/forms/subscribe";
 import { CenteredContent } from "../components/layout/CenteredContent";
+import { useCreateSubscriptionMutation } from "../feature/api/publicSlice";
 import { mock } from "../MockedData";
 import { Group, Subscription } from "../models/types";
 
 export function SubscribePage() {
 
+    const createSubscription = useCreateSubscriptionMutation()[0]
+
+
     const onSubscribtion = (subscription: Subscription) => {
 
         toast.promise(
             async () => {
-                await wait(1000) // Do something
+                await createSubscription(subscription)
             },
             {
                 pending: t('processing subscription'),

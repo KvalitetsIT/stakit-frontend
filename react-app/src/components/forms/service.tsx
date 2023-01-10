@@ -30,10 +30,11 @@ export function ServiceForm(props: ServiceFormProps) {
 
     const initialValues = {
         service: props.service ?? {
+            service_identifier: "",
             name: "",
             description: "",
-            group: undefined
-
+            group: undefined,
+            ignore_service_name: false
         }
     }
 
@@ -60,6 +61,13 @@ export function ServiceForm(props: ServiceFormProps) {
                 {({ errors, touched, values, setFieldValue }) => (
                     <Form>
                         <Stack spacing={2}>
+                            
+                        <ValidatedTextField
+                                name="service.service_identifier"
+                                label={"Identifier"}
+                                value={values.service.service_identifier}
+                                error={touched.service?.service_identifier && errors.service?.service_identifier ? errors.service?.service_identifier : undefined}
+                            />
                             <ValidatedTextField
                                 name="service.name"
                                 label={"Name"}

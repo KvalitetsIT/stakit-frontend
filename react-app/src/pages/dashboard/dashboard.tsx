@@ -7,16 +7,20 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { useEffect, useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AnnouncementsCard } from "../../components/cards/Announcements";
+import { toast } from "react-toastify";
+import { useGetAllGroupsQuery } from "../../feature/api/groupsSlice";
+import { useGetStatusOfGroupsQuery } from "../../feature/api/publicSlice";
+import { Group } from "../../models/types";
 
 
 export function DashboardPage() {
 
 
-    const refresh = () => {
+    // const {isLoading, data} = useGetStatusOfGroupsQuery(undefined)
+    
+    const groups: Group[] = []
 
-    }
-
-    const announcements = mock.announcements
+    console.log("groups", groups)
 
     return (
         <Box>
@@ -25,20 +29,18 @@ export function DashboardPage() {
                     <StatusMessage
                         level="success"
                         msg="Alle systemer virker hensigtsmæssigt"
-                        callback={refresh}
+                        callback={() => toast("refresh")}
                     />
 
-                    {mock.groups.map(serviceGroup => (
-                        <Paper sx={{ mt: 2 }}>
+                    {groups && groups.map(serviceGroup => (
                             <GroupAccordion group={serviceGroup} ></GroupAccordion>
-                        </Paper>
                     ))}
 
-                    <Subscibe></Subscibe>
+                    <Subscibe/>
 
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <AnnouncementsCard announcements={announcements}></AnnouncementsCard>
+                    <AnnouncementsCard></AnnouncementsCard>
                 </Grid>
             </Grid>
         </Box>

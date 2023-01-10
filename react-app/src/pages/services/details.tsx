@@ -11,6 +11,8 @@ import EditOffIcon from '@mui/icons-material/EditOff';
 
 import { Delete } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import { useDeleteServiceMutation, useGetServiceQuery } from "../../feature/api/serviceSlice";
+import { randomUUID } from "crypto";
 
 
 
@@ -58,9 +60,14 @@ export function ServiceDetails() {
 
     const params = useParams();
 
+    const { isLoading, data } = useGetServiceQuery("string")
+    const deleteService = useDeleteServiceMutation()[0]
+    
     const [loading, setLoading] = useState(false)
 
-    const service: Service = mock.groups.flatMap(group => group.services).find(service => service.id === parseInt(params.id!))!
+    const service: Service = data!
+
+    console.log("isLoading", isLoading)
 
     const [mode, setMode] = useState<modes>(modes.NORMAL)
 
@@ -100,25 +107,22 @@ export function ServiceDetails() {
                             </Collapse>
                         </CardContent>
                     </Loading>
-
                 </Card>
-
                 <HistorySection />
-
             </Container >
 
             <DeleteServiceDialog
                 service={service}
                 open={mode === modes.DELETE}
                 onClose={resetMode}
-                onSuccess={() => toast("Deleting service! should redirect to services page...")}
+                onSuccess={(service) => deleteService(service)}
             ></DeleteServiceDialog>
         </>
     )
 }
 
 
-export function DeleteServiceDialog(props: { service: Service, open: boolean, onClose: () => void, onSuccess: () => void }) {
+export function DeleteServiceDialog(props: { service: Service, open: boolean, onClose: () => void, onSuccess: (service: Service) => void }) {
     return (
         <Dialog
             aria-labelledby="alert-dialog-title"
@@ -136,7 +140,7 @@ export function DeleteServiceDialog(props: { service: Service, open: boolean, on
             </DialogContent>
             <DialogActions>
                 <Button onClick={props.onClose}>No</Button>
-                <Button onClick={props.onSuccess} autoFocus>
+                <Button onClick={ () =>{ props.onSuccess(props.service)} } autoFocus>
                     Yes
                 </Button>
             </DialogActions>
@@ -150,9 +154,10 @@ export function Header(props: { service: Service, showPath?: boolean }) {
     const { service } = props
 
     const paths: { title: string, href: string }[] = [
-        { title: service.group?.name!, href: "/groups/" + service.group?.id },
-        { title: service.name, href: "/services/" + service.id }
+        { title: service.name!, href: "/services/" + service.id }
     ]
+
+    if(service.group) paths.unshift({ title: service.group?.name!, href: "/groups/" + service.group?.id })
 
     return (
         <>
@@ -163,12 +168,11 @@ export function Header(props: { service: Service, showPath?: boolean }) {
                     <Typography color={"text.primary"} variant="h6">{props.service.name}</Typography>
             }
         </>
-
-
     )
 }
 
 export function Path(props: { paths: { title: string, href: string }[] }) {
+    
     return (
         <Breadcrumbs aria-label="breadcrumb">
             {props.paths.map((path, index) => {
@@ -192,12 +196,8 @@ export function Path(props: { paths: { title: string, href: string }[] }) {
     )
 }
 
-
-
-
 function HistorySection() {
     return (
-
         <Card sx={{ marginTop: 2 }}>
             <CardHeader title={"History"} subheader={<Typography>The chart below shows the status corrosponding to the last 90 days</Typography>}>
             </CardHeader>
@@ -205,7 +205,6 @@ function HistorySection() {
                 <History days={mock.days.map(day => ({ date: new Date(), percentage: day }))}></History>
             </CardContent >
         </Card >
-
     )
 }
 
@@ -235,7 +234,6 @@ export function History(props: { days: Day[] }) {
                     height={25}
                     fillOpacity={isMouseOver ? 0.5 : props.percentage / 100}
                     fill={isMouseOver ? "#122A4C" : GREEN}
-
                 >
                     <rect x={1} rx="4" ry="4" width={8} height={25} fill="inherit" />
                 </svg>

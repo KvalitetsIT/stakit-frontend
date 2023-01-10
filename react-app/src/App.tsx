@@ -19,8 +19,8 @@ import { ProfilePage } from './pages/profile';
 import { ServicesPage } from './pages/services/ServicesPage';
 import { theme } from './theme';
 import { TestPage } from './pages/test';
-import store from './feature/store';
-
+import store from './redux/store';
+import { AllGoupsPage } from './pages/groups/all';
 
 
 export default function App() {
@@ -40,16 +40,19 @@ export default function App() {
                         </Route>
 
                         <Route path="/services">
-                            <Route index element={<ServicesPage />}></Route>
+                            <Route index element={<ServicesPage />} />
                             <Route path=":id">
-                                <Route index element={<ServiceDetails />}></Route>
+                                <Route index element={<ServiceDetails />} />
                                 <Route path="edit" element={<EditService />} />
                             </Route>
                         </Route>
 
-                        <Route path='/groups/:id'>
-                            <Route index element={<GroupDetails />} />
-                            <Route path="edit" element={<EditGroup />} />
+                        <Route path='groups'>
+                            <Route index element={<AllGoupsPage />} />
+                            <Route path=':id' >
+                                <Route index element={<GroupDetails />} />
+                                <Route path="edit" element={<EditGroup />} />
+                            </Route>
                         </Route>
 
                         <Route path="*" element={<PageNotFound />} />

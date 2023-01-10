@@ -4,7 +4,6 @@ import { Group, Service } from "../../models/types"
 import * as yup from 'yup';
 import { ValidatedTextField } from "../input/validatedTextField";
 import { useState } from "react";
-import { mock } from "../../MockedData";
 
 
 
@@ -14,20 +13,20 @@ export function EditGroupForm(props: { group: Group, onSubmit: (group: Group) =>
     const validationSchema = yup.object().shape({
         group: yup.object().shape({
             name: yup.string().required(),
+            display_order: yup.string().required(),
             description: yup.string().required(),
         })
     })
 
 
     const [loading, setLoading] = useState<boolean>(false)
-    const [group, setGroup] = useState<Group>(props.group)
 
-    const unassignedServices: Service[] = mock.services
+    const unassignedServices: Service[] = []
 
     return (
         <FormControl fullWidth>
             <Formik
-                initialValues={{ group: group, confirmedPassword: "" }}
+                initialValues={{ group: props.group?? new Group("", 1)}}
                 onSubmit={(values) => props.onSubmit(values.group)}
                 validationSchema={validationSchema}
             >
@@ -39,6 +38,13 @@ export function EditGroupForm(props: { group: Group, onSubmit: (group: Group) =>
                                 label={"Name"}
                                 value={values.group.name}
                                 error={touched.group?.name && errors.group?.name ? errors.group?.name : undefined}
+                            />
+                            <ValidatedTextField
+                                name="group.display_order"
+                                label={"Display-order"}
+                                type="number"
+                                value={values.group.display_order}
+                                error={touched.group?.display_order && errors.group?.display_order ? errors.group?.display_order : undefined}
                             />
                             <ValidatedTextField
                                 name="group.description"
@@ -73,10 +79,7 @@ export function EditGroupForm(props: { group: Group, onSubmit: (group: Group) =>
 
                             <Stack spacing={2} direction={"row"}>
                                 <Button
-                                    onClick={(event) => {
-                                        event.preventDefault()
-                                        props.onSubmit(group)
-                                    }}
+                                    
                                     type={"submit"}
                                     variant="contained"
                                     fullWidth={true}

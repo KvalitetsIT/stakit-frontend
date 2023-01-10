@@ -1,26 +1,27 @@
 import { Add } from "@mui/icons-material"
 import { Card, CardContent, CardHeader, Collapse, Container, IconButton, List, Tooltip } from "@mui/material"
 import { ServicePreview } from "../../components/service"
-import { mock } from "../../MockedData"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from "react"
 import { ServiceForm } from "../../components/forms/service"
-import { wait } from "@testing-library/user-event/dist/utils"
+import { useCreateServiceMutation, useGetAllServiceQuery } from "../../feature/api/serviceSlice";
+import { Service } from "../../models/types";
 
+export enum modes {
+    NORMAL, EDIT, ADD
+}
 
 export function ServicesPage() {
 
+    const {isLoading, data} = useGetAllServiceQuery(undefined)
+    const createService = useCreateServiceMutation()[0]
 
-    const enum modes {
-        NORMAL, EDIT, ADD
-    }
-
-    const services = mock.groups.flatMap(group => group.services)
+    const services = data
 
     const [mode, setMode] = useState<modes>(modes.NORMAL)
 
-    const addService = async () => {
-        await wait(5000)
+    const addService = async (service: Service) => {
+        await createService(service)
         setMode(modes.NORMAL)
     }
 
@@ -58,7 +59,7 @@ export function ServicesPage() {
 
                     <List>
                         {
-                            services.map(service => (
+                            services && services.map(service => (
                                 <ServicePreview service={service} showPath></ServicePreview>
                             ))
                         }

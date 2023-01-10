@@ -9,7 +9,10 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group }) {
 
-    const down = props.group.services.filter(service => service.status === Status.UP).length
+
+    const services = props.group.services ?? []
+
+    const down = services.filter(service => service.status === Status.UP).length
 
     const actions: { name: string, callback: () => void }[] = [{ name: "Edit", callback: () => { } }, { name: "Edit", callback: () => { } }, { name: "Details", callback: () => { } }, { name: "Delete", callback: () => { } }]
 
@@ -33,11 +36,11 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group 
                         </Stack>
                     </Grid>
                     <Grid item xs={1}>
-                        <Typography>{down} / {props.group.services.length}</Typography>
+                        <Typography>{down} / {services.length}</Typography>
                     </Grid>
                 </Grid>
                 <AccordionActions >
-                    {props.group.services.every(service => service.status === Status.UP) ? <CheckCircleIcon color="success" /> : <CancelIcon color="warning" />}
+                    {services.every(service => service.status === Status.UP) ? <CheckCircleIcon color="success" /> : <CancelIcon color="warning" />}
                 </AccordionActions>
 
 
@@ -45,7 +48,7 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group 
             <Divider />
             <AccordionDetails sx={{ padding: 0 }}>
                 <List>
-                    {props.group.services.map(service => (
+                    {services.map(service => (
                         <ServicePreview
                             service={service}
                         ></ServicePreview>
@@ -58,51 +61,3 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group 
     )
 }
 
-
-function MenuDropdown(props: { actions: { name: string, callback: () => void }[] }) {
-
-    const [anchor, setAnchor] = useState<null | HTMLElement>(null);
-
-    const open = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchor(event.currentTarget);
-    };
-    const close = () => setAnchor(null)
-
-    return (
-        <>
-            <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-group"
-                aria-haspopup="true"
-                onClick={open}
-                onMouseLeave={close}
-                onMouseEnter={open}>
-                <MoreVertIcon />
-            </IconButton>
-            <Menu
-                id="menu-group"
-                anchorEl={anchor}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-                open={Boolean(anchor)}
-
-                sx={{
-                    display: { xs: 'block', md: 'none' },
-                }}
-            >
-                {props.actions.map((action) => (
-                    <MenuItem key={action.name} onClick={() => { close(); action.callback() }}>
-                        <Typography textAlign="center">{action.name}</Typography>
-                    </MenuItem>
-                ))}
-            </Menu>
-        </>
-    )
-}

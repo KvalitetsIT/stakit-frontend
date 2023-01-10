@@ -10,7 +10,7 @@ export function EditService() {
 
     const params = useParams();
 
-    const service: Service | undefined = mock.groups.flatMap(group => group.services).find(service => service.id === parseInt(params.id!))
+    const service: Service | undefined = mock.groups.flatMap(group => group.services).find(service => service!.id === params.id!)
 
     return (
 

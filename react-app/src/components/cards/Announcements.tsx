@@ -1,35 +1,63 @@
-import { Card, CardHeader, CardContent, List, ListItemButton, ListItem, ListItemText } from "@mui/material"
+import { Card, CardHeader, CardContent, List, ListItemButton, ListItem, ListItemText, IconButton, Tooltip, Collapse } from "@mui/material"
 import { Link } from "react-router-dom"
 import { Announcement } from "../../models/types"
+import ReplayIcon from '@mui/icons-material/Replay';
+import { toast } from "react-toastify";
+import { Add, Delete } from "@mui/icons-material";
+import { Action } from "../input/actions/Action";
+import { useGetAllAnnouncementsQuery } from "../../feature/api/publicSlice";
+import { Loading } from "../feedback/loading";
+import { AnnouncementForm } from "../forms/announcement";
+import { useState } from "react";
+import { modes } from "../../pages/services/ServicesPage";
+import { useCreateAnnouncementMutation } from "../../feature/api/announcementSlice";
 
 
 interface AnnouncementsCardProps {
     title?: string
     subTitle?: string
-    announcements: Announcement[]
+    announcements?: Announcement[]
 }
 
 AnnouncementsCard.defaultProps = {
     title: "Announcements",
     subTitle: "some subtitle",
-    announcements: [],
 }
 
 export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
-    const { title, subTitle, announcements } = props
+    const { title, subTitle } = props
+
+    const { isError, isLoading, isSuccess, isUninitialized, isFetching, data, refetch } = useGetAllAnnouncementsQuery(undefined)
+    const create = useCreateAnnouncementMutation()
+    
+
+    const [mode, setMode] = useState<modes>(modes.NORMAL)
+
+    const refresh = () => {
+        toast("Refresh")
+    }
 
     const Actions = () => (
-        <>actions</>
+        <>
+            <Action title="Refresh" icon={<Add />} onClick={() => setMode(modes.ADD)} />
+            <Action title="Refresh" icon={<ReplayIcon />} onClick={() => refetch()} />
+        </>
     )
-
 
     const Item = (props: { announcement: Announcement }) => {
 
         const { announcement } = props
 
         const Actions = () => (
-            <>Actions</>
+            <>
+
+                <Tooltip title="Refresh">
+                    <IconButton onClick={() => refresh()}>
+                        <Delete></Delete>
+                    </IconButton>
+                </Tooltip>
+            </>
         )
 
         return (
@@ -51,7 +79,6 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
         )
     }
 
-
     return (
         <>
             <Card>
@@ -60,12 +87,28 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     subheader={subTitle}
                     action={<Actions></Actions>}
                 ></CardHeader>
+                <Collapse in={mode === modes.ADD}>
+                    <CardContent>
+                        <AnnouncementForm
+                            onSubmit={async (sub) => {
+                                await create[0](sub)
+                                setMode(modes.NORMAL)
+                            }}
+                            onCancel={() => {
+                                setMode(modes.NORMAL)
+                            }}
+                        />
+                    </CardContent>
+                </Collapse>
                 <CardContent>
-                    <List>
-                        {announcements.map(announcement => (
-                            <Item announcement={announcement}></Item>
-                        ))}
-                    </List>
+                    <Loading loading={isLoading}>
+                        <List>
+                            {data && data.map((announcement: Announcement) => (
+                                <Item announcement={announcement}></Item>
+                            ))}
+                        </List>
+                    </Loading>
+
                 </CardContent>
             </Card>
         </>

@@ -11,7 +11,7 @@ export function GroupDetails() {
 
     const params = useParams();
 
-    const group: Group | undefined = mock.groups.find(group => group.id === parseInt(params.id!))
+    const group: Group | undefined = mock.groups.find(group => group.id === params.id)
 
     const [loading, setLoading] = useState(false)
 
