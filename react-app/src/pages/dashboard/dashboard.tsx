@@ -16,11 +16,9 @@ import { Group } from "../../models/types";
 export function DashboardPage() {
 
 
-    // const {isLoading, data} = useGetStatusOfGroupsQuery(undefined)
-    
-    const groups: Group[] = []
+    const { data, refetch } = useGetStatusOfGroupsQuery(undefined)
 
-    console.log("groups", groups)
+    const groups: Group[] = data ?? []
 
     return (
         <Box>
@@ -29,35 +27,28 @@ export function DashboardPage() {
                     <StatusMessage
                         level="success"
                         msg="Alle systemer virker hensigtsmæssigt"
-                        callback={() => toast("refresh")}
+                        callback={() => refetch() }
                     />
-
                     {groups && groups.map(serviceGroup => (
-                            <GroupAccordion group={serviceGroup} ></GroupAccordion>
+                        <GroupAccordion group={serviceGroup} ></GroupAccordion>
                     ))}
-
-                    <Subscibe/>
-
+                    <SubscibeButton />
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <AnnouncementsCard></AnnouncementsCard>
+                    <AnnouncementsCard />
                 </Grid>
             </Grid>
         </Box>
-
-
-
     )
 }
 
 
 
 
-function Subscibe() {
+export function SubscibeButton() {
     return (
         <Link to={"/subscribe"}>
             <Tooltip title="Subscribe">
-
                 <SpeedDial
                     ariaLabel="Subscribe"
                     sx={{ position: 'absolute', bottom: 16, right: 16 }}
@@ -70,7 +61,6 @@ function Subscibe() {
                             }
                         }
                     }}
-
                 >
                 </SpeedDial>
 
@@ -132,6 +122,7 @@ function StatusMessage(props: { msg: string, level?: AlertColor, refreshRate?: n
         >
             <CardHeader
                 title={"Perferkt"}
+                subheader={props.msg}
                 action={
                     <Tooltip title="Refresh">
                         <IconButton onClick={() => refresh()}>
@@ -141,14 +132,11 @@ function StatusMessage(props: { msg: string, level?: AlertColor, refreshRate?: n
                 }
             />
             <CardContent>
-                <Grid container>
-                    <Grid item xs={9}>
-                        <Typography>{props.msg}</Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Typography textAlign={"right"}>Sidst opdateret: {lastRefresh.toLocaleTimeString()}</Typography>
-                    </Grid>
-                </Grid>
+
+
+                <Typography textAlign={"right"}>Sidst opdateret: {lastRefresh.toLocaleTimeString()}</Typography>
+
+
             </CardContent>
             <CardActionArea>
                 <Tooltip title={"Time to next refresh"}>

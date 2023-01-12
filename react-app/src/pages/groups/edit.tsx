@@ -8,7 +8,7 @@ import { Group } from "../../models/types";
 export function EditGroup() {
 
     const params = useParams();
-    const group: Group | undefined = mock.groups.find(group => group.id === params.id )
+    const group: Group | undefined = mock.groups.find(group => group.uuid === params.id )
 
     return (
 

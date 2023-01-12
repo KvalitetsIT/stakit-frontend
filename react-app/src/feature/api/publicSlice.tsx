@@ -6,8 +6,6 @@ import handleResponse from '../../redux/handleResponse';
 import { stakitApiSlice } from '../../redux/stakit-api-slice';
 
 
-
-
 // Define a service using a base URL and expected endpoints
 export const announcementSlice = stakitApiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -16,7 +14,7 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
                 url: `announcements-to-show`,
                 method: "GET",
-                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Services could not be fetched" }),
+                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Announcements could not be fetched" }),
             }),
             providesTags: ["announcements"]
         }),
@@ -25,7 +23,7 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
                 url: `service-status-grouped`,
                 method: "GET",
-                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Services could not be fetched" }),
+                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Groups could not be fetched" }),
             }),
             providesTags: ["statusOfGroups"]
         }),
@@ -34,7 +32,7 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
                 url: `subscribe`,
                 method: "POST",
-                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Services could not be fetched" }),
+                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not create subscription" }),
             }),
             invalidatesTags: ["subscription"]
         }),
@@ -43,13 +41,10 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
                 url: `subscribe-confirmed`,
                 method: "GET",
-                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Services could not be fetched" }),
+                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not confirm subscription" }),
             }),
             providesTags: ["confirmSubscription"]
         }),
-
-
-
     })
 })
 

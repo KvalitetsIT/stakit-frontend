@@ -9,6 +9,7 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { Sidebar, SidebarSection, SidebarItem } from './Sidebar';
 import { Topbar } from './Topbar';
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 type LayoutProps = {
   children: JSX.Element
 }
@@ -48,7 +49,7 @@ export default function Layout(props: LayoutProps) {
             <SidebarItem title='Subcribe' icon={<NotificationsActiveIcon />} href={"/subscribe"} />
           </SidebarSection>
           <SidebarSection title={"Authorized"}>
-            <SidebarItem title="Services" icon={<>ICON</>} href={"/services"} />
+            <SidebarItem title="Services" icon={<MiscellaneousServicesIcon/>} href={"/services"} />
             <SidebarItem title="Groups" icon={<WorkspacesIcon />} href={"/groups"} />
           </SidebarSection>
         </Sidebar>

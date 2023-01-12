@@ -7,13 +7,14 @@ import { ServiceForm } from "../../components/forms/service"
 import { useCreateServiceMutation, useGetAllServiceQuery } from "../../feature/api/serviceSlice";
 import { Service } from "../../models/types";
 
+
 export enum modes {
-    NORMAL, EDIT, ADD
+    NORMAL, EDIT, ADD, DELETE
 }
 
 export function ServicesPage() {
 
-    const {isLoading, data} = useGetAllServiceQuery(undefined)
+    const { isLoading, data } = useGetAllServiceQuery(undefined)
     const createService = useCreateServiceMutation()[0]
 
     const services = data
@@ -26,12 +27,11 @@ export function ServicesPage() {
     }
 
     const actions = [{ title: "Add new service", mode: modes.ADD, icon: <Add /> }]
-
+    
     return (
         <Container>
             <Card sx={{ mt: 4 }}>
                 <CardHeader
-
                     title="Services"
                     subheader={"A list of all services"}
                     action={<>
@@ -41,7 +41,6 @@ export function ServicesPage() {
                                     {action.icon}
                                 </IconButton>
                             </Tooltip>
-
                         ))}
                         <IconButton aria-label="settings">
                             <MoreVertIcon />
@@ -55,16 +54,17 @@ export function ServicesPage() {
 
                     </CardContent>
                 </Collapse>
-                <CardContent sx={{ padding: 0 }}>
-
-                    <List>
-                        {
-                            services && services.map(service => (
-                                <ServicePreview service={service} showPath></ServicePreview>
-                            ))
-                        }
-                    </List>
-                </CardContent>
+                {services && services.length > 0 && (
+                    <CardContent sx={{ padding: 0 }}>
+                        <List>
+                            {
+                                services && services.map(service => (
+                                    <ServicePreview service={service} showPath></ServicePreview>
+                                ))
+                            }
+                        </List>
+                    </CardContent>
+                )}
             </Card>
 
 

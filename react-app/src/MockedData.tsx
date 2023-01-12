@@ -4,7 +4,7 @@ import { Service, Group, Status, Announcement } from "./models/types"
 const services: Service[] = [
     {
         service_identifier: "identifier0",
-        id: "0",
+        uuid: "0",
         name: "Pexip Video Cluster",
         status: Status.DOWN,
         description: "VDX Pexip konferencenode cluster som står for selve afvikling af video",
@@ -12,7 +12,7 @@ const services: Service[] = [
     },
     {
         service_identifier: "identifier1",
-        id: "1",
+        uuid: "1",
         name: "Pexip WebApp",
         status: Status.UP,
         description: "Standard WebRTC video klienten som følger med Pexip installationen",
@@ -20,7 +20,7 @@ const services: Service[] = [
     },
     {
         service_identifier: "identifier2",
-        id: "2",
+        uuid: "2",
         name: "VDX-API ",
         status: Status.UP,
         description: "VDX-API er det api (Application Programming Interface) som udstilles som en service i VDX, hvor de tilsluttede parter kan integrere til egne systemer for booking af møder i VDX",
@@ -28,7 +28,7 @@ const services: Service[] = [
     },
     {
         service_identifier: "identifier3",
-        id: "3",
+        uuid: "3",
         name: "VDX Management",
         status: Status.DOWN,
         description: "VDX Management er værktøjet til de tilsluttede parter for administration af egen organisation af af tilgængelige services i VDX",
@@ -36,7 +36,7 @@ const services: Service[] = [
     },
     {
         service_identifier: "identifier4",
-        id: "4",
+        uuid: "4",
         name: "VDX Booking",
         status: Status.UP,
         description: "VDX Booking er værktøjet til de tilsluttede parter for booking af møder i VDX",
@@ -46,7 +46,7 @@ const services: Service[] = [
 
 const groups: Group[] = [
     {
-        id: "0",
+        uuid: "0",
         display_order: 1,
         name: "VDX Drift",
         status: Status.DOWN,
@@ -60,7 +60,7 @@ const groups: Group[] = [
         ]
     },
     {
-        id: "1",
+        uuid: "1",
         display_order: 1,
         name: "VDX Stage",
         status: Status.DOWN,
@@ -74,7 +74,7 @@ const groups: Group[] = [
         ]
     },
     {
-        id: "2",
+        uuid: "2",
         display_order: 1,
         name: "VDX Stage",
         status: Status.DOWN,
@@ -93,13 +93,13 @@ const groups: Group[] = [
 groups.forEach(group => group.services && group.services.forEach(service => service.group = group))
 
 const announcements: Announcement[] = [
-    { id: 0, from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
-    { id: 1, from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
-    { id: 2, from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
-    { id: 3, from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
-    { id: 4, from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
-    { id: 5, from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
-    { id: 6, from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
+    { uuid: "0", from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
+    { uuid: "1", from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
+    { uuid: "2", from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
+    { uuid: "3", from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
+    { uuid: "4", from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
+    { uuid: "5", from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
+    { uuid: "6", from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },
 ]
 
 

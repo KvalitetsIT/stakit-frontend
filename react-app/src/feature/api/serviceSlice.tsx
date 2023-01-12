@@ -50,7 +50,7 @@ export const serviceSlice = stakitApiSlice.injectEndpoints({
     }),
     updateService: builder.mutation<Service, Service>({
       query: (request) => HandleQuery({
-        url: `services/${request.id}`,
+        url: `services/${request.uuid}`,
         responseHandler: (res) => handleResponse({ response: res, toastSuccessText: "Service was created", toastErrorText: "Service could not be created" }),
         method: 'PUT',
         body: request,
@@ -60,9 +60,10 @@ export const serviceSlice = stakitApiSlice.injectEndpoints({
     }),
     deleteService: builder.mutation<undefined, Service>({
       query: (request) => HandleQuery({
-        url: `services/${request.id}`,
+        url: `services/${request.uuid}`,
         method: "DELETE",
       })
+      
     })
 
   })
@@ -70,7 +71,7 @@ export const serviceSlice = stakitApiSlice.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useCreateServiceMutation, useGetAllServiceQuery, useGetServiceQuery , useLazyGetAllServiceQuery, useDeleteServiceMutation} = serviceSlice
+export const { useCreateServiceMutation, useUpdateServiceMutation, useGetAllServiceQuery, useGetServiceQuery , useLazyGetAllServiceQuery, useDeleteServiceMutation} = serviceSlice
 
 
 

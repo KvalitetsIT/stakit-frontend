@@ -64,7 +64,7 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                                 error={errors.subscription?.groups && touched.subscription?.groups ? errors.subscription?.groups : undefined}
                             >
                                 {props.optionalGroups.map(group => (
-                                    <MenuItem value={group.id}>{group.name}</MenuItem>
+                                    <MenuItem value={group.uuid}>{group.name}</MenuItem>
                                 ))}
                             </ValidatedSelect>
 

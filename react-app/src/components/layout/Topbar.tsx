@@ -1,8 +1,9 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Avatar } from "@mui/material";
+import { AppBar, Toolbar, IconButton, Typography, Box, Avatar, Button } from "@mui/material";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { theme } from "../../theme";
 import MenuIcon from '@mui/icons-material/Menu'
+import { SubscibeButton } from "../../pages/dashboard/dashboard";
 
 interface TopbarProps { width: number | string, logo?: ReactNode, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void }
 export function Topbar(props: TopbarProps) {
@@ -62,8 +63,6 @@ export function Topbar(props: TopbarProps) {
                         <IconButton sx={{ p: 0 }}>
                             <Avatar alt="J" src="/static/images/avatar/2.jpg" />
                         </IconButton>
-
-
                     </Link>
                 </Box>
 

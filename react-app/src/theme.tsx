@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+import shadows from "@mui/material/styles/shadows";
 
 export const theme = createTheme({
     palette: {
@@ -36,5 +37,14 @@ export const theme = createTheme({
             contrastText: '#000000',
         },
     },
+    components: {
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    boxShadow: shadows[5]
+                }
+            }
+        }
+    }
 
 });

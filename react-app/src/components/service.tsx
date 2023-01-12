@@ -7,6 +7,7 @@ import { DeleteServiceDialog, Header } from "../pages/services/details";
 import { StatusIcon } from "./status";
 
 import EditIcon from '@mui/icons-material/Edit';
+import { useDeleteServiceMutation, useGetAllServiceQuery } from "../feature/api/serviceSlice";
 
 export function ServicePreview(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
 
@@ -20,7 +21,13 @@ export function ServicePreview(props: { service: Service, showActions?: boolean,
         setMode(Modes.NORMAL)
     }
 
-    const deleteService = () => {
+    const deleteService = useDeleteServiceMutation()[0]
+    const serviceGetter = useGetAllServiceQuery(undefined)
+
+    const remove = () => {
+        deleteService(props.service).then(
+            serviceGetter.refetch
+        )
         setMode(Modes.NORMAL)
     }
 
@@ -36,7 +43,7 @@ export function ServicePreview(props: { service: Service, showActions?: boolean,
                 </Grid>
                 <Grid item xs={6}>
                     <Tooltip title={"Edit"}>
-                        <Link to={"/services/" + props.service.id + "/edit"}>
+                        <Link to={"/services/" + props.service.uuid + "/edit"}>
                             <IconButton edge="end" aria-label="Edit" onClick={() => setMode(Modes.Edit)}>
                                 <EditIcon />
                             </IconButton>
@@ -51,12 +58,12 @@ export function ServicePreview(props: { service: Service, showActions?: boolean,
     return (
         <>
             <ListItem
-                key={"item_" + props.service.id}
+                key={"item_" + props.service.uuid}
                 disablePadding
                 secondaryAction={<Actions />}
             >
                 <ListItemButton dense>
-                    <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={"/services/" + props.service.id}>
+                    <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={"/services/" + props.service.uuid}>
 
                         {/* <ListItemAvatar>
                             <Avatar>
@@ -72,7 +79,14 @@ export function ServicePreview(props: { service: Service, showActions?: boolean,
 
                 </ListItemButton>
             </ListItem>
-            <DeleteServiceDialog open={mode === Modes.DELETE} service={props.service} onSuccess={deleteService} onClose={resetMode}></DeleteServiceDialog>
+            
+            <DeleteServiceDialog
+                open={mode === Modes.DELETE}
+                item={props.service}
+                onSuccess={remove}
+                onClose={resetMode}
+            />
+
         </>
 
     )

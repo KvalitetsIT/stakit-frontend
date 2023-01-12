@@ -11,7 +11,7 @@ import { t } from "i18next";
 
 interface ServiceFormProps extends FormProps<Service> {
     service?: Service,
-    optionalGroups: Group[],
+    optionalGroups?: Group[],
 
 }
 
@@ -37,45 +37,34 @@ export function ServiceForm(props: ServiceFormProps) {
             ignore_service_name: false
         }
     }
-
     return (
         <FormControl fullWidth>
 
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => {
-
-                    toast.promise(
-                        async () => {
-                            await props.onSubmit(values.service)
-                        },
-                        {
-                            pending: t('processing subscription'),
-                            success: t(" successfully subscribed"),
-                            error: t('subscription rejected')
-                        }
-                    )
-                }}
+                onSubmit={(values) => props.onSubmit(values.service)
+                }
                 validationSchema={validationSchema}
             >
-                {({ errors, touched, values, setFieldValue }) => (
-                    <Form>
-                        <Stack spacing={2}>
-                            
-                        <ValidatedTextField
-                                name="service.service_identifier"
-                                label={"Identifier"}
-                                value={values.service.service_identifier}
-                                error={touched.service?.service_identifier && errors.service?.service_identifier ? errors.service?.service_identifier : undefined}
-                            />
-                            <ValidatedTextField
-                                name="service.name"
-                                label={"Name"}
-                                value={values.service.name}
-                                error={touched.service?.name && errors.service?.name ? errors.service?.name : undefined}
-                            />
+                {({ errors, touched, values, setFieldValue }) => {
+                    return (
+                        <Form>
+                            <Stack spacing={2}>
 
-                            {/* <ValidatedSelect
+                                <ValidatedTextField
+                                    name="service.service_identifier"
+                                    label={"Identifier"}
+                                    value={values.service.service_identifier}
+                                    error={touched.service?.service_identifier && errors.service?.service_identifier ? errors.service?.service_identifier : undefined}
+                                />
+                                <ValidatedTextField
+                                    name="service.name"
+                                    label={"Name"}
+                                    value={values.service.name}
+                                    error={touched.service?.name && errors.service?.name ? errors.service?.name : undefined}
+                                />
+
+                                {/* <ValidatedSelect
                                 name="service.groups"
                                 label="Groups"
                                 multiple
@@ -86,30 +75,31 @@ export function ServiceForm(props: ServiceFormProps) {
                                 ))}
                             </ValidatedSelect> */}
 
-                            <ValidatedTextField
-                                name="service.description"
-                                label={"Description"}
-                                multiline
-                                rows={3}
-                                value={values.service.description}
-                                error={touched.service?.description && errors.service?.description ? errors.service?.description : undefined}
-                            />
+                                <ValidatedTextField
+                                    name="service.description"
+                                    label={"Description"}
+                                    multiline
+                                    rows={3}
+                                    value={values.service.description}
+                                    error={touched.service?.description && errors.service?.description ? errors.service?.description : undefined}
+                                />
 
-                            <Stack spacing={2} direction={"row"}>
-                                <Button
-                                    type={"submit"}
-                                    variant="contained"
-                                    fullWidth={true}
-                                >
-                                    {loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : "Gem"}
-                                </Button>
+                                <Stack spacing={2} direction={"row"}>
+                                    <Button
+                                        type={"submit"}
+                                        variant="contained"
+                                        fullWidth={true}
+                                    >
+                                        {loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : "Gem"}
+                                    </Button>
 
-                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">Cancel</Button>
+                                    <Button fullWidth={true} onClick={props.onCancel} variant="outlined">Cancel</Button>
 
+                                </Stack>
                             </Stack>
-                        </Stack>
-                    </Form>
-                )}
+                        </Form>
+                    )
+                }}
 
             </Formik>
         </FormControl >

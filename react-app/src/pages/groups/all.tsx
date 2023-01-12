@@ -54,14 +54,8 @@ export function AllGoupsPage(props: {}) {
                     <Collapse in={mode === modes.ADD}>
                         <CardContent>
                             <EditGroupForm onSubmit={addGroup} onCancel={() => setMode(modes.NORMAL)}></EditGroupForm>
-
                         </CardContent>
                     </Collapse>
-
-                    <CardContent>
-
-
-                    </CardContent>
                 </Card>
 
                 {

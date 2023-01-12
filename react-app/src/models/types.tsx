@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 
 class Resource {
-    id?: string
+    uuid?: string
 }
 
 export interface Credentials {
@@ -71,10 +71,9 @@ export interface Subscription {
     groups?: Group[]
 }
 
-export interface Announcement {
-    id?: number
-    from_datetime?: Date,
-    to_datetime?: Date,
-    message?: string,
+export class Announcement extends Resource {
+    from_datetime?: Date
+    to_datetime?: Date
+    message?: string
     subject?: string
 }

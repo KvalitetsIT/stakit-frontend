@@ -47,7 +47,7 @@ export default function App() {
                             </Route>
                         </Route>
 
-                        <Route path='groups'>
+                        <Route path='/groups'>
                             <Route index element={<AllGoupsPage />} />
                             <Route path=':id' >
                                 <Route index element={<GroupDetails />} />

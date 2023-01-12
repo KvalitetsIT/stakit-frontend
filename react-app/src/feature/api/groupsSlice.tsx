@@ -44,7 +44,7 @@ export const groupSlice = stakitApiSlice.injectEndpoints({
     }),
     updateGroup: builder.mutation<Group, Group>({
       query: (request) => HandleQuery({
-        url: `groups/${request.id}`,
+        url: `groups/${request.uuid}`,
         responseHandler: (res) => handleResponse({ response: res, toastSuccessText: "Group was created", toastErrorText: "Group could not be created" }),
         method: 'PUT',
         body: request,
@@ -53,7 +53,7 @@ export const groupSlice = stakitApiSlice.injectEndpoints({
     }),
     deleteGroup: builder.mutation<undefined, Group>({
       query: (request) => HandleQuery({
-        url: `groups/${request.id}`,
+        url: `groups/${request.uuid}`,
         method: "DELETE",
       }),
       invalidatesTags: ['groups'],

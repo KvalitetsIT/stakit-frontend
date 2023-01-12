@@ -33,7 +33,7 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
     }),
     updateAnnouncement: builder.mutation<Announcement, Announcement>({
       query: (request) => HandleQuery({
-        url: `announcements/${request.id}`,
+        url: `announcements/${request.uuid}`,
         responseHandler: (res) => handleResponse({ response: res, toastSuccessText: "Announcement was updated", toastErrorText: "Announcement could not be updated" }),
         method: 'PUT',
         body: request,
@@ -42,7 +42,7 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
     }),
     deleteAnnouncement: builder.mutation<undefined, Announcement>({
       query: (request) => HandleQuery({
-        url: `announcements/${request.id}`,
+        url: `announcements/${request.uuid}`,
         method: "DELETE",
       }),
       invalidatesTags: ['announcements'],

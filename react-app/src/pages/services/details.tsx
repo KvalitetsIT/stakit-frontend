@@ -2,17 +2,189 @@ import { Breadcrumbs, Button, Card, CardContent, CardHeader, Collapse, Container
 import { ReactNode, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { mock } from "../../MockedData";
-import { Service } from "../../models/types";
+import { Announcement, Service } from "../../models/types";
 import EditIcon from '@mui/icons-material/Edit';
 import { Loading } from "../../components/feedback/loading";
 import { ServiceForm } from "../../components/forms/service";
 import EditOffIcon from '@mui/icons-material/EditOff';
-
-
 import { Delete } from "@mui/icons-material";
-import { toast } from "react-toastify";
-import { useDeleteServiceMutation, useGetServiceQuery } from "../../feature/api/serviceSlice";
-import { randomUUID } from "crypto";
+import { useDeleteServiceMutation, useGetServiceQuery, useUpdateServiceMutation } from "../../feature/api/serviceSlice";
+
+
+
+export function ServiceDetails() {
+
+    const enum modes {
+        NORMAL, EDIT, DELETE
+    }
+
+    const params = useParams();
+
+    const { isLoading, data } = useGetServiceQuery(params.id!)
+    const deleteService = useDeleteServiceMutation()[0]
+    const editService = useUpdateServiceMutation()[0]
+
+
+    const [loading, setLoading] = useState(false)
+
+    const service: Service | undefined = data // mock.services[0]
+
+
+
+    const [mode, setMode] = useState<modes>(modes.NORMAL)
+
+
+    const actions: { title: string, icon: ReactNode, secondaryIcon?: ReactNode, mode: modes }[] = [
+        { title: "Edit", icon: <EditIcon />, secondaryIcon: <EditOffIcon />, mode: modes.EDIT },
+        { title: "Delete", icon: <Delete />, mode: modes.DELETE }
+    ]
+
+    const resetMode = () => setMode(modes.NORMAL)
+
+    return (
+
+        service == undefined ?
+            <>
+                Service == undefined
+            </>
+            :
+            <>
+                <Container sx={{ paddingTop: 4 }}>
+                    <Card>
+                        <Loading loading={loading}>
+                            <CardHeader
+                                title={
+                                    <Header service={service} showPath></Header>
+                                }
+                                subheader={service?.description}
+                                action={<>
+                                    {actions.map(action => (
+
+                                        <Tooltip title={action.title}>
+                                            <IconButton disabled={mode !== modes.NORMAL} aria-label={action.title} onClick={() => mode === modes.NORMAL ? setMode(action.mode) : setMode(modes.NORMAL)}>
+                                                {mode === action.mode ? action.secondaryIcon ?? action.icon : action.icon}
+                                            </IconButton>
+                                        </Tooltip>
+                                    ))}
+                                </>
+                                }
+                            />
+                            <CardContent>
+                                <Collapse in={mode === modes.EDIT}>
+                                    <ServiceForm service={service} onCancel={() => setMode(modes.NORMAL)} onSubmit={async (service) => { editService(service) }}></ServiceForm>
+                                </Collapse>
+                            </CardContent>
+                        </Loading>
+                    </Card>
+                    <HistorySection />
+                </Container >
+
+                <DeleteServiceDialog
+                    open={mode === modes.DELETE}
+                    onClose={resetMode}
+                    onSuccess={(service) => { deleteService(service); setMode(modes.NORMAL); } } 
+                    item={service}
+                />
+            </>
+    )
+}
+
+
+export function DeleteAnnouncementDialog(props: DeleteItemDialogProps<Announcement>) {
+    return (
+        <DeleteItemDialog
+            renderMessage={(announcement) => <Typography>You are about to delete the announcement: {announcement.subject}</Typography>}
+            renderTitle={(announcement) => <Typography>Delete {announcement.name}</Typography>}
+            {...props}
+        />
+    )
+}
+
+export function DeleteServiceDialog(props: DeleteItemDialogProps<Service>) {
+    return (
+        <DeleteItemDialog
+            renderMessage={(service) => <Typography>You are about to delete the service: {service.name}</Typography>}
+            renderTitle={(service) => <Typography>Delete {service.name}</Typography>}
+            {...props}
+        />
+    )
+}
+
+interface DeleteItemDialogProps<T> {
+    item: T, open: boolean, onClose: () => void, onSuccess: (item: T) => void, renderTitle?: (item: T) => ReactNode, renderMessage?: (item: T) => ReactNode
+}
+
+function DeleteItemDialog(props: DeleteItemDialogProps<any>) {
+
+    const { renderTitle, renderMessage, item } = props
+    return (
+        <Dialog
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            {...props}
+        >
+            {(renderTitle &&
+                <DialogTitle id="alert-dialog-title">
+                    {renderTitle(item)}
+                </DialogTitle>
+            )}
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    {renderMessage && renderMessage(item)}
+                    <Typography>Do you want to continue?</Typography>
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={props.onClose}>No</Button>
+                <Button onClick={() => { props.onSuccess(props.item) }} autoFocus>
+                    Yes
+                </Button>
+            </DialogActions>
+        </Dialog>
+    )
+}
+
+
+export function Header(props: { service: Service, showPath?: boolean }) {
+
+    const { service } = props
+
+    const paths: { title: string, href: string }[] = []
+
+    paths.push({ title: service.name, href: "/services/" + service.uuid })
+    if (service && service.group) { paths.unshift({ title: service.group.name!, href: "/groups/" + service.group.uuid }) }
+
+    return (
+        <>
+            {
+                props.showPath ?
+                    <Breadcrumbs aria-label="breadcrumb">
+                        {paths.map((path, index) => {
+                            return (
+                                <>
+                                    {index < paths.length - 1 ?
+                                        <Typography
+                                            sx={{ ":hover": { textDecoration: "underline" } }}
+                                            color={"inherit"}
+                                            variant="h6"
+                                        >
+                                            <Link to={path.href} style={{ textDecoration: 'none', color: "inherit" }}>{path.title}</Link>
+                                        </Typography>
+                                        :
+                                        <Typography color={"text.primary"} variant="h6">{path.title}</Typography>
+                                    }
+                                </>
+                            )
+                        })}
+                    </Breadcrumbs >
+                    :
+                    <Typography color={"text.primary"} variant="h6">{service?.name}</Typography>
+            }
+        </>
+    )
+}
+
+
 
 
 
@@ -49,150 +221,6 @@ export function DialogButton(props: { children: React.ReactElement<typeof Button
             {props.children}
 
         </>
-    )
-}
-
-export function ServiceDetails() {
-
-    const enum modes {
-        NORMAL, EDIT, DELETE
-    }
-
-    const params = useParams();
-
-    const { isLoading, data } = useGetServiceQuery("string")
-    const deleteService = useDeleteServiceMutation()[0]
-    
-    const [loading, setLoading] = useState(false)
-
-    const service: Service = data!
-
-    console.log("isLoading", isLoading)
-
-    const [mode, setMode] = useState<modes>(modes.NORMAL)
-
-
-    const actions: { title: string, icon: ReactNode, secondaryIcon?: ReactNode, mode: modes }[] = [
-        { title: "Edit", icon: <EditIcon />, secondaryIcon: <EditOffIcon />, mode: modes.EDIT },
-        { title: "Delete", icon: <Delete />, mode: modes.DELETE }
-    ]
-
-    const resetMode = () => setMode(modes.NORMAL)
-
-    return (
-        <>
-            <Container sx={{ paddingTop: 4 }}>
-                <Card>
-                    <Loading loading={loading}>
-                        <CardHeader
-                            title={
-                                <Header service={service} showPath></Header>
-                            }
-                            subheader={service?.description}
-                            action={<>
-                                {actions.map(action => (
-
-                                    <Tooltip title={action.title}>
-                                        <IconButton disabled={mode !== modes.NORMAL} aria-label={action.title} onClick={() => mode === modes.NORMAL ? setMode(action.mode) : setMode(modes.NORMAL)}>
-                                            {mode === action.mode ? action.secondaryIcon ?? action.icon : action.icon}
-                                        </IconButton>
-                                    </Tooltip>
-                                ))}
-                            </>
-                            }
-                        />
-                        <CardContent>
-                            <Collapse in={mode === modes.EDIT}>
-                                <ServiceForm service={service} onCancel={() => setMode(modes.NORMAL)} onSubmit={async () => console.log("Edit")} optionalGroups={mock.groups}></ServiceForm>
-                            </Collapse>
-                        </CardContent>
-                    </Loading>
-                </Card>
-                <HistorySection />
-            </Container >
-
-            <DeleteServiceDialog
-                service={service}
-                open={mode === modes.DELETE}
-                onClose={resetMode}
-                onSuccess={(service) => deleteService(service)}
-            ></DeleteServiceDialog>
-        </>
-    )
-}
-
-
-export function DeleteServiceDialog(props: { service: Service, open: boolean, onClose: () => void, onSuccess: (service: Service) => void }) {
-    return (
-        <Dialog
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            {...props}
-        >
-            <DialogTitle id="alert-dialog-title">
-                {"Delete service?"}
-            </DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    <Typography>You are about to delete the service: {props.service.name}</Typography>
-                    <Typography>Do you want to continue?</Typography>
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={props.onClose}>No</Button>
-                <Button onClick={ () =>{ props.onSuccess(props.service)} } autoFocus>
-                    Yes
-                </Button>
-            </DialogActions>
-        </Dialog>
-    )
-}
-
-
-export function Header(props: { service: Service, showPath?: boolean }) {
-
-    const { service } = props
-
-    const paths: { title: string, href: string }[] = [
-        { title: service.name!, href: "/services/" + service.id }
-    ]
-
-    if(service.group) paths.unshift({ title: service.group?.name!, href: "/groups/" + service.group?.id })
-
-    return (
-        <>
-            {
-                props.showPath ?
-                    <Path paths={paths}></Path>
-                    :
-                    <Typography color={"text.primary"} variant="h6">{props.service.name}</Typography>
-            }
-        </>
-    )
-}
-
-export function Path(props: { paths: { title: string, href: string }[] }) {
-    
-    return (
-        <Breadcrumbs aria-label="breadcrumb">
-            {props.paths.map((path, index) => {
-                return (
-                    <>
-                        {index < props.paths.length - 1 ?
-                            <Typography
-                                sx={{ ":hover": { textDecoration: "underline" } }}
-                                color={"inherit"}
-                                variant="h6"
-                            >
-                                <Link to={path.href} style={{ textDecoration: 'none', color: "inherit" }}>{path.title}</Link>
-                            </Typography>
-                            :
-                            <Typography color={"text.primary"} variant="h6">{path.title}</Typography>
-                        }
-                    </>
-                )
-            })}
-        </Breadcrumbs >
     )
 }
 
