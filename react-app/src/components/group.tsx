@@ -12,7 +12,7 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group 
 
     const services = props.group.services ?? []
 
-    const down = services.filter(service => service.status === Status.UP).length
+    const down = services.filter(service => service.status === Status.OK).length
 
     const actions: { name: string, callback: () => void }[] = [{ name: "Edit", callback: () => { } }, { name: "Edit", callback: () => { } }, { name: "Details", callback: () => { } }, { name: "Delete", callback: () => { } }]
 
@@ -40,7 +40,7 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group 
                     </Grid>
                 </Grid>
                 <AccordionActions >
-                    {services.every(service => service.status === Status.UP) ? <CheckCircleIcon color="success" /> : <CancelIcon color="warning" />}
+                    {services.every(service => service.status === Status.OK) ? <CheckCircleIcon color="success" /> : <CancelIcon color="warning" />}
                 </AccordionActions>
 
 

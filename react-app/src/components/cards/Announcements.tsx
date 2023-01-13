@@ -9,9 +9,9 @@ import { useGetAllAnnouncementsQuery } from "../../feature/api/publicSlice";
 import { Loading } from "../feedback/loading";
 import { AnnouncementForm } from "../forms/announcement";
 import { useState } from "react";
-import { modes } from "../../pages/services/ServicesPage";
+import { Mode } from "../../pages/services/ServicesPage";
 import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/api/announcementSlice";
-import { DeleteAnnouncementDialog, DeleteServiceDialog } from "../../pages/services/details";
+import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
 
 
 interface AnnouncementsCardProps {
@@ -21,7 +21,7 @@ interface AnnouncementsCardProps {
 
 AnnouncementsCard.defaultProps = {
     title: "Announcements",
-    subTitle: "some subtitle",
+    subTitle: "A list of the latest announcenements",
 }
 
 export function AnnouncementsCard(props: AnnouncementsCardProps) {
@@ -32,11 +32,11 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     const create = useCreateAnnouncementMutation()
     const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
 
-    const [mode, setMode] = useState<modes>(modes.NORMAL)
+    const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     const Actions = () => (
         <>
-            <Action title="Refresh" icon={<Add />} onClick={() => setMode(modes.ADD)} />
+            <Action title="Refresh" icon={<Add />} onClick={() => setMode(Mode.ADD)} />
             <Action title="Refresh" icon={<ReplayIcon />} onClick={() => refetch()} />
         </>
     )
@@ -48,13 +48,13 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
         const remove = () => {
             deleteAnnouncement(announcement)
-            setMode(modes.NORMAL)
+            setMode(Mode.NORMAL)
         }
 
         const Actions = () => (
             <>
                 <Tooltip title="Refresh">
-                    <IconButton onClick={() => setMode(modes.DELETE)}>
+                    <IconButton onClick={() => setMode(Mode.DELETE)}>
                         <Delete></Delete>
                     </IconButton>
                 </Tooltip>
@@ -83,10 +83,10 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                 </ListItem>
 
                 <DeleteAnnouncementDialog 
-                    onClose={() => setMode(modes.NORMAL)}
+                    onClose={() => setMode(Mode.NORMAL)}
                     onSuccess={() => remove()}
                     item={announcement} 
-                    open={mode == modes.DELETE}
+                    open={mode == Mode.DELETE}
                 />
             </>
 
@@ -104,20 +104,20 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     subheader={subTitle}
                     action={<Actions></Actions>}
                 ></CardHeader>
-                <Collapse in={mode === modes.ADD}>
-                    <CardContent>
+                <Collapse in={mode === Mode.ADD}>
+                    <CardContent sx={{padding: 2}}>
                         <AnnouncementForm
                             onSubmit={async (sub) => {
                                 await create[0](sub)
-                                setMode(modes.NORMAL)
+                                setMode(Mode.NORMAL)
                             }}
                             onCancel={() => {
-                                setMode(modes.NORMAL)
+                                setMode(Mode.NORMAL)
                             }}
                         />
                     </CardContent>
                 </Collapse>
-                <CardContent>
+                <CardContent sx={{padding: 0}}>
                     <Loading loading={isLoading}>
                         {
                             data ? (

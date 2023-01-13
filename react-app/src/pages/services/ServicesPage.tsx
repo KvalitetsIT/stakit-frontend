@@ -8,8 +8,10 @@ import { useCreateServiceMutation, useGetAllServiceQuery } from "../../feature/a
 import { Service } from "../../models/types";
 
 
-export enum modes {
-    NORMAL, EDIT, ADD, DELETE
+
+
+export enum Mode {
+    NORMAL, EDIT, ADD, DELETE,SUCCESS
 }
 
 export function ServicesPage() {
@@ -19,14 +21,14 @@ export function ServicesPage() {
 
     const services = data
 
-    const [mode, setMode] = useState<modes>(modes.NORMAL)
+    const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     const addService = async (service: Service) => {
         await createService(service)
-        setMode(modes.NORMAL)
+        setMode(Mode.NORMAL)
     }
 
-    const actions = [{ title: "Add new service", mode: modes.ADD, icon: <Add /> }]
+    const actions = [{ title: "Add new service", mode: Mode.ADD, icon: <Add /> }]
     
     return (
         <Container>
@@ -37,7 +39,7 @@ export function ServicesPage() {
                     action={<>
                         {actions.map(action => (
                             <Tooltip title={action.title}>
-                                <IconButton disabled={mode !== modes.NORMAL} aria-label={action.title} onClick={() => { mode === modes.NORMAL ? setMode(action.mode) : setMode(modes.NORMAL) }}>
+                                <IconButton disabled={mode !== Mode.NORMAL} aria-label={action.title} onClick={() => { mode === Mode.NORMAL ? setMode(action.mode) : setMode(Mode.NORMAL) }}>
                                     {action.icon}
                                 </IconButton>
                             </Tooltip>
@@ -48,9 +50,9 @@ export function ServicesPage() {
                     </>}
                 >
                 </CardHeader>
-                <Collapse in={mode === modes.ADD}>
+                <Collapse in={mode === Mode.ADD}>
                     <CardContent>
-                        <ServiceForm onSubmit={addService} onCancel={() => setMode(modes.NORMAL)} service={undefined} optionalGroups={[]}></ServiceForm>
+                        <ServiceForm onSubmit={addService} onCancel={() => setMode(Mode.NORMAL)} service={undefined} optionalGroups={[]}></ServiceForm>
 
                     </CardContent>
                 </Collapse>

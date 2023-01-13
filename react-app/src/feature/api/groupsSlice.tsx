@@ -23,7 +23,7 @@ export const groupSlice = stakitApiSlice.injectEndpoints({
       }),
       providesTags: ["groups"]
     }),
-    getGroup: builder.query<Group[], string>({
+    getGroup: builder.query<Group, string>({
       query: (id) => ({
         //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
         url: `groups/${id}`,
@@ -61,4 +61,4 @@ export const groupSlice = stakitApiSlice.injectEndpoints({
   })
 })
 
-export const {useCreateGroupMutation, useGetAllGroupsQuery} = groupSlice
+export const {useCreateGroupMutation, useGetAllGroupsQuery, useGetGroupQuery, useUpdateGroupMutation } = groupSlice

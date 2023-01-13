@@ -4,8 +4,8 @@ import ArrowCircleUpOutlinedIcon from '@mui/icons-material/ArrowCircleUpOutlined
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 export function StatusIcon(props: {status?: Status}){
     switch(props.status) {
-        case Status.UP: return <ArrowCircleUpOutlinedIcon color="success"></ArrowCircleUpOutlinedIcon>
-        case Status.DOWN: return <ArrowCircleDownOutlinedIcon color="warning"></ArrowCircleDownOutlinedIcon>
+        case Status.OK: return <ArrowCircleUpOutlinedIcon color="success"></ArrowCircleUpOutlinedIcon>
+        case Status.NOT_OK: return <ArrowCircleDownOutlinedIcon color="warning"></ArrowCircleDownOutlinedIcon>
         default: return <HelpOutlineOutlinedIcon color="secondary"></HelpOutlineOutlinedIcon>
     }
 }

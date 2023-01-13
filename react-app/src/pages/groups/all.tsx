@@ -2,30 +2,29 @@ import { Add } from "@mui/icons-material"
 import { Container, Card, CardHeader, IconButton, Collapse, CardContent, Tooltip } from "@mui/material"
 import { useState } from "react"
 import { Group } from "../../models/types"
-import { modes } from "../services/ServicesPage"
+import { Mode } from "../services/ServicesPage"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { EditGroupForm } from "../../components/forms/group"
 import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/api/groupsSlice"
 import { GroupAccordion } from "../../components/group"
+import { useGetAllServiceQuery } from "../../feature/api/serviceSlice"
 
 export function AllGoupsPage(props: {}) {
 
     const { isLoading, data } = useGetAllGroupsQuery(undefined)
-    const createGroup = useCreateGroupMutation()[0]
-
     const groups = data
 
-    const [mode, setMode] = useState<modes>(modes.NORMAL)
+    
+    const createGroup = useCreateGroupMutation()[0]
+    const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     const addGroup = async (group: Group) => {
         await createGroup(group)
-        setMode(modes.NORMAL)
+        setMode(Mode.NORMAL)
     }
 
-    const actions = [{ title: "Add new group", mode: modes.ADD, icon: <Add /> }]
+    const actions = [{ title: "Add new group", mode: Mode.ADD, icon: <Add /> }]
 
-
-    console.log(groups)
 
     return (
         <>
@@ -37,7 +36,7 @@ export function AllGoupsPage(props: {}) {
                         action={<>
                             {actions.map(action => (
                                 <Tooltip title={action.title}>
-                                    <IconButton disabled={mode !== modes.NORMAL} aria-label={action.title} onClick={() => { mode === modes.NORMAL ? setMode(action.mode) : setMode(modes.NORMAL) }}>
+                                    <IconButton disabled={mode !== Mode.NORMAL} aria-label={action.title} onClick={() => { mode === Mode.NORMAL ? setMode(action.mode) : setMode(Mode.NORMAL) }}>
                                         {action.icon}
                                     </IconButton>
                                 </Tooltip>
@@ -51,9 +50,12 @@ export function AllGoupsPage(props: {}) {
                     </CardHeader>
 
 
-                    <Collapse in={mode === modes.ADD}>
+                    <Collapse in={mode === Mode.ADD}>
                         <CardContent>
-                            <EditGroupForm onSubmit={addGroup} onCancel={() => setMode(modes.NORMAL)}></EditGroupForm>
+                            <EditGroupForm 
+                            onSubmit={addGroup} 
+                            onCancel={() => setMode(Mode.NORMAL)} 
+                            />
                         </CardContent>
                     </Collapse>
                 </Card>

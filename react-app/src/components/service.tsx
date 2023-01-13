@@ -3,11 +3,12 @@ import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Avatar, Li
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Service } from "../models/types";
-import { DeleteServiceDialog, Header } from "../pages/services/details";
+import { Header } from "../pages/services/details";
 import { StatusIcon } from "./status";
 
 import EditIcon from '@mui/icons-material/Edit';
 import { useDeleteServiceMutation, useGetAllServiceQuery } from "../feature/api/serviceSlice";
+import { DeleteServiceDialog } from "./dialogs/DeleteDialog";
 
 export function ServicePreview(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
 

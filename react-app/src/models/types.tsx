@@ -57,7 +57,7 @@ export class Group extends Resource {
 
 
 export enum Status {
-    UP, DOWN, UKNOWN
+    OK, NOT_OK, UKNOWN
 }
 
 export interface Action {

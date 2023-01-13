@@ -10,7 +10,7 @@ import { AnnouncementsCard } from "../../components/cards/Announcements";
 import { toast } from "react-toastify";
 import { useGetAllGroupsQuery } from "../../feature/api/groupsSlice";
 import { useGetStatusOfGroupsQuery } from "../../feature/api/publicSlice";
-import { Group } from "../../models/types";
+import { Group, Status } from "../../models/types";
 
 
 export function DashboardPage() {
@@ -20,13 +20,19 @@ export function DashboardPage() {
 
     const groups: Group[] = data ?? []
 
+    const services = groups.flatMap(group => group.services)
+
+    const numberOfServicesDown = services.map(service => service.status == Status.NOT_OK).length
+ 
+    const level = numberOfServicesDown == 0 ? "success" : "warning"
+
     return (
         <Box>
             <Grid container spacing={2}>
                 <Grid item xs={12} lg={6}>
                     <StatusMessage
-                        level="success"
-                        msg="Alle systemer virker hensigtsmæssigt"
+                        level={level}
+                        msg={numberOfServicesDown == 0 ? "Alle systemer virker hensigtsmæssigt": "Et eller flere systemer oplever problemer"}
                         callback={() => refetch() }
                     />
                     {groups && groups.map(serviceGroup => (
@@ -121,7 +127,7 @@ function StatusMessage(props: { msg: string, level?: AlertColor, refreshRate?: n
             sx={{ backgroundColor: "warning" }}
         >
             <CardHeader
-                title={"Perferkt"}
+                title={"Perfekt"}
                 subheader={props.msg}
                 action={
                     <Tooltip title="Refresh">
