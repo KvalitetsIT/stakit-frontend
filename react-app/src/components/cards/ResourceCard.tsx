@@ -11,8 +11,12 @@ import { Service } from "../../models/types"
 import { useUpdateServiceMutation } from "../../feature/api/serviceSlice"
 
 
+interface ServiceCardProps extends ResourceCardProps<Service> {
+    service: Service
+    
+}
 
-function ServiceCard(props: Omit<ResourceCardProps<Service>, "setMode">) {
+function ServiceCard(props: ServiceCardProps) {
     
     const [mode, setMode] = useState(Mode.NORMAL)
 
@@ -24,12 +28,12 @@ function ServiceCard(props: Omit<ResourceCardProps<Service>, "setMode">) {
                 <ServiceForm
                     service={service}
                     onCancel={() => setMode(Mode.NORMAL)}
-                    onSubmit={async (service) => { updateService(service)}}
-                />
+                    onSubmit={async (service) => { updateService(service) } } />
             )}
             mode={mode}
-            setMode={(mode: Mode) => setMode(mode)}
-            {...props}
+            setMode={(mode: Mode) => setMode(mode)} 
+            resource={props.service}
+            isLoading={false}
         />
     )
 }
@@ -40,23 +44,22 @@ interface ResourceCardProps<T> {
     header?: ReactNode
     subHeader?: ReactNode
     renderForm?: (resource: T) => ReactNode
-    mode?: Mode
+    mode: Mode
     setMode: (mode: Mode) => void
+    isLoading: boolean
 }
 
 export function ResourceCard(props: ResourceCardProps<any>) {
-
-    const [loading, setLoading] = useState(false)
 
     const actions: { title: string, icon: ReactNode, secondaryIcon?: ReactNode, mode: Mode }[] = [
         { title: "Edit", icon: <EditIcon />, secondaryIcon: <EditOffIcon />, mode: Mode.EDIT },
         { title: "Delete", icon: <Delete />, mode: Mode.DELETE }
     ]
 
-    const { mode, header,subHeader, renderForm, setMode, resource} = props
+    const { mode, header,subHeader, renderForm, setMode, resource, isLoading} = props
     return (
         <Card>
-            <Loading loading={loading}>
+            <Loading loading={isLoading}>
                 <CardHeader
                     title={header}
 

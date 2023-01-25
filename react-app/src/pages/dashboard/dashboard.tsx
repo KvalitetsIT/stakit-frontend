@@ -10,7 +10,8 @@ import { AnnouncementsCard } from "../../components/cards/Announcements";
 import { toast } from "react-toastify";
 import { useGetAllGroupsQuery } from "../../feature/api/groupsSlice";
 import { useGetStatusOfGroupsQuery } from "../../feature/api/publicSlice";
-import { Group, Status } from "../../models/types";
+import {  Status } from "../../models/types";
+import { Group } from "../../models/group";
 
 
 export function DashboardPage() {
@@ -26,17 +27,21 @@ export function DashboardPage() {
  
     const level = numberOfServicesDown == 0 ? "success" : "warning"
 
+    const successMsg = "Alle systemer virker hensigtsmæssigt"
+
+    const warningMsg = "Et eller flere systemer oplever problemer"
+
     return (
         <Box>
             <Grid container spacing={2}>
                 <Grid item xs={12} lg={6}>
                     <StatusMessage
                         level={level}
-                        msg={numberOfServicesDown == 0 ? "Alle systemer virker hensigtsmæssigt": "Et eller flere systemer oplever problemer"}
+                        msg={numberOfServicesDown == 0 ? successMsg: warningMsg}
                         callback={() => refetch() }
                     />
-                    {groups && groups.map(serviceGroup => (
-                        <GroupAccordion group={serviceGroup} ></GroupAccordion>
+                    {groups && groups.map((serviceGroup, index) => (
+                        <GroupAccordion group={serviceGroup} key={"group_"+index} ></GroupAccordion>
                     ))}
                     <SubscibeButton />
                 </Grid>
@@ -47,8 +52,6 @@ export function DashboardPage() {
         </Box>
     )
 }
-
-
 
 
 export function SubscibeButton() {
@@ -146,7 +149,7 @@ function StatusMessage(props: { msg: string, level?: AlertColor, refreshRate?: n
             </CardContent>
             <CardActionArea>
                 <Tooltip title={"Time to next refresh"}>
-                    <LinearProgress variant={"determinate"} value={progress} />
+                    <LinearProgress color={"secondary"} sx={{backgroundColor:""}} variant={"determinate"} value={progress} />
                 </Tooltip>
             </CardActionArea>
         </Card>

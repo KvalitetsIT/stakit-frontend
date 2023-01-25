@@ -1,4 +1,4 @@
-import { FormControl, Stack, Button, CircularProgress } from "@mui/material"
+import { FormControl, Stack, Button, CircularProgress, TextField } from "@mui/material"
 import { Formik, Form } from "formik"
 import { t } from "i18next"
 import { ValidatedTextField } from "../input/validatedTextField"
@@ -18,7 +18,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
             subject: yup.string().required(t("subject is required")),
             message: yup.string().required(t("message is required")),
             from_datetime: yup.date().required(t("from is required")),
-            to_datetime: yup.date().required(t("from is required")),
+            to_datetime: yup.date().required(t("to is required")),
         }),
     })
 
@@ -36,8 +36,9 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => props.onSubmit(values.announcement)}
+                onSubmit={(values) => {values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!);  props.onSubmit(values.announcement)}}
                 validationSchema={validationSchema}
+
             >
                 {({ errors, touched, values, handleChange }) => (
                     <Form>
@@ -49,40 +50,43 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                 name="announcement.subject"
                                 value={values.announcement?.subject}
                                 onChange={handleChange}
-                            >
-                            </ValidatedTextField>
+                            />
+
                             <ValidatedTextField
                                 type={"text"}
+                                multiline
+                                rows={3}
                                 error={errors.announcement?.message && touched.announcement?.message ? errors.announcement.message : undefined}
                                 label="Message"
                                 name="announcement.message"
                                 value={values.announcement?.message}
                                 onChange={handleChange}
-                            >
-                            </ValidatedTextField>
-
+                            />
 
                             <Stack spacing={2} direction={"row"}>
 
+
                                 <ValidatedTextField
-                                    type={"text"}
+                                    type={"datetime-local"}
                                     error={errors.announcement?.from_datetime && touched.announcement?.from_datetime ? errors.announcement.from_datetime : undefined}
                                     label="From"
                                     name="announcement.from_datetime"
                                     value={values.announcement?.from_datetime}
                                     onChange={handleChange}
-                                >
-                                </ValidatedTextField>
+                                />
+
+
 
                                 <ValidatedTextField
-                                    type={"text"}
+                                    type={"datetime-local"}
                                     error={errors.announcement?.to_datetime && touched.announcement?.to_datetime ? errors.announcement.to_datetime : undefined}
                                     label="To"
                                     name="announcement.to_datetime"
                                     value={values.announcement?.to_datetime}
                                     onChange={handleChange}
-                                >
-                                </ValidatedTextField>
+                                />
+
+
                             </Stack>
                             <Stack spacing={2} direction={"row"}>
                                 <Button

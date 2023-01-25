@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { theme } from "../../theme";
 import MenuIcon from '@mui/icons-material/Menu'
 import { SubscibeButton } from "../../pages/dashboard/dashboard";
+import { Logo } from "../../icons/logo";
 
 interface TopbarProps { width: number | string, logo?: ReactNode, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void }
 export function Topbar(props: TopbarProps) {
@@ -51,12 +52,11 @@ export function Topbar(props: TopbarProps) {
                     }}
                 >
                     <Link style={{ textDecoration: 'none', color: "inherit" }} to={"/"}>
-                        Sta<span style={{ color: theme.palette.secondary.main }}>KIT</span>
+                        Sta<Logo />
                     </Link>
                 </Typography>
 
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
-
 
                 <Box sx={{ flexGrow: 0 }}>
                     <Link to={"/profile"} style={{ textDecoration: "none", color: "inherit" }}>

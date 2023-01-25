@@ -10,6 +10,8 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { Sidebar, SidebarSection, SidebarItem } from './Sidebar';
 import { Topbar } from './Topbar';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import { Logo } from '../../icons/logo';
+
 type LayoutProps = {
   children: JSX.Element
 }
@@ -41,7 +43,7 @@ export default function Layout(props: LayoutProps) {
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <Topbar width={sidebarWidth} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}></Topbar>
-        <Sidebar width={sidebarWidth} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} logo={<Logo color={theme.palette.primary.contrastText} />}>
+        <Sidebar width={sidebarWidth} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} logo={<Title color={theme.palette.primary.contrastText} />}>
           <SidebarSection hideDivider title={"Public"}>
             <SidebarItem title="Dashboard" icon={<SwapVertIcon />} href={"/"} />
             <SidebarItem title='Login' icon={<LoginIcon />} href={"/login"} />
@@ -64,7 +66,7 @@ export default function Layout(props: LayoutProps) {
 }
 
 
-function Logo(props: { color?: string }) {
+function Title(props: { color?: string }) {
   return (
     <Typography
       variant="h4"
@@ -78,9 +80,10 @@ function Logo(props: { color?: string }) {
         letterSpacing: '.3rem',
         color: 'inherit',
         textDecoration: 'none',
+        
       }}
     >
-      <span style={{ color: props.color ?? theme.palette.primary.main }}>Sta</span><span style={{ color: theme.palette.secondary.main }}>KIT</span>
+      <span style={{ color: props.color ?? theme.palette.primary.main}}>Sta</span><Logo />
     </Typography>
   )
 }

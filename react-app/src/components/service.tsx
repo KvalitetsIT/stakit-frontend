@@ -1,8 +1,8 @@
 import { Delete } from "@mui/icons-material";
-import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Avatar, ListItemAvatar, Grid } from "@mui/material";
+import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Avatar, ListItemAvatar, Grid, ListItemIcon } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Service } from "../models/types";
+import { Service, Status } from "../models/types";
 import { Header } from "../pages/services/details";
 import { StatusIcon } from "./status";
 
@@ -10,7 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useDeleteServiceMutation, useGetAllServiceQuery } from "../feature/api/serviceSlice";
 import { DeleteServiceDialog } from "./dialogs/DeleteDialog";
 
-export function ServicePreview(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
+export function ServiceItem(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
 
     enum Modes {
         NORMAL, DELETE, Edit
@@ -37,7 +37,7 @@ export function ServicePreview(props: { service: Service, showActions?: boolean,
             <Grid container>
                 <Grid item xs={6}>
                     <Tooltip title={"Delete"}>
-                        <IconButton edge="end" aria-label="Delete" onClick={() => setMode(Modes.DELETE)}>
+                        <IconButton edge="end" aria-label="Delete" onClick={(e) => { e.preventDefault(); setMode(Modes.DELETE) }}>
                             <Delete />
                         </IconButton>
                     </Tooltip>
@@ -45,42 +45,43 @@ export function ServicePreview(props: { service: Service, showActions?: boolean,
                 <Grid item xs={6}>
                     <Tooltip title={"Edit"}>
                         <Link to={"/services/" + props.service.uuid + "/edit"}>
-                            <IconButton edge="end" aria-label="Edit" onClick={() => setMode(Modes.Edit)}>
+                            <IconButton edge="end" aria-label="Edit" onClick={(e) => { setMode(Modes.Edit) }}>
                                 <EditIcon />
                             </IconButton>
                         </Link>
                     </Tooltip>
                 </Grid>
-
             </Grid>
         </>
     )
 
     return (
         <>
-            <ListItem
-                key={"item_" + props.service.uuid}
-                disablePadding
-                secondaryAction={<Actions />}
-            >
-                <ListItemButton dense>
-                    <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={"/services/" + props.service.uuid}>
 
-                        {/* <ListItemAvatar>
-                            <Avatar>
-                                <StatusIcon status={props.service.status} ></StatusIcon>
-                            </Avatar>
-                        </ListItemAvatar> */}
+            <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={"/services/" + props.service.uuid}>
+
+                <ListItem
+                    key={"item_" + props.service.uuid}
+                    disablePadding
+                    secondaryAction={<Actions />}
+                >
+                    <ListItemButton dense>
+
+                        <ListItemIcon>
+                            <StatusIcon status={props.service.status}/>
+                        </ListItemIcon>
 
                         <ListItemText
                             primary={<Header {...props} />}
                             secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : ".")}
                         />
-                    </Link>
 
-                </ListItemButton>
-            </ListItem>
-            
+
+                    </ListItemButton>
+                </ListItem>
+            </Link>
+
+
             <DeleteServiceDialog
                 open={mode === Modes.DELETE}
                 item={props.service}

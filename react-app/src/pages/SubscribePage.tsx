@@ -5,30 +5,27 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { SubscriptionForm } from "../components/forms/subscribe";
 import { CenteredContent } from "../components/layout/CenteredContent";
+import { useGetAllGroupsCascaded } from "../feature/api/facade";
+import { useGetAllGroupsQuery } from "../feature/api/groupsSlice";
 import { useCreateSubscriptionMutation } from "../feature/api/publicSlice";
 import { mock } from "../MockedData";
-import { Group, Subscription } from "../models/types";
+import { Group } from "../models/group";
+import {  Subscription } from "../models/types";
 import { Mode } from "./services/ServicesPage";
 
 export function SubscribePage() {
 
     const createSubscription = useCreateSubscriptionMutation()[0]
-
+    const getAllGroups = useGetAllGroupsQuery(undefined)
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     const onSubscribtion = (subscription: Subscription) => {
-
         createSubscription(subscription).then(() => setMode(Mode.SUCCESS))
-
-
     }
 
-    const groups: Group[] = mock.groups
-
+    const {isLoading, data:groups} = useGetAllGroupsCascaded() ?? []
 
     switch (mode) {
-
-
         case Mode.SUCCESS: return (
             <CenteredContent>
                 <Container maxWidth="sm">
@@ -36,7 +33,6 @@ export function SubscribePage() {
                     <Typography variant="h6">Check you email. You should recieve a confirmation</Typography>
                 </Container>
             </CenteredContent>
-
         )
         default: return (
             <CenteredContent>
@@ -51,7 +47,6 @@ export function SubscribePage() {
                 </Container>
             </CenteredContent>
         )
-
     }
 
 

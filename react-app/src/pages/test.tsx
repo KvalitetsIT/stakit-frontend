@@ -1,7 +1,8 @@
 import { Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { EditGroupForm } from "../components/forms/group";
+import { GroupForm } from "../components/forms/group";
+import { Logo } from "../icons/logo";
 
 export function TestPage() {
 
@@ -14,12 +15,10 @@ export function TestPage() {
     return (
 
         <>
-        <Typography variant="h4">Test Page</Typography>
+            <Typography variant="h4">Test Page</Typography>
 
 
-        <EditGroupForm onSubmit={() => toast("Submit")} onCancel={() => toast("Submit")}></EditGroupForm>
-
-
+            <Logo></Logo>
         </>
     )
 

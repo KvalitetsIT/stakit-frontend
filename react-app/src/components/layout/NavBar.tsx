@@ -17,6 +17,7 @@ import { Link, useLocation, useOutlet } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { Theme, useTheme } from '@mui/material';
+import { Logo } from '../../icons/logo';
 
 
 function ResponsiveAppBar(props: { user?: User }) {
@@ -64,7 +65,7 @@ function ResponsiveAppBar(props: { user?: User }) {
                 textDecoration: 'none',
               }}
             >
-              Sta<span style={{ color: theme.palette.success.light }}>KIT</span>
+              Sta<Logo />
 
             </Typography>
 
@@ -128,7 +129,7 @@ function ResponsiveAppBar(props: { user?: User }) {
             }}
           >
             <Link style={{ textDecoration: 'none', color: "inherit" }} to={"/"}>
-              Sta<span style={{ color: theme.palette.secondary.main }}>KIT</span>
+              Sta<Logo />
             </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

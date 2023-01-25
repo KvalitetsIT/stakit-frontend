@@ -1,5 +1,6 @@
 
-import { Announcement, Group, Subscription } from '../../models/types';
+import { Group } from '../../models/group';
+import { Announcement, Subscription } from '../../models/types';
 import HandleQuery from '../../redux/EndpointQueryHandler';
 //import handleResponse from '../redux/handleResponse';
 import handleResponse from '../../redux/handleResponse';

@@ -1,26 +1,26 @@
 
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions';
-import { group } from 'console';
-import { t } from 'i18next';
-import { useMemo, useState } from 'react';
-import { toast } from 'react-toastify';
-import { Group } from '../../models/types';
+import { RepeatOneSharp } from '@mui/icons-material';
+import { mock } from '../../MockedData';
+import { Group, GroupDto } from '../../models/group';
+import { Service } from '../../models/types';
 import HandleQuery from '../../redux/EndpointQueryHandler';
 //import handleResponse from '../redux/handleResponse';
 import handleResponse from '../../redux/handleResponse';
 import { stakitApiSlice } from '../../redux/stakit-api-slice';
+import { announcementSlice } from './announcementSlice';
+import { serviceSlice, useGetAllServiceQuery } from './serviceSlice';
 
 
 // Define a Group using a base URL and expected endpoints
 export const groupSlice = stakitApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllGroups: builder.query<Group[], undefined>({
+    getAllGroups: builder.query<GroupDto[], undefined>({
       query: () => HandleQuery({
         //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
         url: `groups`,
         method: "GET",
         responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Groups could not be fetched" }),
-      }),
+      }), 
       providesTags: ["groups"]
     }),
     getGroup: builder.query<Group, string>({
@@ -38,7 +38,7 @@ export const groupSlice = stakitApiSlice.injectEndpoints({
         responseHandler: (res) => handleResponse({ response: res, toastSuccessText: "Group was created", toastErrorText: "Group could not be created" }),
         method: 'POST',
         body: request,
-        
+
       }),
       invalidatesTags: ['groups'],
     }),
@@ -57,8 +57,10 @@ export const groupSlice = stakitApiSlice.injectEndpoints({
         method: "DELETE",
       }),
       invalidatesTags: ['groups'],
-    })  
+    })
   })
 })
 
-export const {useCreateGroupMutation, useGetAllGroupsQuery, useGetGroupQuery, useUpdateGroupMutation } = groupSlice
+
+
+export const { useCreateGroupMutation, useGetAllGroupsQuery, useUpdateGroupMutation, useGetGroupQuery} = groupSlice

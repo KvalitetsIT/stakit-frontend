@@ -1,11 +1,13 @@
-import { Button, CircularProgress, FormControl, MenuItem, Stack } from "@mui/material";
+import { Autocomplete, Button, CircularProgress, FormControl, MenuItem, Stack, TextField, TextFieldProps } from "@mui/material";
 import { Form, Formik } from "formik";
 import { t } from "i18next";
 import { useState } from "react";
 import * as yup from 'yup';
-import { Group, Subscription } from "../../models/types";
-import { ValidatedSelect } from "../input/validatedSelect";
+import { Subscription } from "../../models/types";
+import {  ValidatedSelect } from "../input/validatedSelect";
+import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { ValidatedTextField } from "../input/validatedTextField";
+import { Group } from "../../models/group";
 
 export interface FormProps<T> {
     onSubmit: (submission: T) => Promise<void>
@@ -24,7 +26,7 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
     const validationSchema = yup.object().shape({
         subscription: yup.object().shape({
             email: yup.string().required(t("email is required")).email(t("email is not valid")),
-            groups: yup.array().required("groups is required").min(1, t("groups is required")),
+            groups: yup.array().required("groups is required").min(1, t("Atleast one group is needed")),
         }),
         checked: yup.bool().required(t("checkbox is required")),
     })
@@ -67,6 +69,15 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                                     <MenuItem value={group.uuid}>{group.name}</MenuItem>
                                 ))}
                             </ValidatedSelect>
+
+                            <ValidatedAutoComplete
+                                options={props.optionalGroups} 
+                                name={"subscription.groups"} 
+                                label={"Groups"} 
+                                error={errors.subscription?.groups && touched.subscription?.groups ? errors.subscription?.groups : undefined}
+                                getOptionLabel={(option: Group) => option.uuid}
+                            />
+                            
 
 
 

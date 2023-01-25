@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import { GroupAccordion } from "../../components/group";
 import { Loading } from "../../components/feedback/loading";
 import { mock } from "../../MockedData";
-import { Group } from "../../models/types";
 import { EditGroup } from "./edit";
+import { Group } from "../../models/group";
 
 export function GroupDetails() {
 

@@ -3,14 +3,16 @@ import { ReactNode, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { mock } from "../../MockedData";
 import { Announcement, Service } from "../../models/types";
-import EditIcon from '@mui/icons-material/Edit';
+
 import { Loading } from "../../components/feedback/loading";
 import { ServiceForm } from "../../components/forms/service";
+
 import EditOffIcon from '@mui/icons-material/EditOff';
 import { Delete } from "@mui/icons-material";
 import { useDeleteServiceMutation, useGetServiceQuery, useUpdateServiceMutation } from "../../feature/api/serviceSlice";
 import { DeleteServiceDialog } from "../../components/dialogs/DeleteDialog";
 
+import EditIcon from '@mui/icons-material/Edit';
 
 
 export function ServiceDetails() {
@@ -44,7 +46,7 @@ export function ServiceDetails() {
 
     return (
 
-        service == undefined ?
+        service === undefined ?
             <>
                 Service == undefined
             </>
@@ -100,7 +102,7 @@ export function Header(props: { service: Service, showPath?: boolean }) {
     const paths: { title: string, href: string }[] = []
 
     paths.push({ title: service.name, href: "/services/" + service.uuid })
-    if (service && service.group) { paths.unshift({ title: service.group.name!, href: "/groups/" + service.group.uuid }) }
+    //if (service && service.group) { paths.unshift({ title: service.group.name!, href: "/groups/" + service.group.uuid }) }
 
     return (
         <>

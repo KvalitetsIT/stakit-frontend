@@ -46,8 +46,8 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
         const { announcement } = props
 
-        const remove = () => {
-            deleteAnnouncement(announcement)
+        const remove = (a: Announcement) => {
+            deleteAnnouncement(a)
             setMode(Mode.NORMAL)
         }
 
@@ -76,7 +76,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                                 </>
                             }
                             secondary={<>
-                                <Typography>{dateToText(new Date(announcement.to_datetime!))} - {dateToText(new Date(announcement.from_datetime!))}</Typography>
+                                <Typography>{dateToText(new Date(announcement.from_datetime!))} - {dateToText(new Date(announcement.to_datetime!))}</Typography>
                             </>}
                         />
                     </ListItemButton>
@@ -84,7 +84,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
                 <DeleteAnnouncementDialog 
                     onClose={() => setMode(Mode.NORMAL)}
-                    onSuccess={() => remove()}
+                    onSuccess={() => { console.log("announcement", announcement); return remove(announcement)}}
                     item={announcement} 
                     open={mode == Mode.DELETE}
                 />
@@ -126,7 +126,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                                         <Item announcement={announcement}></Item>
                                     ))}
                                 </List>
-                            ) : (<>No announcements to show</>)
+                            ) : (<Typography marginLeft={2}></Typography>)
                         }
                     </Loading>
 

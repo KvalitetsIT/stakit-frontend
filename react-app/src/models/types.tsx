@@ -1,6 +1,9 @@
+import { group } from "console"
+import { RandomUUIDOptions } from "crypto"
 import { ReactNode } from "react"
+import { Group } from "./group"
 
-class Resource {
+export class Resource {
     uuid?: string
 }
 
@@ -30,31 +33,17 @@ export class Service extends Resource {
     description?: string
     group?: Group
 
-
     constructor(service_identifier: string, name: string, ignore_service_name: boolean){
         super()
         this.service_identifier=service_identifier
         this.name=name
-        this.ignore_service_name=ignore_service_name
-        
+        this.ignore_service_name=ignore_service_name   
     }
 }
 
-export class Group extends Resource {
-    name: string
-    display_order: number 
-    description?: string
-    status?: Status
-    services: Service[]
-
-    constructor(name: string, display_order: number, servies?: Service[]){
-        super()
-        this.name = name
-        this.display_order = display_order
-        this.services = servies ?? []
-    }
+export interface ServiceDto extends Omit<Service, "group"> {
+    group?: String
 }
-
 
 export enum Status {
     OK, NOT_OK, UKNOWN

@@ -1,20 +1,19 @@
 import { Add } from "@mui/icons-material"
 import { Container, Card, CardHeader, IconButton, Collapse, CardContent, Tooltip } from "@mui/material"
 import { useState } from "react"
-import { Group } from "../../models/types"
 import { Mode } from "../services/ServicesPage"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { EditGroupForm } from "../../components/forms/group"
+import { GroupForm } from "../../components/forms/group"
 import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/api/groupsSlice"
 import { GroupAccordion } from "../../components/group"
 import { useGetAllServiceQuery } from "../../feature/api/serviceSlice"
+import { Group } from "../../models/group";
+import { useGetAllGroupsCascaded } from "../../feature/api/facade";
 
 export function AllGoupsPage(props: {}) {
 
-    const { isLoading, data } = useGetAllGroupsQuery(undefined)
-    const groups = data
+    const {isLoading,  data: groups} = useGetAllGroupsCascaded()
 
-    
     const createGroup = useCreateGroupMutation()[0]
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
@@ -52,7 +51,7 @@ export function AllGoupsPage(props: {}) {
 
                     <Collapse in={mode === Mode.ADD}>
                         <CardContent>
-                            <EditGroupForm 
+                            <GroupForm 
                             onSubmit={addGroup} 
                             onCancel={() => setMode(Mode.NORMAL)} 
                             />

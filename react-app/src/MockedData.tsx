@@ -1,5 +1,6 @@
 import { mockComponent } from "react-dom/test-utils"
-import { Service, Group, Status, Announcement } from "./models/types"
+import { Group } from "./models/group"
+import { Service, Status, Announcement } from "./models/types"
 
 const services: Service[] = [
     {

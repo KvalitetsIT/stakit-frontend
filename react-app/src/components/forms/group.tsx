@@ -1,88 +1,93 @@
-import { FormControl, Stack, InputLabel, Select, MenuItem, Button, CircularProgress, OutlinedInput, Menu, Autocomplete, TextField, TextFieldProps } from "@mui/material"
-import { Formik, Form, Field } from "formik"
-import { Group, Service } from "../../models/types"
+import { FormControl, Stack, Button, CircularProgress, Autocomplete, AutocompleteRenderInputParams } from "@mui/material"
+import { Formik, Form } from "formik"
+import { Service } from "../../models/types"
 import * as yup from 'yup';
 import { ValidatedTextField } from "../input/validatedTextField";
-import { useState } from "react";
-import { serviceSlice, useGetAllServiceQuery, useUpdateServiceMutation } from "../../feature/api/serviceSlice";
+import { ReactNode, useState } from "react";
+import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
+import { FormProps } from "./subscribe";
+import { Group } from "../../models/group";
+import { useGetAllServicesCascaded } from "../../feature/api/facade";
+import { t } from "i18next";
 
 
+interface GroupFormProps extends FormProps<Group> {
+    group?: Group
+}
 
-export function EditGroupForm(props: { group: Group, onSubmit: (group: Group) => void, onCancel: () => void }) {
+export function GroupForm(props: GroupFormProps) {
 
+    //const services = useGetAllServicesCascaded()
+    const {isLoading, data} = useGetAllServicesCascaded() // data?.filter(service => service.group == undefined) ?? []
+    const services = data.concat(props.group?.services ?? [])
 
     const validationSchema = yup.object().shape({
         group: yup.object().shape({
-            name: yup.string().required(),
-            display_order: yup.string().required(),
-            description: yup.string().required(),
+            name: yup.string().required(t("Name is required")),
+            display_order: yup.string().required(t("Display-order is required")),
+            description: yup.string().required(t("Description is required"))
         })
     })
-
 
     const initialValues = {
         group: props.group ?? {
             name: "",
-            display_order: 1
+            display_order: 1,
+            services: [],
+            description: "",
         }
     }
-
-    const { data } = useGetAllServiceQuery(undefined)
-
 
 
     const [loading, setLoading] = useState<boolean>(false)
 
-    let availableServices: Service[] = data?.filter(service => service.group == undefined) ?? []
-
-    const services = availableServices.concat(props.group?.services ?? [])
-
     return (
         <FormControl fullWidth>
             <Formik
-                initialValues={{ group: props.group ?? new Group("", 1) }}
-                onSubmit={(values) => props.onSubmit(values.group)}
+                initialValues={initialValues}
+                onSubmit={(values) => { console.log("values: ", values); props.onSubmit(values.group) }}
                 validationSchema={validationSchema}
             >
-                {({ errors, touched, values, setFieldValue, initialValues }) => (
+                {({ errors, touched, values, submitForm, handleChange, setFieldValue}) => (
                     <Form>
                         <Stack spacing={2}>
                             <Stack spacing={2} direction={"row"}>
                                 <ValidatedTextField
                                     name="group.name"
-                                    label={"Name"}
+                                    label={t("Name")}
                                     value={values.group.name}
                                     error={touched.group?.name && errors.group?.name ? errors.group?.name : undefined}
                                 />
                                 <ValidatedTextField
                                     name="group.display_order"
-                                    label={"Display-order"}
+                                    label={t("Display-order")}
                                     type="number"
                                     value={values.group.display_order}
                                     error={touched.group?.display_order && errors.group?.display_order ? errors.group?.display_order : undefined}
                                 />
                             </Stack>
 
-                            <ValidatedTextField
-                                name="group.description"
-                                label={"Description"}
-                                value={values.group.description}
-                                error={touched.group?.description && errors.group?.description ? errors.group?.description : undefined}
-                            />
-                            <Autocomplete
+                            <ValidatedAutoComplete
                                 multiple
                                 id="tags-standard"
-                                options={availableServices}
+                                label="Services"
+                                name="group.services"
+                                options={services}
+                                onChange={(e, selected) => {console.log("selected", selected); setFieldValue("group.services", selected) }}
                                 getOptionLabel={(option: Service) => option.name}
                                 defaultValue={initialValues.group.services}
-                                renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
-                                    <TextField
-                                        {...params}
-                                        variant="outlined"
-                                        label={"Services"}
+                                noOptionsText={"Non available services"}
+                                error={touched.group?.services && errors.group?.services ? errors.group?.services : undefined}
+                                loading={isLoading}
+                            />
 
-                                    />
-                                )}
+                            <ValidatedTextField
+                                name="group.description"
+                                label={t("Description")}
+                                rows={3}
+                                multiline
+                                value={values.group.description}
+                                error={touched.group?.description && errors.group?.description ? errors.group?.description : undefined}
                             />
 
 
@@ -92,9 +97,9 @@ export function EditGroupForm(props: { group: Group, onSubmit: (group: Group) =>
                                     variant="contained"
                                     fullWidth={true}
                                 >
-                                    {loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : "Gem"}
+                                    {loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : "" + t("Save")}
                                 </Button>
-                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">Cancel</Button>
+                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{"" + t("Cancel")}</Button>
                             </Stack>
                         </Stack>
                     </Form>
@@ -107,6 +112,6 @@ export function EditGroupForm(props: { group: Group, onSubmit: (group: Group) =>
 
 
 
-EditGroupForm.defaultProps = {
+GroupForm.defaultProps = {
     group: {}
 }

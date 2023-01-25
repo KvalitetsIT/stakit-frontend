@@ -1,30 +1,31 @@
 import { Add } from "@mui/icons-material"
 import { Card, CardContent, CardHeader, Collapse, Container, IconButton, List, Tooltip } from "@mui/material"
-import { ServicePreview } from "../../components/service"
+import { ServiceItem } from "../../components/service"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from "react"
 import { ServiceForm } from "../../components/forms/service"
 import { useCreateServiceMutation, useGetAllServiceQuery } from "../../feature/api/serviceSlice";
-import { Service } from "../../models/types";
+import { Service, ServiceDto } from "../../models/types";
+import { useCreateService, useGetAllServicesCascaded } from "../../feature/api/facade";
 
 
 
 
 export enum Mode {
-    NORMAL, EDIT, ADD, DELETE,SUCCESS
+    NORMAL, EDIT, ADD, DELETE, SUCCESS
 }
 
 export function ServicesPage() {
 
-    const { isLoading, data } = useGetAllServiceQuery(undefined)
-    const createService = useCreateServiceMutation()[0]
+    //const { isLoading, data } = useGetAllServiceQuery(undefined)
+    const createService = useCreateService()
 
-    const services = data
+    const {isLoading, data: services} = useGetAllServicesCascaded()
 
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     const addService = async (service: Service) => {
-        await createService(service)
+        createService(service)
         setMode(Mode.NORMAL)
     }
 
@@ -52,7 +53,7 @@ export function ServicesPage() {
                 </CardHeader>
                 <Collapse in={mode === Mode.ADD}>
                     <CardContent>
-                        <ServiceForm onSubmit={addService} onCancel={() => setMode(Mode.NORMAL)} service={undefined} optionalGroups={[]}></ServiceForm>
+                        <ServiceForm onSubmit={addService} onCancel={() => setMode(Mode.NORMAL)} service={undefined}></ServiceForm>
 
                     </CardContent>
                 </Collapse>
@@ -61,7 +62,7 @@ export function ServicesPage() {
                         <List>
                             {
                                 services && services.map(service => (
-                                    <ServicePreview service={service} showPath></ServicePreview>
+                                    <ServiceItem service={service} showPath></ServiceItem>
                                 ))
                             }
                         </List>
