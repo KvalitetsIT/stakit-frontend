@@ -1,7 +1,7 @@
 import { Box, Container, CssBaseline, Toolbar, Typography, useTheme } from '@mui/material';
 import { Role, User } from '../../models/User';
 import React from 'react';
-import { theme } from '../../theme';
+import { theme } from '../../config/theme';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
@@ -19,16 +19,16 @@ type LayoutProps = {
 
 export default function Layout(props: LayoutProps) {
 
-  const user = new User()
+  // const user = new User()
 
-  user.name = "bob bobson"
-  user.username = "bobby"
-  user.phone = "123456789"
-  user.latest_login = new Date()
-  user.roles = [Role.ADMIN]
-  user.roleToString = () => "admin"
+  // user.name = "bob bobson"
+  // user.username = "bobby"
+  // user.phone = "123456789"
+  // user.latest_login = new Date()
+  // user.roles = [Role.ADMIN]
+  // user.roleToString = () => "admin"
 
-  const loggedInAs: User | undefined = user
+  // const loggedInAs: User | undefined = user
 
 
   const sidebarWidth = 250

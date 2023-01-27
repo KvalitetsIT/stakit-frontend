@@ -2,8 +2,7 @@ import { Card, CardContent, CardHeader } from "@mui/material";
 import { Container } from "@mui/system";
 import { redirect, useParams } from "react-router-dom";
 import { GroupForm } from "../../components/forms/group";
-import { useGetAllGroupsQuery, useGetGroupQuery, useUpdateGroupMutation } from "../../feature/api/groupsSlice";
-import { mock } from "../../MockedData";
+import { useGetAllGroupsQuery, useGetGroupQuery, useUpdateGroupMutation } from "../../feature/stakit/groupsSlice";
 import { Group } from "../../models/group";
 
 

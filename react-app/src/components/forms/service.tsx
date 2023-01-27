@@ -8,7 +8,7 @@ import { useState } from "react";
 import { FormProps } from "./subscribe";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { Group } from "../../models/group";
-import { useGetAllGroupsQuery } from "../../feature/api/groupsSlice";
+import { useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
 import { t } from "i18next";
 
 interface ServiceFormProps extends FormProps<Service> {

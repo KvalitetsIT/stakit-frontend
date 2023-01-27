@@ -4,9 +4,9 @@ import { useState } from "react"
 import { Mode } from "../services/ServicesPage"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { GroupForm } from "../../components/forms/group"
-import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/api/groupsSlice"
+import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice"
 import { GroupAccordion } from "../../components/group"
-import { useGetAllServiceQuery } from "../../feature/api/serviceSlice"
+import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice"
 import { Group } from "../../models/group";
 
 export function AllGoupsPage(props: {}) {

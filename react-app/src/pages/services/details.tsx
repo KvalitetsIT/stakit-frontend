@@ -1,7 +1,7 @@
 import { Breadcrumbs, Button, Card, CardContent, CardHeader, Collapse, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { Link, useLocation, useParams, useRoutes } from "react-router-dom";
-import { mock } from "../../MockedData";
+
 import { Announcement, Service } from "../../models/types";
 
 import { Loading } from "../../components/feedback/loading";
@@ -9,7 +9,7 @@ import { ServiceForm } from "../../components/forms/service";
 
 import EditOffIcon from '@mui/icons-material/EditOff';
 import { Delete } from "@mui/icons-material";
-import { useDeleteServiceMutation, useGetServiceQuery, useUpdateServiceMutation } from "../../feature/api/serviceSlice";
+import { useDeleteServiceMutation, useGetServiceQuery, useUpdateServiceMutation } from "../../feature/stakit/serviceSlice";
 import { DeleteServiceDialog } from "../../components/dialogs/DeleteDialog";
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -173,7 +173,7 @@ function HistorySection() {
             <CardHeader title={"History"} subheader={<Typography>The chart below shows the status corrosponding to the last 90 days</Typography>}>
             </CardHeader>
             <CardContent>
-                <History days={mock.days.map(day => ({ date: new Date(), percentage: day }))}></History>
+                {/* <History days={mock.days.map(day => ({ date: new Date(), percentage: day }))}></History> */}
             </CardContent >
         </Card >
     )
@@ -216,7 +216,7 @@ export function History(props: { days: Day[] }) {
 
         <Grid container>
             <Grid item xs={0.5} alignContent={"center"}>
-                <Typography>{mock.days.length} %</Typography>
+                {/* <Typography>{mock.days.length} %</Typography> */}
             </Grid>
             <Grid item xs={11.5}>
                 <Stack direction={"row"}>

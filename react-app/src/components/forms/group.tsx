@@ -8,7 +8,7 @@ import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { FormProps } from "./subscribe";
 import { Group } from "../../models/group";
 import { t } from "i18next";
-import { useGetAllServiceQuery } from "../../feature/api/serviceSlice";
+import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
 import { group } from "console";
 
 

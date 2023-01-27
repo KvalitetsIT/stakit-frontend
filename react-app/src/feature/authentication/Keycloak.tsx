@@ -1,5 +1,6 @@
 import Keycloak from "keycloak-js";
-import getEnvironment from "../../env";
+import getEnvironment from "../../config/env";
+
 const keycloak = new Keycloak({
     url: getEnvironment().REACT_APP_KEYCLOAK_URL,
     realm: getEnvironment().REACT_APP_KEYCLOAK_REALM,

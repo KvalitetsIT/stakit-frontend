@@ -4,7 +4,7 @@ import { ServiceItem } from "../../components/service"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from "react"
 import { ServiceForm } from "../../components/forms/service"
-import { useCreateServiceMutation, useGetAllServiceQuery } from "../../feature/api/serviceSlice";
+import { useCreateServiceMutation, useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
 import { Service } from "../../models/types";
 
 export enum Mode {

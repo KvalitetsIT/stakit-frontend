@@ -7,7 +7,7 @@ import { Header } from "../pages/services/details";
 import { StatusIcon } from "./status";
 
 import EditIcon from '@mui/icons-material/Edit';
-import { useDeleteServiceMutation, useGetAllServiceQuery } from "../feature/api/serviceSlice";
+import { useDeleteServiceMutation, useGetAllServiceQuery } from "../feature/stakit/serviceSlice";
 import { DeleteServiceDialog } from "./dialogs/DeleteDialog";
 
 

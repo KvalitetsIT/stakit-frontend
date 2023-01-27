@@ -1,18 +1,15 @@
-import { AlertColor, Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea, Paper } from "@mui/material"
+import { AlertColor, Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea } from "@mui/material"
 import { GroupAccordion } from "../../components/group"
-import { mock } from "../../MockedData"
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Link } from "react-router-dom";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { useEffect, useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AnnouncementsCard } from "../../components/cards/Announcements";
-import { toast } from "react-toastify";
-import { useGetAllGroupsQuery } from "../../feature/api/groupsSlice";
-import { useGetStatusOfGroupsQuery } from "../../feature/api/publicSlice";
+import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
 import {  Status } from "../../models/types";
 import { Group } from "../../models/group";
-import { useGetAllServiceQuery } from "../../feature/api/serviceSlice";
+import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
 
 
 export function DashboardPage() {

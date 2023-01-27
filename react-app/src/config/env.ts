@@ -7,6 +7,7 @@ interface env {
     REACT_APP_KEYCLOAK_URL : string
     REACT_APP_KEYCLOAK_REALM : string
     REACT_APP_KEYCLOAK_CLIENTID : string
+    REACT_APP_INACTIVITY_MAX_MINUTES: string
 }
 
 export default function getEnvironment(): env {

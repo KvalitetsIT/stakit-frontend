@@ -1,7 +1,7 @@
 import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, Drawer, Toolbar } from "@mui/material"
 import { ReactNode, ReactElement } from "react"
 import { Link } from "react-router-dom"
-import { theme } from "../../theme"
+import { theme } from "../../config/theme"
 
 export function SidebarSection(props: { hideDivider?: boolean, title?: string | ReactNode, children: ReactElement<typeof SidebarItem> | ReactElement<typeof SidebarItem>[] }) {
     return (

@@ -1,14 +1,10 @@
 
-import { RepeatOneSharp } from '@mui/icons-material';
-import { mock } from '../../MockedData';
+
 import { Group } from '../../models/group';
-import { Service } from '../../models/types';
 import HandleQuery from '../../redux/EndpointQueryHandler';
 //import handleResponse from '../redux/handleResponse';
 import handleResponse from '../../redux/handleResponse';
 import { stakitApiSlice } from '../../redux/stakit-api-slice';
-import { announcementSlice } from './announcementSlice';
-import { serviceSlice, useGetAllServiceQuery } from './serviceSlice';
 
 
 // Define a Group using a base URL and expected endpoints

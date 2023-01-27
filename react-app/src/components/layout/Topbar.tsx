@@ -1,10 +1,12 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Avatar, Button } from "@mui/material";
-import { ReactNode } from "react";
+import { AppBar, Toolbar, IconButton, Typography, Box, Avatar, Button, Chip } from "@mui/material";
+import { ReactNode, useContext } from "react";
 import { Link } from "react-router-dom";
-import { theme } from "../../theme";
+import { theme } from "../../config/theme";
 import MenuIcon from '@mui/icons-material/Menu'
 import { SubscibeButton } from "../../pages/dashboard/dashboard";
 import { Logo } from "../icons/logo";
+import { UserContext } from "../../feature/authentication/logic/FetchUser";
+import TagFacesIcon from '@mui/icons-material/TagFaces';
 
 interface TopbarProps { width: number | string, logo?: ReactNode, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void }
 export function Topbar(props: TopbarProps) {
@@ -12,6 +14,9 @@ export function Topbar(props: TopbarProps) {
     const { width, setMobileOpen, mobileOpen } = props
 
     const handleDrawerToggle = () => setMobileOpen ? setMobileOpen(!mobileOpen ?? false) : {};
+
+
+    const user = useContext(UserContext)
 
     return (
         <AppBar
@@ -61,7 +66,7 @@ export function Topbar(props: TopbarProps) {
                 <Box sx={{ flexGrow: 0 }}>
                     <Link to={"/profile"} style={{ textDecoration: "none", color: "inherit" }}>
                         <IconButton sx={{ p: 0 }}>
-                            <Avatar alt="J" src="/static/images/avatar/2.jpg" />
+                            <Chip clickable color="secondary" icon={<TagFacesIcon  />} /* avatar={<Avatar>{user?.firstName?.charAt(0)}</Avatar>} */ label={user?.firstName} />
                         </IconButton>
                     </Link>
                 </Box>

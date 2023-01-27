@@ -8,7 +8,7 @@ import { ServiceForm } from "../forms/service"
 import EditIcon from '@mui/icons-material/Edit';
 import EditOffIcon from '@mui/icons-material/EditOff';
 import { Service } from "../../models/types"
-import { useUpdateServiceMutation } from "../../feature/api/serviceSlice"
+import { useUpdateServiceMutation } from "../../feature/stakit/serviceSlice"
 
 
 interface ServiceCardProps extends ResourceCardProps<Service> {

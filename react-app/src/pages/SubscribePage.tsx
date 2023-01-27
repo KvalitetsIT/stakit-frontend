@@ -1,14 +1,9 @@
 import { Container, Typography } from "@mui/material";
-import { wait } from "@testing-library/user-event/dist/utils";
-import { t } from "i18next";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { SubscriptionForm } from "../components/forms/subscribe";
 import { CenteredContent } from "../components/layout/CenteredContent";
-import { useGetAllGroupsQuery } from "../feature/api/groupsSlice";
-import { useCreateSubscriptionMutation } from "../feature/api/publicSlice";
-import { mock } from "../MockedData";
-import { Group } from "../models/group";
+import { useGetAllGroupsQuery } from "../feature/stakit/groupsSlice";
+import { useCreateSubscriptionMutation } from "../feature/stakit/publicSlice";
 import {  Subscription } from "../models/types";
 import { Mode } from "./services/ServicesPage";
 

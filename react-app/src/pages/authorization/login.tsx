@@ -61,11 +61,10 @@ export function LoginPage() {
 }
 
 
-
 function updateAbility(ability: Ability, user: User) {
     const { can, rules } = new AbilityBuilder();
 
-    if (user.roles.includes(Role.ADMIN)) {
+    if (user.roles?.includes(Role.ADMIN)) {
         can('manage', 'all');
     } else {
         can('read', 'all');

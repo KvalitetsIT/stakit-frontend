@@ -8,7 +8,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Group } from "../models/group";
 import { PowerInputSharp, QuestionAnswerOutlined, QuestionAnswerRounded, QuestionMarkOutlined, QuestionMarkRounded } from "@mui/icons-material";
-import { useGetAllServiceQuery } from "../feature/api/serviceSlice";
+import { useGetAllServiceQuery } from "../feature/stakit/serviceSlice";
 
 export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group, key?: string }) {
 

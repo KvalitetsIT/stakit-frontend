@@ -1,5 +1,5 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
-import getEnvironment from "../env";
+import getEnvironment from "../config/env";
 
 
 //const baseurl = getEnvironment().REACT_APP_API_BASEURL;

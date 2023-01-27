@@ -5,16 +5,16 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import { toast } from "react-toastify";
 import { Add, Delete } from "@mui/icons-material";
 import { Action } from "../input/actions/Action";
-import { useGetAllAnnouncementsQuery } from "../../feature/api/publicSlice";
+import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";
 import { Loading } from "../feedback/loading";
 import { AnnouncementForm } from "../forms/announcement";
 import { useContext, useState } from "react";
 import { Mode } from "../../pages/services/ServicesPage";
-import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/api/announcementSlice";
+import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/stakit/announcementSlice";
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
 import { Can } from "@casl/react";
-import { UserContext } from "../../feature/User/logic/FetchUser";
-import { Operation } from "../../feature/User/config/ability";
+import { UserContext } from "../../feature/authentication/logic/FetchUser";
+import { Operation } from "../../feature/authentication/config/ability";
 
 
 interface AnnouncementsCardProps {

@@ -3,10 +3,8 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { GroupAccordion } from "../../components/group";
 import { Loading } from "../../components/feedback/loading";
-import { mock } from "../../MockedData";
 import { EditGroup } from "./edit";
-import { Group } from "../../models/group";
-import { useGetGroupQuery } from "../../feature/api/groupsSlice";
+import { useGetGroupQuery } from "../../feature/stakit/groupsSlice";
 
 export function GroupDetails() {
 
