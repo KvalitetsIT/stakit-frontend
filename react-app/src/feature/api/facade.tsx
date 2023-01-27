@@ -2,67 +2,64 @@ import { MutationDefinition, BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchB
 import { UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks"
 import { group } from "console"
 import { boolean } from "yup"
-import { Group, GroupDto } from "../../models/group"
-import { Resource, Service, ServiceDto } from "../../models/types"
 import { groupSlice, useGetAllGroupsQuery } from "./groupsSlice"
 import { serviceSlice } from "./serviceSlice"
 
 
-const { useGetGroupQuery } = groupSlice
-const { useGetAllServiceQuery, useCreateServiceMutation, useLazyGetServiceQuery } = serviceSlice
+// const { useGetAllServiceQuery, useCreateServiceMutation, useLazyGetServiceQuery } = serviceSlice
 
-export function useGetAllGroupsCascaded(): { isLoading: boolean; data: Group[] } {
+// export function useGetAllGroupsCascaded(): { isLoading: boolean; data: Group[] } {
 
-    const { isLoading: groupsIsLoading, data: groupDtos } = useGetAllGroupsQuery(undefined)
-    const { isLoading: servicesIsLoading, data: serviceDtos } = useGetAllServiceQuery(undefined)
+//     const { isLoading: groupsIsLoading, data: groupDtos } = useGetAllGroupsQuery(undefined)
+//     const { isLoading: servicesIsLoading, data: serviceDtos } = useGetAllServiceQuery(undefined)
 
-    let groups = groupDtos ? groupDtos.map(dto => mergeGroup(dto, serviceDtos ?? [])) : []
+//     let groups = groupDtos ? groupDtos.map((dto: GroupDto) => mergeGroup(dto, serviceDtos ?? [])) : []
 
-    return { isLoading: (groupsIsLoading || servicesIsLoading), data: groups };
-}
-
-
-function mergeGroup(dto: GroupDto, services: ServiceDto[]): Group {
-
-    let group = JSON.parse(JSON.stringify(dto as unknown as Group))
-
-    group.services = services.filter(service => service?.uuid !== undefined ? dto.services.includes(service.uuid) : false)
-
-    return group;
-
-}
+//     return { isLoading: (groupsIsLoading || servicesIsLoading), data: groups };
+// }
 
 
-export function useGetAllServicesCascaded(): { isLoading: boolean; data: Service[] } {
+// function mergeGroup(dto: GroupDto, services: ServiceDto[]): Group {
 
-    const { isLoading: groupsIsLoading, data: groupDtos } = useGetAllGroupsQuery(undefined)
-    const { isLoading: servicesIsLoading, data: serviceDtos } = useGetAllServiceQuery(undefined)
+//     let group = JSON.parse(JSON.stringify(dto as unknown as Group))
 
-    let services = serviceDtos ? serviceDtos.map((dto: ServiceDto) => mergeService(dto, groupDtos ?? [])) : []
+//     group.services = services.filter(service => service?.uuid !== undefined ? dto.services.includes(service.uuid) : false)
 
-    return { isLoading: (groupsIsLoading || servicesIsLoading), data: services };
-}
+//     return group;
 
-
-function mergeService(dto: ServiceDto, groups: GroupDto[]): Service {
-
-    let service = JSON.parse(JSON.stringify(dto as unknown as Service))
-
-    let ids = groups.map(group => group.uuid)
-
-    service.group = groups.filter(group => group?.uuid !== undefined ? ids.includes(group.uuid) : false)
-
-    return service;
-
-}
+// }
 
 
-export function useCreateService(): (service: Service) => void {
-    const createService = useCreateServiceMutation()[0]
-    return async (service: Service) => {
-        let dto: ServiceDto = service as ServiceDto;
-        dto.group = service.group?.uuid;
+// export function useGetAllServicesCascaded(): { isLoading: boolean; data: Service[] } {
 
-        await createService(dto)
-    }
-}
+//     const { isLoading: groupsIsLoading, data: groupDtos } = useGetAllGroupsQuery(undefined)
+//     const { isLoading: servicesIsLoading, data: serviceDtos } = useGetAllServiceQuery(undefined)
+
+//     let services = serviceDtos ? serviceDtos.map((dto: ServiceDto) => mergeService(dto, groupDtos ?? [])) : []
+
+//     return { isLoading: (groupsIsLoading || servicesIsLoading), data: services };
+// }
+
+
+// function mergeService(dto: ServiceDto, groups: GroupDto[]): Service {
+
+//     let service = JSON.parse(JSON.stringify(dto as unknown as Service))
+
+//     let ids = groups.map(group => group.uuid)
+
+//     service.group = groups.filter(group => group?.uuid !== undefined ? ids.includes(group.uuid) : false)
+
+//     return service;
+
+// }
+
+
+// export function useCreateService(): (service: Service) => void {
+//     const createService = useCreateServiceMutation()[0]
+//     return async (service: Service) => {
+//         let dto: ServiceDto = service as ServiceDto;
+//         dto.group = service.group?.uuid;
+
+//         await createService(dto)
+//     }
+// }

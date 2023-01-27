@@ -6,12 +6,13 @@ import { Loading } from "../../components/feedback/loading";
 import { mock } from "../../MockedData";
 import { EditGroup } from "./edit";
 import { Group } from "../../models/group";
+import { useGetGroupQuery } from "../../feature/api/groupsSlice";
 
 export function GroupDetails() {
 
     const params = useParams();
 
-    const group: Group | undefined = mock.groups.find(group => group.uuid === params.id)
+    const {data: group, isLoading} = useGetGroupQuery(params.id!)
 
     const [loading, setLoading] = useState(false)
 

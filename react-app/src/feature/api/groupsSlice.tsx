@@ -1,7 +1,7 @@
 
 import { RepeatOneSharp } from '@mui/icons-material';
 import { mock } from '../../MockedData';
-import { Group, GroupDto } from '../../models/group';
+import { Group } from '../../models/group';
 import { Service } from '../../models/types';
 import HandleQuery from '../../redux/EndpointQueryHandler';
 //import handleResponse from '../redux/handleResponse';
@@ -14,7 +14,7 @@ import { serviceSlice, useGetAllServiceQuery } from './serviceSlice';
 // Define a Group using a base URL and expected endpoints
 export const groupSlice = stakitApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllGroups: builder.query<GroupDto[], undefined>({
+    getAllGroups: builder.query<Group[], undefined>({
       query: () => HandleQuery({
         //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
         url: `groups`,

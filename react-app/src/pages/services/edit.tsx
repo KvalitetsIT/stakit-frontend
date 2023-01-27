@@ -24,7 +24,6 @@ export function EditService() {
                             onSubmit={async (service) => { console.log("Submitted", service); }}
                             onCancel={() => { window.history.go(-1); }}
                         />
-
                     </CardContent>
                 </Card>
             </Loading>

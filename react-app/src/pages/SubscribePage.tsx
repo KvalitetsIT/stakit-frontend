@@ -5,7 +5,6 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { SubscriptionForm } from "../components/forms/subscribe";
 import { CenteredContent } from "../components/layout/CenteredContent";
-import { useGetAllGroupsCascaded } from "../feature/api/facade";
 import { useGetAllGroupsQuery } from "../feature/api/groupsSlice";
 import { useCreateSubscriptionMutation } from "../feature/api/publicSlice";
 import { mock } from "../MockedData";
@@ -23,7 +22,7 @@ export function SubscribePage() {
         createSubscription(subscription).then(() => setMode(Mode.SUCCESS))
     }
 
-    const {isLoading, data:groups} = useGetAllGroupsCascaded() ?? []
+    const {isLoading, data:groups} = useGetAllGroupsQuery(undefined) ?? []
 
     switch (mode) {
         case Mode.SUCCESS: return (

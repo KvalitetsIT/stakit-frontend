@@ -13,8 +13,6 @@ export function EditGroup() {
 
     const {data, isError} = useGetGroupQuery(id!) // <-- might be undefined or wrong 
 
-
-    console.log("data", data)
     // if(idIsMissing || idNotExisting) go back.. or redirect to "/groups"
 
     const group: Group | undefined =  data

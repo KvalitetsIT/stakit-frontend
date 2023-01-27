@@ -2,8 +2,6 @@ import { KeycloakInstance } from "keycloak-js";
 import { createContext } from "react";
 import { useDispatch } from "react-redux";
 import { Role, User } from "../../../models/User";
-
-
 import UserFactory from "./UserFactory";
 
 export async function GetJWTToken(keycloak: KeycloakInstance): Promise<JWTToken | undefined> {
@@ -28,7 +26,24 @@ export function LoginBasedOnToken(token: JWTToken): User {
     return user;
 }
 
-export const UserContext = createContext<User | undefined>(undefined);
+
+//Fake User 
+// <
+const user = new User()
+
+user.name = "bob bobson"
+user.username = "bobby"
+user.phone = "123456789"
+user.latest_login = new Date()
+user.roles = [Role.ADMIN]
+user.roleToString = () => "admin"
+
+const loggedInAs: User | undefined = user
+
+// > 
+
+
+export const UserContext = createContext<User | undefined>(loggedInAs);
 
 function getRoleFromStringArray(roles: string[] | undefined): Role {
 

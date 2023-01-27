@@ -1,5 +1,5 @@
 
-import { Service, ServiceDto } from '../../models/types';
+import { Service } from '../../models/types';
 import HandleQuery from '../../redux/EndpointQueryHandler';
 //import handleResponse from '../redux/handleResponse';
 import handleResponse from '../../redux/handleResponse';
@@ -11,7 +11,7 @@ import { stakitApiSlice } from '../../redux/stakit-api-slice';
 // Define a service using a base URL and expected endpoints
 export const serviceSlice = stakitApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllService: builder.query<ServiceDto[], undefined>({
+    getAllService: builder.query<Service[], undefined>({
       query: () => HandleQuery({
         //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
         url: `services`,
@@ -29,7 +29,7 @@ export const serviceSlice = stakitApiSlice.injectEndpoints({
       }),
       providesTags: ["services"]
     }),
-    createService: builder.mutation<Service, ServiceDto>({
+    createService: builder.mutation<Service, Service>({
       query: (request) =>  HandleQuery({
         url: `services`,
         responseHandler: (res) => handleResponse({ response: res, toastSuccessText: "Service was created", toastErrorText: "Service could not be created" }),

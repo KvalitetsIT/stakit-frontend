@@ -1,6 +1,5 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import getEnvironment from "../env";
-import keycloak from "../feature/Keycloak/Keycloak";
 
 
 //const baseurl = getEnvironment().REACT_APP_API_BASEURL;

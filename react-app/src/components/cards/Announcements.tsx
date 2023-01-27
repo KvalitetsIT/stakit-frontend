@@ -8,10 +8,13 @@ import { Action } from "../input/actions/Action";
 import { useGetAllAnnouncementsQuery } from "../../feature/api/publicSlice";
 import { Loading } from "../feedback/loading";
 import { AnnouncementForm } from "../forms/announcement";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Mode } from "../../pages/services/ServicesPage";
 import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/api/announcementSlice";
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
+import { Can } from "@casl/react";
+import { UserContext } from "../../feature/User/logic/FetchUser";
+import { Operation } from "../../feature/User/config/ability";
 
 
 interface AnnouncementsCardProps {
@@ -33,11 +36,16 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
 
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
+    
+    const loggedInAs = useContext(UserContext)
 
     const Actions = () => (
         <>
             <Action title="Refresh" icon={<Add />} onClick={() => setMode(Mode.ADD)} />
-            <Action title="Refresh" icon={<ReplayIcon />} onClick={() => refetch()} />
+
+            <Can ability={loggedInAs!.getAbility()} I={Operation.READ} a={Announcement}>
+                <Action title="Refresh" icon={<ReplayIcon />} onClick={() => refetch()} />
+            </Can>
         </>
     )
 
@@ -82,10 +90,10 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     </ListItemButton>
                 </ListItem>
 
-                <DeleteAnnouncementDialog 
+                <DeleteAnnouncementDialog
                     onClose={() => setMode(Mode.NORMAL)}
-                    onSuccess={() => { console.log("announcement", announcement); return remove(announcement)}}
-                    item={announcement} 
+                    onSuccess={() => { console.log("announcement", announcement); return remove(announcement) }}
+                    item={announcement}
                     open={mode == Mode.DELETE}
                 />
             </>
@@ -96,6 +104,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     const dateToText = (date: Date): string => {
         return date.toLocaleDateString() + " " + date.toLocaleTimeString()
     }
+
     return (
         <>
             <Card>
@@ -105,7 +114,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     action={<Actions></Actions>}
                 ></CardHeader>
                 <Collapse in={mode === Mode.ADD}>
-                    <CardContent sx={{padding: 2}}>
+                    <CardContent sx={{ padding: 2 }}>
                         <AnnouncementForm
                             onSubmit={async (sub) => {
                                 await create[0](sub)
@@ -117,7 +126,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                         />
                     </CardContent>
                 </Collapse>
-                <CardContent sx={{padding: 0}}>
+                <CardContent sx={{ padding: 0 }}>
                     <Loading loading={isLoading}>
                         {
                             data ? (

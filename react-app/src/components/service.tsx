@@ -10,11 +10,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useDeleteServiceMutation, useGetAllServiceQuery } from "../feature/api/serviceSlice";
 import { DeleteServiceDialog } from "./dialogs/DeleteDialog";
 
+
+export enum Modes {
+    NORMAL, DELETE, EDIT
+}
+
 export function ServiceItem(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
 
-    enum Modes {
-        NORMAL, DELETE, Edit
-    }
 
     const [mode, setMode] = useState<Modes>(Modes.NORMAL)
 
@@ -35,17 +37,17 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
     const Actions = () => (
         <>
             <Grid container>
-                <Grid item xs={6}>
+                {/* <Grid item xs={6}>
                     <Tooltip title={"Delete"}>
                         <IconButton edge="end" aria-label="Delete" onClick={(e) => { e.preventDefault(); setMode(Modes.DELETE) }}>
                             <Delete />
                         </IconButton>
                     </Tooltip>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={6}>
                     <Tooltip title={"Edit"}>
-                        <Link to={"/services/" + props.service.uuid + "/edit"}>
-                            <IconButton edge="end" aria-label="Edit" onClick={(e) => { setMode(Modes.Edit) }}>
+                        <Link to={"/services/" + props.service.uuid} state={{ mode: Modes.EDIT }} >
+                            <IconButton edge="end" aria-label="Edit" onClick={(e) => { setMode(Modes.EDIT) }}>
                                 <EditIcon />
                             </IconButton>
                         </Link>
@@ -65,22 +67,17 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
                     disablePadding
                     secondaryAction={<Actions />}
                 >
-                    <ListItemButton dense>
-
+                    <ListItemButton dense >
                         <ListItemIcon>
-                            <StatusIcon status={props.service.status}/>
+                            <StatusIcon status={props.service.status} />
                         </ListItemIcon>
-
                         <ListItemText
                             primary={<Header {...props} />}
                             secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : ".")}
                         />
-
-
                     </ListItemButton>
                 </ListItem>
             </Link>
-
 
             <DeleteServiceDialog
                 open={mode === Modes.DELETE}

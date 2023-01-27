@@ -21,9 +21,16 @@ import { theme } from './theme';
 import { TestPage } from './pages/test';
 import store from './redux/store';
 import { AllGoupsPage } from './pages/groups/all';
+import { UserContext } from './feature/User/logic/FetchUser';
+import { useContext } from 'react';
+import { Can } from '@casl/react';
+import { Operation } from './feature/User/config/ability';
 
 
 export default function App() {
+
+
+    const loggedInAs = useContext(UserContext)
 
     return (
         <Router>
@@ -36,7 +43,6 @@ export default function App() {
                             <Route path="login" element={<LoginPage />} />
                             <Route path="register" element={<RegistrationPage />} />
                             <Route path="subscribe" element={<SubscribePage />} />
-                            <Route path="test" element={<TestPage />} />
                         </Route>
 
                         <Route path="/services">

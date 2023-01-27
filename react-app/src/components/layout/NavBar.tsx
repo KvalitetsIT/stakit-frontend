@@ -17,7 +17,7 @@ import { Link, useLocation, useOutlet } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { Theme, useTheme } from '@mui/material';
-import { Logo } from '../../icons/logo';
+import { Logo } from '../icons/logo';
 
 
 function ResponsiveAppBar(props: { user?: User }) {

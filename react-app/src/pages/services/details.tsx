@@ -1,6 +1,6 @@
 import { Breadcrumbs, Button, Card, CardContent, CardHeader, Collapse, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { ReactNode, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useRoutes } from "react-router-dom";
 import { mock } from "../../MockedData";
 import { Announcement, Service } from "../../models/types";
 
@@ -13,13 +13,11 @@ import { useDeleteServiceMutation, useGetServiceQuery, useUpdateServiceMutation 
 import { DeleteServiceDialog } from "../../components/dialogs/DeleteDialog";
 
 import EditIcon from '@mui/icons-material/Edit';
+import { Modes } from "../../components/service";
 
 
 export function ServiceDetails() {
 
-    const enum modes {
-        NORMAL, EDIT, DELETE
-    }
 
     const params = useParams();
 
@@ -28,67 +26,62 @@ export function ServiceDetails() {
     const editService = useUpdateServiceMutation()[0]
 
 
-    const [loading, setLoading] = useState(false)
 
-    const service: Service | undefined = data // mock.services[0]
+    const service: Service = data! // mock.services[0]
 
+    const location = useLocation();
 
+    const [mode, setMode] = useState<Modes>(location.state?.mode != null ? location.state?.mode : Modes.NORMAL)
 
-    const [mode, setMode] = useState<modes>(modes.NORMAL)
-
-
-    const actions: { title: string, icon: ReactNode, secondaryIcon?: ReactNode, mode: modes }[] = [
-        { title: "Edit", icon: <EditIcon />, secondaryIcon: <EditOffIcon />, mode: modes.EDIT },
-        { title: "Delete", icon: <Delete />, mode: modes.DELETE }
+    const actions: { title: string, icon: ReactNode, secondaryIcon?: ReactNode, mode: Modes }[] = [
+        { title: "Edit", icon: <EditIcon />, secondaryIcon: <EditOffIcon />, mode: Modes.EDIT },
+        { title: "Delete", icon: <Delete />, mode: Modes.DELETE }
     ]
 
-    const resetMode = () => setMode(modes.NORMAL)
+    const resetMode = () => setMode(Modes.NORMAL)
 
     return (
 
-        service === undefined ?
-            <>
-                Service == undefined
-            </>
-            :
-            <>
-                <Container sx={{ paddingTop: 4 }}>
-                    <Card>
-                        <Loading loading={loading}>
-                            <CardHeader
-                                title={
-                                    <Header service={service} showPath></Header>
-                                }
-                                subheader={service?.description}
-                                action={<>
-                                    {actions.map(action => (
 
-                                        <Tooltip title={action.title}>
-                                            <IconButton disabled={mode !== modes.NORMAL} aria-label={action.title} onClick={() => mode === modes.NORMAL ? setMode(action.mode) : setMode(modes.NORMAL)}>
-                                                {mode === action.mode ? action.secondaryIcon ?? action.icon : action.icon}
-                                            </IconButton>
-                                        </Tooltip>
-                                    ))}
-                                </>
-                                }
-                            />
-                            <CardContent>
-                                <Collapse in={mode === modes.EDIT}>
-                                    <ServiceForm service={service} onCancel={() => setMode(modes.NORMAL)} onSubmit={async (service) => { editService(service) }}></ServiceForm>
-                                </Collapse>
-                            </CardContent>
-                        </Loading>
-                    </Card>
-                    <HistorySection />
-                </Container >
+        <>
+            <Container sx={{ paddingTop: 4 }}>
+                <Card>
+                    <Loading loading={isLoading}>
+                        <CardHeader
+                            title={
+                                <Header service={service} showPath></Header>
+                            }
+                            subheader={service?.description}
+                            action={<>
+                                {actions.map(action => (
 
-                <DeleteServiceDialog
-                    open={mode === modes.DELETE}
-                    onClose={resetMode}
-                    onSuccess={(service) => { deleteService(service); setMode(modes.NORMAL); } } 
-                    item={service}
-                />
-            </>
+                                    <Tooltip title={action.title}>
+                                        <IconButton disabled={mode !== Modes.NORMAL} aria-label={action.title} onClick={() => mode === Modes.NORMAL ? setMode(action.mode) : setMode(Modes.NORMAL)}>
+                                            {mode === action.mode ? action.secondaryIcon ?? action.icon : action.icon}
+                                        </IconButton>
+                                    </Tooltip>
+                                ))}
+                            </>
+                            }
+                        />
+                        <CardContent>
+                            <Collapse in={mode === Modes.EDIT}>
+                                <ServiceForm service={service} onCancel={() => setMode(Modes.NORMAL)} onSubmit={async (service) => { editService(service) }}></ServiceForm>
+                            </Collapse>
+                        </CardContent>
+                        <DeleteServiceDialog
+                            open={mode === Modes.DELETE}
+                            onClose={resetMode}
+                            onSuccess={(service) => { deleteService(service); setMode(Modes.NORMAL); }}
+                            item={service}
+                        />
+                    </Loading>
+                </Card>
+                <HistorySection />
+            </Container >
+
+
+        </>
     )
 }
 

@@ -15,11 +15,14 @@ export interface FormProps<T> {
 }
 
 interface SubscriptionFormProps extends FormProps<Subscription> {
-    optionalGroups: Group[],
+    optionalGroups?: Group[],
     subscription?: Subscription
 }
 
 export function SubscriptionForm(props: SubscriptionFormProps) {
+
+
+    const {optionalGroups} = props
 
     const [loading, setLoading] = useState()
 
@@ -65,7 +68,7 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                                 multiple
                                 error={errors.subscription?.groups && touched.subscription?.groups ? errors.subscription?.groups : undefined}
                             >
-                                {props.optionalGroups.map(group => (
+                                {optionalGroups && optionalGroups.map(group => (
                                     <MenuItem value={group.uuid}>{group.name}</MenuItem>
                                 ))}
                             </ValidatedSelect>

@@ -8,7 +8,8 @@ import { useState } from "react";
 import { FormProps } from "./subscribe";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { Group } from "../../models/group";
-import { useGetAllGroupsCascaded } from "../../feature/api/facade";
+import { useGetAllGroupsQuery } from "../../feature/api/groupsSlice";
+import { t } from "i18next";
 
 interface ServiceFormProps extends FormProps<Service> {
     service?: Service
@@ -16,7 +17,9 @@ interface ServiceFormProps extends FormProps<Service> {
 
 export function ServiceForm(props: ServiceFormProps) {
 
-    const { isLoading, data: groups } = useGetAllGroupsCascaded() ?? []
+    const { isLoading, data } = useGetAllGroupsQuery(undefined) ?? []
+
+    const groups = data ?? []
 
     const validationSchema = yup.object().shape({
         service: yup.object().shape({
@@ -27,7 +30,7 @@ export function ServiceForm(props: ServiceFormProps) {
         })
     })
 
-    const defaultGroup = groups.find(group => group.name === "Default")!
+    const defaultGroup = groups && groups.find(group => group.name === "Default")?.uuid
 
     const initialValues = {
         service: props.service ?? {
@@ -38,6 +41,8 @@ export function ServiceForm(props: ServiceFormProps) {
             ignore_service_name: false
         }
     }
+
+    console.log("service", props.service)
 
     return (
         <FormControl fullWidth>
@@ -69,12 +74,15 @@ export function ServiceForm(props: ServiceFormProps) {
                                     loading={isLoading}
                                     options={groups}
                                     name={"service.group"}
-                                    label={"Group"}
+                                    label={t("Group")}
                                     getOptionLabel={(option: Group) => option.name ?? ""}
                                     value={values.service.group}
-                                    onChange={(e, selected) => { console.log("selected", selected); setFieldValue("service.group", selected as Group) }}
+                                    onChange={(e, selected) => {
+                                        const uuid = (selected as unknown as { id: string }).id
+                                        setFieldValue("service.group", uuid)
+                                    }}
                                     defaultValue={initialValues.service.group}
-                                    noOptionsText={"Non available groups"}
+                                    noOptionsText={""+ t("Non available groups")}
                                     error={touched.service?.group && errors.service?.group ? errors.service?.group : undefined}
                                     isOptionEqualToValue={(option, value) => option.uuid == value.uuid}
                                 />
@@ -104,8 +112,4 @@ export function ServiceForm(props: ServiceFormProps) {
             </Formik>
         </FormControl >
     )
-}
-
-ServiceForm.defaultProps = {
-    group: {}
 }

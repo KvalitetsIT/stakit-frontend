@@ -12,6 +12,7 @@ import { useGetAllGroupsQuery } from "../../feature/api/groupsSlice";
 import { useGetStatusOfGroupsQuery } from "../../feature/api/publicSlice";
 import {  Status } from "../../models/types";
 import { Group } from "../../models/group";
+import { useGetAllServiceQuery } from "../../feature/api/serviceSlice";
 
 
 export function DashboardPage() {
@@ -21,10 +22,11 @@ export function DashboardPage() {
 
     const groups: Group[] = data ?? []
 
-    const services = groups.flatMap(group => group.services)
+    const {data: services} = useGetAllServiceQuery(undefined)
 
-    const numberOfServicesDown = services.map(service => service.status == Status.NOT_OK).length
- 
+    const numberOfServicesDown = services && services.map(service => service.status == Status.NOT_OK).length
+    
+    
     const level = numberOfServicesDown == 0 ? "success" : "warning"
 
     const successMsg = "Alle systemer virker hensigtsmæssigt"

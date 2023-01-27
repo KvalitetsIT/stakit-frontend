@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { GroupForm } from "../components/forms/group";
-import { Logo } from "../icons/logo";
+import { Logo } from "../components/icons/logo";
 
 export function TestPage() {
 

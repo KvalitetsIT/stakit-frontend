@@ -10,7 +10,7 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { Sidebar, SidebarSection, SidebarItem } from './Sidebar';
 import { Topbar } from './Topbar';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
-import { Logo } from '../../icons/logo';
+import { Logo } from '../icons/logo';
 
 type LayoutProps = {
   children: JSX.Element

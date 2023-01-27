@@ -1,5 +1,5 @@
 import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Grid, Stack, Divider, IconButton, Menu, MenuItem, AccordionActions, ListItemAvatar, Chip, Tooltip, Box } from "@mui/material";
-import { Status } from "../models/types";
+import { Service, Status } from "../models/types";
 import { ServiceItem } from "./service";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from "react";
@@ -7,23 +7,26 @@ import { User } from "../models/types";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Group } from "../models/group";
-import { PowerInputSharp } from "@mui/icons-material";
+import { PowerInputSharp, QuestionAnswerOutlined, QuestionAnswerRounded, QuestionMarkOutlined, QuestionMarkRounded } from "@mui/icons-material";
+import { useGetAllServiceQuery } from "../feature/api/serviceSlice";
 
 export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group, key?: string }) {
 
 
-    const services = props.group.services ?? []
+    const serviceIds = props.group.services ?? []
 
-    const up = services.filter(service => service.status === Status.OK).length
+    const { data: allServices, isLoading } = useGetAllServiceQuery(undefined)
+
+    const services: Service[] = (allServices && allServices.filter(service => service.uuid && serviceIds.includes(service.uuid))) ?? []
+
+    const up: number = services.filter(service => service.status === Status.OK).length
 
     const actions: { name: string, callback: () => void }[] = [{ name: "Edit", callback: () => { } }, { name: "Edit", callback: () => { } }, { name: "Details", callback: () => { } }, { name: "Delete", callback: () => { } }]
-
-    const user: User | undefined = { firstName: "bob" }
 
     return (
 
 
-        <Accordion disableGutters defaultExpanded={props.defaultExpanded} sx={{ marginTop: 2 }}>
+        <Accordion disableGutters defaultExpanded={props.defaultExpanded} sx={{ marginTop: 2 }} disabled={services.length <= 0}>
             <AccordionSummary>
                 <Stack direction={"row"} justifyContent="space-between" alignItems="stretch" width={"100%"}>
                     <Stack>
@@ -36,13 +39,11 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group,
                         justifyContent: "center"
                     }}>
                         <Chip
-                            avatar={services.every(service => service.status === Status.OK) ? <CheckCircleIcon color="success" /> : <CancelIcon color="warning" />}
+                            avatar={services.length == 0 ? <QuestionMarkOutlined/>: services.every(service => service.status === Status.OK) ? <CheckCircleIcon color="success" /> : <CancelIcon color="warning" />}
                             color={services.length === 0 ? "default" : up !== services.length ? "error" : "success"}
                             label={<Typography>{up} / {services.length}</Typography>}
                         />
                     </Box>
-
-
                 </Stack>
                 {/* 
                 <Grid
@@ -82,7 +83,6 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group,
                         </AccordionDetails>
                     </>
                 )
-
             }
         </Accordion>
 

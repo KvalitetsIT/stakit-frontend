@@ -5,11 +5,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from "react"
 import { ServiceForm } from "../../components/forms/service"
 import { useCreateServiceMutation, useGetAllServiceQuery } from "../../feature/api/serviceSlice";
-import { Service, ServiceDto } from "../../models/types";
-import { useCreateService, useGetAllServicesCascaded } from "../../feature/api/facade";
-
-
-
+import { Service } from "../../models/types";
 
 export enum Mode {
     NORMAL, EDIT, ADD, DELETE, SUCCESS
@@ -18,9 +14,9 @@ export enum Mode {
 export function ServicesPage() {
 
     //const { isLoading, data } = useGetAllServiceQuery(undefined)
-    const createService = useCreateService()
+    const createService = useCreateServiceMutation()[0]
 
-    const {isLoading, data: services} = useGetAllServicesCascaded()
+    const {isLoading, data: services} = useGetAllServiceQuery(undefined)
 
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
@@ -61,7 +57,7 @@ export function ServicesPage() {
                     <CardContent sx={{ padding: 0 }}>
                         <List>
                             {
-                                services && services.map(service => (
+                                services && services.map((service: Service) => (
                                     <ServiceItem service={service} showPath></ServiceItem>
                                 ))
                             }

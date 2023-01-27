@@ -53,11 +53,11 @@ const groups: Group[] = [
         status: Status.NOT_OK,
         description: "A production ready cluster",
         services: [
-            services[0],
-            services[1],
-            services[2],
-            services[3],
-            services[4],
+            services[0].uuid!,
+            services[1].uuid!,
+            services[2].uuid!,
+            services[3].uuid!,
+            services[4].uuid!,
         ]
     },
     {
@@ -67,11 +67,11 @@ const groups: Group[] = [
         status: Status.NOT_OK,
         description: "A test environment",
         services: [
-            services[0],
-            services[1],
-            services[2],
-            services[3],
-            services[4]
+            services[0].uuid!,
+            services[1].uuid!,
+            services[2].uuid!,
+            services[3].uuid!,
+            services[4].uuid!
         ]
     },
     {
@@ -81,17 +81,15 @@ const groups: Group[] = [
         status: Status.NOT_OK,
         description: "some other group",
         services: [
-            services[0],
-            services[1],
-            services[2],
-            services[3],
-            services[4]
+            services[0].uuid!,
+            services[1].uuid!,
+            services[2].uuid!,
+            services[3].uuid!,
+            services[4].uuid!
         ]
     }
 ]
 
-// Assign references to all services
-groups.forEach(group => group.services && group.services.forEach(service => service.group = group))
 
 const announcements: Announcement[] = [
     { uuid: "0", from_datetime: new Date(), to_datetime: new Date(), subject: "subject", message: "message" },

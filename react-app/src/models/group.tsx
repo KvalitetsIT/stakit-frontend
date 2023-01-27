@@ -5,20 +5,13 @@ export class Group extends Resource {
     display_order: number 
     description?: string
     status?: Status
-    services: Service[]
-
-    constructor(name: string, display_order: number, servies?: Service[]){
+    services: string[]
+    
+    constructor(name: string, display_order: number, servies?: string[]){
         super()
         this.name = name
         this.display_order = display_order
         this.services = servies ?? []
-    }
-
-   
-}
-
-
-export interface GroupDto extends Omit<Group, "services">{
-    services: string[]
+    }  
 }
 

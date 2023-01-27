@@ -17,6 +17,7 @@ export class User {
     name!: string
     phone?: string
     latest_login?: Date
+    email?: string 
 
     roleToString(): string {
         return this.roles.map(role => {

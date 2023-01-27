@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { theme } from "../../theme";
 import MenuIcon from '@mui/icons-material/Menu'
 import { SubscibeButton } from "../../pages/dashboard/dashboard";
-import { Logo } from "../../icons/logo";
+import { Logo } from "../icons/logo";
 
 interface TopbarProps { width: number | string, logo?: ReactNode, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void }
 export function Topbar(props: TopbarProps) {

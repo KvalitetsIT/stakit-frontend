@@ -8,11 +8,10 @@ import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/api/
 import { GroupAccordion } from "../../components/group"
 import { useGetAllServiceQuery } from "../../feature/api/serviceSlice"
 import { Group } from "../../models/group";
-import { useGetAllGroupsCascaded } from "../../feature/api/facade";
 
 export function AllGoupsPage(props: {}) {
 
-    const {isLoading,  data: groups} = useGetAllGroupsCascaded()
+    const { isLoading, data: groups } = useGetAllGroupsQuery(undefined)
 
     const createGroup = useCreateGroupMutation()[0]
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
@@ -23,7 +22,6 @@ export function AllGoupsPage(props: {}) {
     }
 
     const actions = [{ title: "Add new group", mode: Mode.ADD, icon: <Add /> }]
-
 
     return (
         <>
@@ -39,7 +37,6 @@ export function AllGoupsPage(props: {}) {
                                         {action.icon}
                                     </IconButton>
                                 </Tooltip>
-
                             ))}
                             <IconButton aria-label="settings">
                                 <MoreVertIcon />
@@ -51,9 +48,9 @@ export function AllGoupsPage(props: {}) {
 
                     <Collapse in={mode === Mode.ADD}>
                         <CardContent>
-                            <GroupForm 
-                            onSubmit={addGroup} 
-                            onCancel={() => setMode(Mode.NORMAL)} 
+                            <GroupForm
+                                onSubmit={addGroup}
+                                onCancel={() => setMode(Mode.NORMAL)}
                             />
                         </CardContent>
                     </Collapse>

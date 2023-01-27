@@ -31,7 +31,7 @@ export class Service extends Resource {
     status?: Status
     ignore_service_name: boolean
     description?: string
-    group?: Group
+    group?: string
 
     constructor(service_identifier: string, name: string, ignore_service_name: boolean){
         super()
@@ -39,10 +39,6 @@ export class Service extends Resource {
         this.name=name
         this.ignore_service_name=ignore_service_name   
     }
-}
-
-export interface ServiceDto extends Omit<Service, "group"> {
-    group?: String
 }
 
 export enum Status {
