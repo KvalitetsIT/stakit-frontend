@@ -1,12 +1,11 @@
-import { Add } from "@mui/icons-material"
-import { Container, Card, CardHeader, IconButton, Collapse, CardContent, Tooltip } from "@mui/material"
-import { useState } from "react"
-import { Mode } from "../services/ServicesPage"
+import { Add } from "@mui/icons-material";
+import { Container, Card, CardHeader, IconButton, Collapse, CardContent, Tooltip } from "@mui/material";
+import { useState } from "react";
+import { Mode } from "../services/ServicesPage";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { GroupForm } from "../../components/forms/group"
-import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice"
-import { GroupAccordion } from "../../components/group"
-import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice"
+import { GroupForm } from "../../components/forms/group";
+import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
+import { GroupAccordion } from "../../components/group";
 import { Group } from "../../models/group";
 
 export function AllGoupsPage(props: {}) {

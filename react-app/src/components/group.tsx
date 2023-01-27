@@ -1,13 +1,10 @@
-import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Grid, Stack, Divider, IconButton, Menu, MenuItem, AccordionActions, ListItemAvatar, Chip, Tooltip, Box } from "@mui/material";
+import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Stack, Divider, Chip, Box } from "@mui/material";
 import { Service, Status } from "../models/types";
 import { ServiceItem } from "./service";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from "react";
-import { User } from "../models/types";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Group } from "../models/group";
-import { PowerInputSharp, QuestionAnswerOutlined, QuestionAnswerRounded, QuestionMarkOutlined, QuestionMarkRounded } from "@mui/icons-material";
+import { QuestionMarkOutlined } from "@mui/icons-material";
 import { useGetAllServiceQuery } from "../feature/stakit/serviceSlice";
 
 export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group, key?: string }) {

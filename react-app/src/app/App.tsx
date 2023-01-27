@@ -1,6 +1,5 @@
 
 import './App.css';
-import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
@@ -9,7 +8,6 @@ import { LoginPage } from '../pages/authorization/login';
 import { SubscribePage } from '../pages/SubscribePage';
 import Layout from '../components/layout/Layout';
 import { ServiceDetails } from '../pages/services/details';
-import { ThemeProvider } from '@mui/material/styles';
 import { PageNotFound } from '../pages/404';
 import { GroupDetails } from '../pages/groups/details';
 import { RegistrationPage } from '../pages/authorization/registration';
@@ -17,20 +15,15 @@ import { EditService } from '../pages/services/edit';
 import { EditGroup } from '../pages/groups/edit';
 import { ProfilePage } from '../pages/profile';
 import { ServicesPage } from '../pages/services/ServicesPage';
-import { theme } from '../config/theme';
-import store from '../redux/store';
 import { AllGoupsPage } from '../pages/groups/all';
-import { StrictMode, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ReactKeycloakProvider, useKeycloak } from '@react-keycloak/web';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import { User, UserResponse } from '../models/User';
+import { useKeycloak } from '@react-keycloak/web';
+import { User } from '../models/User';
 import { GetJWTToken, JWTToken, UserContext } from '../feature/authentication/logic/FetchUser';
 import { AbilityContext } from '../feature/authentication/logic/Can';
-import { Loading } from '../components/feedback/loading';
 import { Typography } from '@mui/material';
 import getEnvironment from '../config/env';
-import keycloak from '../feature/authentication/Keycloak';
 import UserFactory from '../feature/authentication/logic/UserFactory';
 
 export default function App() {

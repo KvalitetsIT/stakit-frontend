@@ -1,8 +1,7 @@
-import { Delete } from "@mui/icons-material";
-import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Avatar, ListItemAvatar, Grid, ListItemIcon } from "@mui/material";
+import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Grid, ListItemIcon } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Service, Status } from "../models/types";
+import { Service } from "../models/types";
 import { Header } from "../pages/services/details";
 import { StatusIcon } from "./status";
 

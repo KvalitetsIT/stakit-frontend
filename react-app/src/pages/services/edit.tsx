@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, Container } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { Loading } from "../../components/feedback/loading";
 import { ServiceForm } from "../../components/forms/service";
-import { useGetGroupQuery } from "../../feature/stakit/groupsSlice";
 import { useGetServiceQuery } from "../../feature/stakit/serviceSlice";
 
 export function EditService() {

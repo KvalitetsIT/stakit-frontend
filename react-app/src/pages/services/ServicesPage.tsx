@@ -1,9 +1,9 @@
-import { Add } from "@mui/icons-material"
-import { Card, CardContent, CardHeader, Collapse, Container, IconButton, List, Tooltip } from "@mui/material"
-import { ServiceItem } from "../../components/service"
+import { Add } from "@mui/icons-material";
+import { Card, CardContent, CardHeader, Collapse, Container, IconButton, List, Tooltip } from "@mui/material";
+import { ServiceItem } from "../../components/service";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from "react"
-import { ServiceForm } from "../../components/forms/service"
+import { useState } from "react";
+import { ServiceForm } from "../../components/forms/service";
 import { useCreateServiceMutation, useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
 import { Service } from "../../models/types";
 

@@ -1,10 +1,10 @@
-import { Autocomplete, Button, CircularProgress, FormControl, MenuItem, Stack, TextField, TextFieldProps } from "@mui/material";
+import { Button, CircularProgress, FormControl, MenuItem, Stack } from "@mui/material";
 import { Form, Formik } from "formik";
 import { t } from "i18next";
 import { useState } from "react";
 import * as yup from 'yup';
 import { Subscription } from "../../models/types";
-import {  ValidatedSelect } from "../input/validatedSelect";
+import { ValidatedSelect } from "../input/validatedSelect";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { ValidatedTextField } from "../input/validatedTextField";
 import { Group } from "../../models/group";

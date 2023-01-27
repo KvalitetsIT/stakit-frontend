@@ -1,10 +1,9 @@
-import { FormControl, Stack, Button, CircularProgress } from "@mui/material"
+import { FormControl, Stack, Button } from "@mui/material";
 
-import { Formik, Form } from "formik"
-import { Service } from "../../models/types"
+import { Formik, Form } from "formik";
+import { Service } from "../../models/types";
 import * as yup from 'yup';
 import { ValidatedTextField } from "../input/validatedTextField";
-import { useState } from "react";
 import { FormProps } from "./subscribe";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { Group } from "../../models/group";

@@ -1,15 +1,14 @@
-import { FormControl, Stack, Button, CircularProgress, Autocomplete, AutocompleteRenderInputParams } from "@mui/material"
-import { Formik, Form } from "formik"
-import { Service } from "../../models/types"
+import { FormControl, Stack, Button, CircularProgress } from "@mui/material";
+import { Formik, Form } from "formik";
+import { Service } from "../../models/types";
 import * as yup from 'yup';
 import { ValidatedTextField } from "../input/validatedTextField";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { FormProps } from "./subscribe";
 import { Group } from "../../models/group";
 import { t } from "i18next";
 import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
-import { group } from "console";
 
 
 interface GroupFormProps extends FormProps<Group> {

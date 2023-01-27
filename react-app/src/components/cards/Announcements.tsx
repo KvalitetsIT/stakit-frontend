@@ -1,8 +1,6 @@
-import { Card, CardHeader, CardContent, List, ListItemButton, ListItem, ListItemText, IconButton, Tooltip, Collapse, Grid, Typography } from "@mui/material"
-import { Link } from "react-router-dom"
-import { Announcement } from "../../models/types"
+import { Card, CardHeader, CardContent, List, ListItemButton, ListItem, ListItemText, IconButton, Tooltip, Collapse, Typography } from "@mui/material";
+import { Announcement } from "../../models/types";
 import ReplayIcon from '@mui/icons-material/Replay';
-import { toast } from "react-toastify";
 import { Add, Delete } from "@mui/icons-material";
 import { Action } from "../input/actions/Action";
 import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";

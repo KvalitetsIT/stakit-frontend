@@ -1,6 +1,5 @@
-import { SelectProps, FormControl, InputLabel, Select, FormHelperText, TextField, Autocomplete, TextFieldProps, AutocompleteProps, ChipTypeMap } from "@mui/material"
+import { SelectProps, FormControl, InputLabel, Select, FormHelperText } from "@mui/material"
 import { Field } from "formik"
-import { Service } from "../../models/types"
 
 interface ValidatedSelect extends Omit<SelectProps, "error"> {
     name: string,

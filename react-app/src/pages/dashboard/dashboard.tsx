@@ -1,5 +1,5 @@
-import { AlertColor, Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea } from "@mui/material"
-import { GroupAccordion } from "../../components/group"
+import { AlertColor, Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea } from "@mui/material";
+import { GroupAccordion } from "../../components/group";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Link } from "react-router-dom";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AnnouncementsCard } from "../../components/cards/Announcements";
 import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
-import {  Status } from "../../models/types";
+import { Status } from "../../models/types";
 import { Group } from "../../models/group";
 import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
 
@@ -21,10 +21,10 @@ export function DashboardPage() {
 
     const {data: services} = useGetAllServiceQuery(undefined)
 
-    const numberOfServicesDown = services && services.map(service => service.status == Status.NOT_OK).length
+    const numberOfServicesDown = services && services.map(service => service.status === Status.NOT_OK).length
     
     
-    const level = numberOfServicesDown == 0 ? "success" : "warning"
+    const level = numberOfServicesDown === 0 ? "success" : "warning"
 
     const successMsg = "Alle systemer virker hensigtsmæssigt"
 
@@ -36,7 +36,7 @@ export function DashboardPage() {
                 <Grid item xs={12} lg={6}>
                     <StatusMessage
                         level={level}
-                        msg={numberOfServicesDown == 0 ? successMsg: warningMsg}
+                        msg={numberOfServicesDown === 0 ? successMsg: warningMsg}
                         callback={() => refetch() }
                     />
                     {groups && groups.map((serviceGroup, index) => (
