@@ -8,19 +8,18 @@ import { ServiceForm } from "../forms/service"
 import EditIcon from '@mui/icons-material/Edit';
 import EditOffIcon from '@mui/icons-material/EditOff';
 import { Service } from "../../models/types"
-import { useUpdateServiceMutation } from "../../feature/stakit/serviceSlice"
+import { useGetAllServiceQuery, useUpdateServiceMutation } from "../../feature/stakit/serviceSlice"
 
 
-interface ServiceCardProps extends ResourceCardProps<Service> {
-    service: Service
-    
-}
 
-function ServiceCard(props: ServiceCardProps) {
+
+export function ServiceCard(props: Omit<ResourceCardProps<Service>, "resource">) {
     
     const [mode, setMode] = useState(Mode.NORMAL)
 
     const updateService = useUpdateServiceMutation()[0]
+
+    const services = useGetAllServiceQuery(undefined)
 
     return (
         <ResourceCard
@@ -30,10 +29,8 @@ function ServiceCard(props: ServiceCardProps) {
                     onCancel={() => setMode(Mode.NORMAL)}
                     onSubmit={async (service) => { updateService(service) } } />
             )}
-            mode={mode}
-            setMode={(mode: Mode) => setMode(mode)} 
-            resource={props.service}
-            isLoading={false}
+            resource={services}
+            {...props}
         />
     )
 }
@@ -49,7 +46,7 @@ interface ResourceCardProps<T> {
     isLoading: boolean
 }
 
-export function ResourceCard(props: ResourceCardProps<any>) {
+function ResourceCard(props: ResourceCardProps<any>) {
 
     const actions: { title: string, icon: ReactNode, secondaryIcon?: ReactNode, mode: Mode }[] = [
         { title: "Edit", icon: <EditIcon />, secondaryIcon: <EditOffIcon />, mode: Mode.EDIT },

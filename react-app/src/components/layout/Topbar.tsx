@@ -37,8 +37,6 @@ export function Topbar(props: TopbarProps) {
                     <MenuIcon />
                 </IconButton>
 
-
-
                 <Typography
                     variant="h5"
                     noWrap

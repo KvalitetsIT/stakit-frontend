@@ -35,24 +35,13 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
 
     const Actions = () => (
         <>
-            <Grid container>
-                {/* <Grid item xs={6}>
-                    <Tooltip title={"Delete"}>
-                        <IconButton edge="end" aria-label="Delete" onClick={(e) => { e.preventDefault(); setMode(Modes.DELETE) }}>
-                            <Delete />
-                        </IconButton>
-                    </Tooltip>
-                </Grid> */}
-                <Grid item xs={6}>
-                    <Tooltip title={"Edit"}>
-                        <Link to={"/services/" + props.service.uuid} state={{ mode: Modes.EDIT }} >
-                            <IconButton edge="end" aria-label="Edit" onClick={(e) => { setMode(Modes.EDIT) }}>
-                                <EditIcon />
-                            </IconButton>
-                        </Link>
-                    </Tooltip>
-                </Grid>
-            </Grid>
+            <Tooltip title={"Edit"}>
+                <Link to={"/services/" + props.service.uuid} state={{ mode: Modes.EDIT }} >
+                    <IconButton edge="end" aria-label="Edit" onClick={(e) => { setMode(Modes.EDIT) }}>
+                        <EditIcon />
+                    </IconButton>
+                </Link>
+            </Tooltip>
         </>
     )
 

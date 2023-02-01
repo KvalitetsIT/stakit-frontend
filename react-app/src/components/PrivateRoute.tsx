@@ -1,7 +1,8 @@
 import { useKeycloak } from "@react-keycloak/web";
+import { ReactNode } from "react";
 
 interface PrivateRouteProps {
-    children: JSX.Element
+    children: JSX.Element | JSX.Element[] 
 }
 function PrivateRoute(props: PrivateRouteProps) {
 

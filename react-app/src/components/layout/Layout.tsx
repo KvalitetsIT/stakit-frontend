@@ -11,7 +11,7 @@ import { Sidebar, SidebarSection, SidebarItem } from './Sidebar';
 import { Topbar } from './Topbar';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import { Logo } from '../icons/logo';
-
+import AnnouncementIcon from '@mui/icons-material/Announcement';
 type LayoutProps = {
   children: JSX.Element
 }
@@ -53,6 +53,7 @@ export default function Layout(props: LayoutProps) {
           <SidebarSection title={"Authorized"}>
             <SidebarItem title="Services" icon={<MiscellaneousServicesIcon/>} href={"/services"} />
             <SidebarItem title="Groups" icon={<WorkspacesIcon />} href={"/groups"} />
+            <SidebarItem title="Announcements" icon={<AnnouncementIcon />} href={"/announcements"} />
           </SidebarSection>
         </Sidebar>
         <Container maxWidth={false} sx={{ backgroundColor: theme.palette.background.default, flexGrow: 1, p: 2, width: { md: `calc(100% - ${sidebarWidth}px)` } }}>

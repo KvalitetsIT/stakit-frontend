@@ -62,25 +62,15 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                             >
                             </ValidatedTextField>
 
-                            <ValidatedSelect
-                                name="subscription.groups"
-                                label="Groups"
-                                multiple
-                                error={errors.subscription?.groups && touched.subscription?.groups ? errors.subscription?.groups : undefined}
-                            >
-                                {optionalGroups && optionalGroups.map(group => (
-                                    <MenuItem value={group.uuid}>{group.name}</MenuItem>
-                                ))}
-                            </ValidatedSelect>
-
-                            <ValidatedAutoComplete
+                         {/*    <ValidatedAutoComplete
                                 options={props.optionalGroups} 
+                                //value={values.subscription.groups}
                                 name={"subscription.groups"} 
-                                label={"Groups"} 
+                                label={t("Groups")} 
                                 error={errors.subscription?.groups && touched.subscription?.groups ? errors.subscription?.groups : undefined}
-                                getOptionLabel={(option: Group) => option.uuid}
+                                getOptionLabel={(option: Group) => option.name}
                             />
-                            
+                             */}
 
 
 

@@ -60,7 +60,6 @@ export function LoginPage() {
     )
 }
 
-
 function updateAbility(ability: Ability, user: User) {
     const { can, rules } = new AbilityBuilder();
 

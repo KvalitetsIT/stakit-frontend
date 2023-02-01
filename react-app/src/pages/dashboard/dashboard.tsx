@@ -1,29 +1,36 @@
-import { AlertColor, Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea } from "@mui/material";
+import { Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea } from "@mui/material";
 import { GroupAccordion } from "../../components/group";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Link } from "react-router-dom";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AnnouncementsCard } from "../../components/cards/Announcements";
 import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
 import { Status } from "../../models/types";
 import { Group } from "../../models/group";
 import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
+import { UserContext } from "../../feature/authentication/logic/FetchUser";
 
 
 export function DashboardPage() {
 
 
+    const user = useContext(UserContext)
+
     const { data, refetch } = useGetStatusOfGroupsQuery(undefined)
 
     const groups: Group[] = data ?? []
 
-    const {data: services} = useGetAllServiceQuery(undefined)
+    const { data: services } = useGetAllServiceQuery(undefined)
 
     const numberOfServicesDown = services && services.map(service => service.status === Status.NOT_OK).length
-    
-    
+
+    console.log("data", data)
+
+    console.log("groups", groups.map(group => group.services.map(service => service)))
+
+
     const level = numberOfServicesDown === 0 ? "success" : "warning"
 
     const successMsg = "Alle systemer virker hensigtsmæssigt"
@@ -36,13 +43,15 @@ export function DashboardPage() {
                 <Grid item xs={12} lg={6}>
                     <StatusMessage
                         level={level}
-                        msg={numberOfServicesDown === 0 ? successMsg: warningMsg}
-                        callback={() => refetch() }
+                        msg={numberOfServicesDown === 0 ? successMsg : warningMsg}
+                        callback={() => refetch()}
                     />
                     {groups && groups.map((serviceGroup, index) => (
-                        <GroupAccordion group={serviceGroup} key={"group_"+index} ></GroupAccordion>
+                        <GroupAccordion group={serviceGroup} key={"group_" + index} ></GroupAccordion>
                     ))}
-                    <SubscibeButton />
+
+
+                    { user === undefined && <SubscibeButton />}
                 </Grid>
                 <Grid item xs={12} lg={6}>
                     <AnnouncementsCard />
@@ -81,7 +90,7 @@ StatusMessage.defaultProps = {
     level: "info",
 }
 
-function StatusMessage(props: { msg: string, level?: AlertColor, refreshRate?: number, callback?: () => void }) {
+function StatusMessage(props: { msg: string, level?: "success" | "warning", refreshRate?: number, callback?: () => void }) {
 
     const [loading, setLoading] = useState(false)
 
@@ -128,8 +137,13 @@ function StatusMessage(props: { msg: string, level?: AlertColor, refreshRate?: n
         <Card
             sx={{ backgroundColor: "warning" }}
         >
+            <CardActionArea>
+                <Tooltip title={"Time to next refresh"}>
+                    <LinearProgress color={"secondary"} variant={"determinate"} value={progress} />
+                </Tooltip>
+            </CardActionArea>
             <CardHeader
-                title={"Perfekt"}
+                title={props.level === "success" ? <p>Perfekt &#x1F44D;</p> : <p>Advarsel &#x1F44E;</p>}
                 subheader={props.msg}
                 action={
                     <Tooltip title="Refresh">
@@ -140,17 +154,8 @@ function StatusMessage(props: { msg: string, level?: AlertColor, refreshRate?: n
                 }
             />
             <CardContent>
-
-
                 <Typography textAlign={"right"}>Sidst opdateret: {lastRefresh.toLocaleTimeString()}</Typography>
-
-
             </CardContent>
-            <CardActionArea>
-                <Tooltip title={"Time to next refresh"}>
-                    <LinearProgress color={"secondary"} sx={{backgroundColor:""}} variant={"determinate"} value={progress} />
-                </Tooltip>
-            </CardActionArea>
         </Card>
 
 

@@ -1,11 +1,10 @@
-import { KeycloakInstance } from "keycloak-js";
+import Keycloak  from "keycloak-js";
 import { createContext } from "react";
-import { useDispatch } from "react-redux";
 import { Role, User } from "../../../models/User";
 import UserFactory from "./UserFactory";
 
 
-export async function GetJWTToken(keycloak: KeycloakInstance): Promise<JWTToken | undefined> {
+export async function GetJWTToken(keycloak: Keycloak): Promise<JWTToken | undefined> {
     console.log("authenticated", keycloak.tokenParsed)
     return keycloak.tokenParsed as JWTToken;
 }
@@ -19,7 +18,6 @@ export function LoginBasedOnToken(token: JWTToken): User {
     let user = userFactory.createGuestUser();
 
     try {
-        console.log(token)
         const name = token.name;
         const roles: Role[] = token.roles as unknown as Role[];
 

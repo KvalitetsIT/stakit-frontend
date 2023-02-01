@@ -1,6 +1,6 @@
 import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, Drawer, Toolbar } from "@mui/material"
-import { ReactNode, ReactElement } from "react"
-import { Link } from "react-router-dom"
+import { ReactNode, ReactElement, useState } from "react"
+import { Link, NavLink, useLocation, useNavigation } from "react-router-dom"
 import { theme } from "../../config/theme"
 
 export function SidebarSection(props: { hideDivider?: boolean, title?: string | ReactNode, children: ReactElement<typeof SidebarItem> | ReactElement<typeof SidebarItem>[] }) {
@@ -14,18 +14,28 @@ export function SidebarSection(props: { hideDivider?: boolean, title?: string | 
     )
 }
 
-export function SidebarItem(props: { title: string, icon: ReactNode, href: string, active?: boolean }) {
+export function SidebarItem(props: { title: string, icon: ReactNode, href: string }) {
+
+    const [isActive, setIsActive] = useState(false)
+
     return (
-        <Link to={props.href} style={{ textDecoration: "none", color: "inherit" }}>
-            <ListItem key={props.title} disablePadding>
-                <ListItemButton selected={props.active} >
+        <NavLink to={props.href} style={({ isActive }) => { setIsActive(isActive); return ({ textDecoration: "none", color: "inherit" }) }}>
+            <ListItem
+                key={props.title}
+                disablePadding
+                sx={{
+                    borderLeft: 3,
+                    borderColor: isActive ? theme.palette.secondary.main : theme.palette.primary.main,
+                    backgroundColor: isActive ? theme.palette.primary.light : theme.palette.primary.main
+                }} >
+                <ListItemButton selected={isActive} >
                     <ListItemIcon sx={{ color: "inherit" }}>
                         {props.icon}
                     </ListItemIcon>
                     <ListItemText primary={props.title} />
                 </ListItemButton>
             </ListItem>
-        </Link>
+        </NavLink>
     )
 }
 

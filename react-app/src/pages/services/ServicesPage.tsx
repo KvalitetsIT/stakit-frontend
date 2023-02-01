@@ -1,4 +1,4 @@
-import { Add } from "@mui/icons-material";
+import { Add, Refresh } from "@mui/icons-material";
 import { Card, CardContent, CardHeader, Collapse, Container, IconButton, List, Tooltip } from "@mui/material";
 import { ServiceItem } from "../../components/service";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -25,7 +25,7 @@ export function ServicesPage() {
         setMode(Mode.NORMAL)
     }
 
-    const actions = [{ title: "Add new service", mode: Mode.ADD, icon: <Add /> }]
+    const actions = [{ title: "Add new service", mode: Mode.ADD, icon: <Add /> }, {title: "Refresh", mode: Mode.NORMAL, icon: <Refresh/>}]
     
     return (
         <Container>
@@ -41,9 +41,7 @@ export function ServicesPage() {
                                 </IconButton>
                             </Tooltip>
                         ))}
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
+                        
                     </>}
                 >
                 </CardHeader>

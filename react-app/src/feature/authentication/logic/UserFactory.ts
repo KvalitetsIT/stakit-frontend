@@ -20,6 +20,8 @@ export default class UserFactory {
         user.firstName = token.given_name;
         user.lastName = token.family_name;
         user.roles = getRoleFromStringArray(token.roles)
+        user.keycloak_uuid = token.sub;
+        user.token = token
         return user
     }
 
@@ -29,15 +31,15 @@ export default class UserFactory {
 
     createGuestUser(): User {
         const user = new User();
-
+/* 
         if (getEnvironment().REACT_APP_NODE_ENV === "dev") {
             user.name = "Jens Jensen";
-            user.roles.push(Role.ADMIN)
+            user.roles.push(Role.UNKNOWN)
             return user;
         }
-
+ */
         user.name = "";
-        user.roles.push(Role.ADMIN)
+        user.roles.push(Role.UNKNOWN)
         return user;
     }
 }

@@ -20,19 +20,19 @@ export const theme = createTheme({
         },
         success: {
             light: '#68fffb',
-            main: "green",
+            main: "rgb(0,255,0)",
             dark: '#00b397',
             contrastText: '#000000',
         },
         warning: {
             light: '#68fffb',
-            main: "yellow",
+            main: "rgb(0,255,255)",
             dark: '#00b397',
             contrastText: '#000000',
         },
         error: {
             light: '#68fffb',
-            main: "red",
+            main: "rgb(255,0,0)",
             dark: '#00b397',
             contrastText: '#000000',
         },

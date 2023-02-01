@@ -1,10 +1,9 @@
-import { Card, CardHeader, CardContent, List, ListItemButton, ListItem, ListItemText, IconButton, Tooltip, Collapse, Typography } from "@mui/material";
+import { Card, CardHeader, CardContent, List, ListItemButton, ListItem, ListItemText, IconButton, Tooltip, Collapse, Typography, CardActionArea, LinearProgress } from "@mui/material";
 import { Announcement } from "../../models/types";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Add, Delete } from "@mui/icons-material";
 import { Action } from "../input/actions/Action";
 import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";
-import { Loading } from "../feedback/loading";
 import { AnnouncementForm } from "../forms/announcement";
 import { useContext, useState } from "react";
 import { Mode } from "../../pages/services/ServicesPage";
@@ -34,16 +33,19 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
 
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
-    
-    const loggedInAs = useContext(UserContext)
+
+    const user = useContext(UserContext)
 
     const Actions = () => (
         <>
             <Action title="Refresh" icon={<Add />} onClick={() => setMode(Mode.ADD)} />
 
-            <Can ability={loggedInAs!.getAbility()} I={Operation.READ} a={Announcement}>
-                <Action title="Refresh" icon={<ReplayIcon />} onClick={() => refetch()} />
-            </Can>
+            {user &&
+                <Can ability={user.getAbility()} I={Operation.READ} a={Announcement}>
+                    <Action title="Refresh" icon={<ReplayIcon />} onClick={() => refetch()} />
+                </Can>
+            }
+
         </>
     )
 
@@ -72,6 +74,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     key={"item_" + announcement.uuid}
                     disablePadding
                     secondaryAction={<Actions />}
+
                 >
                     <ListItemButton>
                         <ListItemText
@@ -90,7 +93,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
                 <DeleteAnnouncementDialog
                     onClose={() => setMode(Mode.NORMAL)}
-                    onSuccess={() => { console.log("announcement", announcement); return remove(announcement) }}
+                    onSuccess={() => { return remove(announcement) }}
                     item={announcement}
                     open={mode == Mode.DELETE}
                 />
@@ -106,11 +109,16 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     return (
         <>
             <Card>
+                <CardActionArea>
+                    <LinearProgress color="secondary" variant={isLoading ? "indeterminate" : "determinate"} />
+                </CardActionArea>
                 <CardHeader
                     title={title}
                     subheader={subTitle}
                     action={<Actions></Actions>}
                 ></CardHeader>
+
+
                 <Collapse in={mode === Mode.ADD}>
                     <CardContent sx={{ padding: 2 }}>
                         <AnnouncementForm
@@ -125,18 +133,15 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     </CardContent>
                 </Collapse>
                 <CardContent sx={{ padding: 0 }}>
-                    <Loading loading={isLoading}>
-                        {
-                            data ? (
-                                <List>
-                                    {data.map((announcement: Announcement) => (
-                                        <Item announcement={announcement}></Item>
-                                    ))}
-                                </List>
-                            ) : (<Typography marginLeft={2}></Typography>)
-                        }
-                    </Loading>
 
+                    {data ? (
+                        <List>
+                            {data.map((announcement: Announcement) => (
+                                <Item announcement={announcement}></Item>
+                            ))}
+                        </List>
+                    ) : (<Typography marginLeft={2}></Typography>)
+                    }
                 </CardContent>
             </Card>
         </>

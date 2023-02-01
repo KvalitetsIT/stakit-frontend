@@ -41,8 +41,6 @@ export function ServiceForm(props: ServiceFormProps) {
         }
     }
 
-    console.log("service", props.service)
-
     return (
         <FormControl fullWidth>
             <Formik

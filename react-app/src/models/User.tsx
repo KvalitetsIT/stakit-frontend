@@ -1,5 +1,6 @@
 import { AnyAbility } from "@casl/ability"
 import defineAbility from "../feature/authentication/config/ability"
+import { JWTToken } from "../feature/authentication/logic/FetchUser"
 import { Resource } from "./types"
 
 export enum Role {
@@ -24,7 +25,7 @@ export class User extends Resource {
     keycloak_uuid?: string
     // organisation?: OrganisationResponse
     permissions?: string[]
-
+    token?: JWTToken
     // roleToString(): string {
     //     switch (this.role) {
     //         case Role.ADMIN:

@@ -28,8 +28,6 @@ export function GroupForm(props: GroupFormProps) {
         })
     })
 
-    console.log("group", props.group)
-
     const initialValues = {
         group: props.group ?? {
             name: "",
@@ -47,7 +45,7 @@ export function GroupForm(props: GroupFormProps) {
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => { console.log("values: ", values); props.onSubmit(values.group) }}
+                onSubmit={(values) => props.onSubmit(values.group)}
                 validationSchema={validationSchema}
             >
                 {({ errors, touched, values, submitForm, handleChange, setFieldValue}) => (
