@@ -24,7 +24,8 @@ export function DashboardPage() {
 
     const { data: services } = useGetAllServicesQuery(undefined)
 
-    const numberOfServicesDown = services && services.map((service: Service) => service.status === Status.NOT_OK).length
+    
+    const numberOfServicesDown = services && services.filter((service: Service) => service.status === Status.NOT_OK).length
 
     const level = numberOfServicesDown === 0 ? "success" : "warning"
 

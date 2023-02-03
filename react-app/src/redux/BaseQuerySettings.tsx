@@ -3,7 +3,7 @@ import getEnvironment from "../config/env";
 import keycloak from "../feature/authentication/Keycloak";
 
 //const baseurl = getEnvironment().REACT_APP_API_BASEURL;
-const baseurl =  getEnvironment().REACT_APP_API_BASEURL ?? "http://localhost:8080/v1"
+const baseurl =  getEnvironment().REACT_APP_API_BASEURL ?? "https://stakit.t0.hosting.kitkube.dk/api/v1/"
 
 export default function fetchDefaultBaseQuery() {
     return fetchBaseQuery({
