@@ -6,7 +6,7 @@ import { Header } from "../pages/services/details";
 import { StatusIcon } from "./status";
 
 import EditIcon from '@mui/icons-material/Edit';
-import { useDeleteServiceMutation, useGetAllServiceQuery } from "../feature/stakit/serviceSlice";
+import { useDeleteServiceMutation, useGetAllServicesQuery } from "../feature/stakit/serviceSlice";
 import { DeleteServiceDialog } from "./dialogs/DeleteDialog";
 
 
@@ -24,7 +24,7 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
     }
 
     const deleteService = useDeleteServiceMutation()[0]
-    const serviceGetter = useGetAllServiceQuery(undefined)
+    const serviceGetter = useGetAllServicesQuery(undefined)
 
     const remove = () => {
         deleteService(props.service).then(

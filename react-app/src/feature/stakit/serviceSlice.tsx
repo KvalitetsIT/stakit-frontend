@@ -11,7 +11,7 @@ import { stakitApiSlice } from '../../redux/stakit-api-slice';
 // Define a service using a base URL and expected endpoints
 export const serviceSlice = stakitApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllService: builder.query<Service[], undefined>({
+    getAllServices: builder.query<Service[], undefined>({
       query: () => HandleQuery({
         //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
         url: `services`,
@@ -60,7 +60,7 @@ export const serviceSlice = stakitApiSlice.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useCreateServiceMutation, useUpdateServiceMutation, useGetAllServiceQuery, useDeleteServiceMutation, useGetServiceQuery} = serviceSlice
+export const { useCreateServiceMutation, useUpdateServiceMutation, useGetAllServicesQuery, useDeleteServiceMutation, useGetServiceQuery} = serviceSlice
 
 
 

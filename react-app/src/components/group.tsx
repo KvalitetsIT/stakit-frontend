@@ -5,16 +5,16 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Group } from "../models/group";
 import { QuestionMarkOutlined } from "@mui/icons-material";
-import { useGetAllServiceQuery } from "../feature/stakit/serviceSlice";
+import { useGetAllServicesQuery } from "../feature/stakit/serviceSlice";
 
 export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group, key?: string }) {
 
 
     const serviceIds = props.group.services ?? []
 
-    const { data: allServices, isLoading } = useGetAllServiceQuery(undefined)
+    const { data: allServices, isLoading } = useGetAllServicesQuery(undefined)
 
-    const services: Service[] = (allServices && allServices.filter(service => service.uuid && serviceIds.includes(service.uuid))) ?? []
+    const services: Service[] = (allServices && allServices.filter((service: Service) => service.uuid && serviceIds.includes(service.uuid))) ?? []
 
     const up: number = services.filter(service => service.status === Status.OK).length
 

@@ -31,7 +31,7 @@ export class Service extends Resource {
     status?: Status
     ignore_service_name: boolean
     description?: string
-    group?: string
+    group?: string | Group
 
     constructor(service_identifier: string, name: string, ignore_service_name: boolean){
         super()

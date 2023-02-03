@@ -61,6 +61,8 @@ export function Sidebar(props: ResponsiveDrawerProps) {
 
     const handleDrawerToggle = () => setMobileOpen ? setMobileOpen(!mobileOpen ?? false) : {};
 
+    const paperProps = { sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width } }
+
     return (
 
         <Box
@@ -80,7 +82,7 @@ export function Sidebar(props: ResponsiveDrawerProps) {
                 sx={{
                     display: { xs: 'block', md: 'none' }
                 }}
-                PaperProps={{ sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width } }}
+                PaperProps={paperProps}
             >
                 <Toolbar />
                 {drawerContent}
@@ -92,7 +94,7 @@ export function Sidebar(props: ResponsiveDrawerProps) {
                 sx={{
                     display: { xs: 'none', md: 'block' }
                 }}
-                PaperProps={{ sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width } }}
+                PaperProps={paperProps}
                 open
             >
                 <Toolbar><Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>{props.logo}</Link></Toolbar>

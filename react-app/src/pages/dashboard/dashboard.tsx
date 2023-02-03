@@ -7,9 +7,9 @@ import { useContext, useEffect, useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AnnouncementsCard } from "../../components/cards/Announcements";
 import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
-import { Status } from "../../models/types";
+import { Service, Status } from "../../models/types";
 import { Group } from "../../models/group";
-import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
+import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 
 
@@ -22,11 +22,9 @@ export function DashboardPage() {
 
     const groups: Group[] = data ?? []
 
-    const { data: services } = useGetAllServiceQuery(undefined)
+    const { data: services } = useGetAllServicesQuery(undefined)
 
-    const numberOfServicesDown = services && services.map(service => service.status === Status.NOT_OK).length
-
-    console.log("data", data)
+    const numberOfServicesDown = services && services.map((service: Service) => service.status === Status.NOT_OK).length
 
     console.log("groups", groups.map(group => group.services.map(service => service)))
 

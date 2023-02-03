@@ -8,7 +8,7 @@ import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { FormProps } from "./subscribe";
 import { Group } from "../../models/group";
 import { t } from "i18next";
-import { useGetAllServiceQuery } from "../../feature/stakit/serviceSlice";
+import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";
 
 
 interface GroupFormProps extends FormProps<Group> {
@@ -18,7 +18,7 @@ interface GroupFormProps extends FormProps<Group> {
 export function GroupForm(props: GroupFormProps) {
 
     //const services = useGetAllServicesCascaded()
-    const {isLoading, data: services} = useGetAllServiceQuery(undefined) // data?.filter(service => service.group == undefined) ?? []
+    const {isLoading, data: services} = useGetAllServicesQuery(undefined) // data?.filter(service => service.group == undefined) ?? []
     
     const validationSchema = yup.object().shape({
         group: yup.object().shape({

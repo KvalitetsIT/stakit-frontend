@@ -1,7 +1,7 @@
 import { Add } from "@mui/icons-material";
 import { Container, Card, CardHeader, IconButton, Collapse, CardContent, Tooltip } from "@mui/material";
 import { useState } from "react";
-import { Mode } from "../services/ServicesPage";
+import { Mode } from "../../components/cards/Mode";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { GroupForm } from "../../components/forms/group";
 import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";

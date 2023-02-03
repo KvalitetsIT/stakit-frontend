@@ -14,6 +14,8 @@ import { DeleteServiceDialog } from "../../components/dialogs/DeleteDialog";
 
 import EditIcon from '@mui/icons-material/Edit';
 import { Modes } from "../../components/service";
+import { ServiceCard } from "../../components/cards/Services";
+import { Mode } from "../../components/cards/Mode";
 
 
 export function ServiceDetails() {
@@ -22,65 +24,16 @@ export function ServiceDetails() {
     const params = useParams();
 
     const { isLoading, data } = useGetServiceQuery(params.id!)
-    const deleteService = useDeleteServiceMutation()[0]
-    const editService = useUpdateServiceMutation()[0]
-
-
+   
 
     const service: Service = data! // mock.services[0]
 
-    const location = useLocation();
-
-    const [mode, setMode] = useState<Modes>(location.state?.mode != null ? location.state?.mode : Modes.NORMAL)
-
-    const actions: { title: string, icon: ReactNode, secondaryIcon?: ReactNode, mode: Modes }[] = [
-        { title: "Edit", icon: <EditIcon />, secondaryIcon: <EditOffIcon />, mode: Modes.EDIT },
-        { title: "Delete", icon: <Delete />, mode: Modes.DELETE }
-    ]
-
-    const resetMode = () => setMode(Modes.NORMAL)
-
     return (
-
-
         <>
             <Container sx={{ paddingTop: 4 }}>
-                <Card>
-                    <Loading loading={isLoading}>
-                        <CardHeader
-                            title={
-                                <Header service={service} showPath></Header>
-                            }
-                            subheader={service?.description}
-                            action={<>
-                                {actions.map(action => (
-
-                                    <Tooltip title={action.title}>
-                                        <IconButton disabled={mode !== Modes.NORMAL} aria-label={action.title} onClick={() => mode === Modes.NORMAL ? setMode(action.mode) : setMode(Modes.NORMAL)}>
-                                            {mode === action.mode ? action.secondaryIcon ?? action.icon : action.icon}
-                                        </IconButton>
-                                    </Tooltip>
-                                ))}
-                            </>
-                            }
-                        />
-                        <CardContent>
-                            <Collapse in={mode === Modes.EDIT}>
-                                <ServiceForm service={service} onCancel={() => setMode(Modes.NORMAL)} onSubmit={async (service) => { editService(service) }}></ServiceForm>
-                            </Collapse>
-                        </CardContent>
-                        <DeleteServiceDialog
-                            open={mode === Modes.DELETE}
-                            onClose={resetMode}
-                            onSuccess={(service) => { deleteService(service); setMode(Modes.NORMAL); }}
-                            item={service}
-                        />
-                    </Loading>
-                </Card>
+                <ServiceCard resource={service} isLoading={isLoading}/>
                 <HistorySection />
             </Container >
-
-
         </>
     )
 }
@@ -127,45 +80,6 @@ export function Header(props: { service: Service, showPath?: boolean }) {
     )
 }
 
-
-
-
-
-export function DialogButton(props: { children: React.ReactElement<typeof Button> }) {
-    const [open, setOpen] = useState(false)
-
-    const handleClose = () => setOpen(false)
-
-    return (
-        <>
-            <Dialog
-                open={open}
-                onClose={(handleClose)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"Use Google's location service?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Agree
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            {props.children}
-
-        </>
-    )
-}
 
 function HistorySection() {
     return (

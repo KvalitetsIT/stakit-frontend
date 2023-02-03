@@ -5,7 +5,7 @@ import { CenteredContent } from "../components/layout/CenteredContent";
 import { useGetAllGroupsQuery } from "../feature/stakit/groupsSlice";
 import { useCreateSubscriptionMutation } from "../feature/stakit/publicSlice";
 import {  Subscription } from "../models/types";
-import { Mode } from "./services/ServicesPage";
+import { Mode } from "../components/cards/Mode";
 
 export function SubscribePage() {
 

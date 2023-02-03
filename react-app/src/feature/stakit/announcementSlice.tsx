@@ -12,7 +12,7 @@ import { stakitApiSlice } from '../../redux/stakit-api-slice';
 export const announcementSlice = stakitApiSlice.injectEndpoints({
   endpoints: (builder) => ({
   
-    getAnnouncement: builder.query<Announcement[], string>({
+    getAnnouncement: builder.query<Announcement, string>({
       query: (id) => ({
         //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
         url: `announcements/${id}`,

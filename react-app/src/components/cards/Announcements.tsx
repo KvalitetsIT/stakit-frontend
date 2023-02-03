@@ -6,13 +6,41 @@ import { Action } from "../input/actions/Action";
 import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";
 import { AnnouncementForm } from "../forms/announcement";
 import { useContext, useState } from "react";
-import { Mode } from "../../pages/services/ServicesPage";
+import { Mode } from "./Mode";
 import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/stakit/announcementSlice";
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
 import { Can } from "@casl/react";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import { Operation } from "../../feature/authentication/config/ability";
+import { Link } from "react-router-dom";
+import { ResourceCard, ResourceCardProps, ResourcesCard } from "./ResourceCard";
 
+
+interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
+
+export function AnnouncementCard(props: AnnouncementCardProps) {
+    const [mode, setMode] = useState(props.mode ?? Mode.NORMAL)
+    const remove = useDeleteAnnouncementMutation()[0]
+    return (
+        <ResourceCard
+            header={props.resource?.subject ?? ""}
+            subHeader={props.resource?.message ?? ""}
+            mode={mode}
+            onModeChange={(x) => setMode(x)}
+            onDelete={(announcement) => remove(announcement)}
+            renderForm={() => (
+                <AnnouncementForm
+                    onSubmit={async (submission: Announcement) => {
+                        props.onUpdate && props.onUpdate(submission)
+                    }}
+                    onCancel={() => setMode(Mode.NORMAL)}
+                    announcement={props.resource ?? undefined}
+                />
+            )}
+            {...props}
+        />
+    )
+}
 
 interface AnnouncementsCardProps {
     title?: string
@@ -28,7 +56,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     const { title, subTitle } = props
 
-    const { isError, isLoading, isSuccess, isUninitialized, isFetching, data, refetch } = useGetAllAnnouncementsQuery(undefined)
+    const { isLoading, data, refetch } = useGetAllAnnouncementsQuery(undefined)
     const create = useCreateAnnouncementMutation()
     const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
 
@@ -36,68 +64,33 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     const user = useContext(UserContext)
 
-    const Actions = () => (
-        <>
-            <Action title="Refresh" icon={<Add />} onClick={() => setMode(Mode.ADD)} />
-
-            {user &&
-                <Can ability={user.getAbility()} I={Operation.READ} a={Announcement}>
-                    <Action title="Refresh" icon={<ReplayIcon />} onClick={() => refetch()} />
-                </Can>
-            }
-
-        </>
-    )
-
-
+    const Actions = () => <></>
+    
     const Item = (props: { announcement: Announcement }) => {
 
         const { announcement } = props
 
-        const remove = (a: Announcement) => {
-            deleteAnnouncement(a)
-            setMode(Mode.NORMAL)
-        }
-
-        const Actions = () => (
-            <>
-                <Tooltip title="Refresh">
-                    <IconButton onClick={() => setMode(Mode.DELETE)}>
-                        <Delete></Delete>
-                    </IconButton>
-                </Tooltip>
-            </>
-        )
         return (
-            <>
-                <ListItem
-                    key={"item_" + announcement.uuid}
-                    disablePadding
-                    secondaryAction={<Actions />}
 
-                >
-                    <ListItemButton>
-                        <ListItemText
-                            primary={
-                                <>
-                                    <Typography fontWeight={"bold"}>{announcement.subject}</Typography>
-                                    <Typography>{announcement.message}</Typography>
-                                </>
-                            }
-                            secondary={<>
-                                <Typography>{dateToText(new Date(announcement.from_datetime!))} - {dateToText(new Date(announcement.to_datetime!))}</Typography>
-                            </>}
-                        />
-                    </ListItemButton>
-                </ListItem>
-
-                <DeleteAnnouncementDialog
-                    onClose={() => setMode(Mode.NORMAL)}
-                    onSuccess={() => { return remove(announcement) }}
-                    item={announcement}
-                    open={mode == Mode.DELETE}
-                />
-            </>
+            <ListItem
+                key={"item_" + announcement.uuid}
+                disablePadding
+                secondaryAction={<Actions />}
+            >
+                <ListItemButton>
+                    <ListItemText
+                        primary={
+                            <>
+                                <Typography fontWeight={"bold"}>{announcement.subject}</Typography>
+                                <Typography>{announcement.message}</Typography>
+                            </>
+                        }
+                        secondary={<>
+                            <Typography>{dateToText(new Date(announcement.from_datetime!))} - {dateToText(new Date(announcement.to_datetime!))}</Typography>
+                        </>}
+                    />
+                </ListItemButton>
+            </ListItem>
 
         )
     }
@@ -107,44 +100,25 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     }
 
     return (
-        <>
-            <Card>
-                <CardActionArea>
-                    <LinearProgress color="secondary" variant={isLoading ? "indeterminate" : "determinate"} />
-                </CardActionArea>
-                <CardHeader
-                    title={title}
-                    subheader={subTitle}
-                    action={<Actions></Actions>}
-                ></CardHeader>
-
-
-                <Collapse in={mode === Mode.ADD}>
-                    <CardContent sx={{ padding: 2 }}>
-                        <AnnouncementForm
-                            onSubmit={async (sub) => {
-                                await create[0](sub)
-                                setMode(Mode.NORMAL)
-                            }}
-                            onCancel={() => {
-                                setMode(Mode.NORMAL)
-                            }}
-                        />
-                    </CardContent>
-                </Collapse>
-                <CardContent sx={{ padding: 0 }}>
-
-                    {data ? (
-                        <List>
-                            {data.map((announcement: Announcement) => (
-                                <Item announcement={announcement}></Item>
-                            ))}
-                        </List>
-                    ) : (<Typography marginLeft={2}></Typography>)
-                    }
-                </CardContent>
-            </Card>
-        </>
+        <ResourcesCard
+            isLoading={isLoading}
+            mode={mode}
+            header={"Announcements"}
+            subHeader={"A list of the latest announcenements"}
+            onModeChange={(x) => setMode(x)}
+            resources={data!}
+            renderForm={() => <AnnouncementForm
+                onSubmit={async (sub) => {
+                    await create[0](sub);
+                    setMode(Mode.NORMAL);
+                }}
+                onCancel={() => {
+                    setMode(Mode.NORMAL);
+                }} />}
+            renderItem={(item) => <Item announcement={item}></Item>}
+            extractKey={(announcement: Announcement, index) => "announcement_" + index}
+            extractPath={(announcement) => "/announcements/" + announcement.uuid}
+        />
     )
 }
 

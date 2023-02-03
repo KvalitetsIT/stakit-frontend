@@ -15,8 +15,8 @@ export function DeleteAnnouncementDialog(props: DeleteItemDialogProps<Announceme
 export function DeleteServiceDialog(props: DeleteItemDialogProps<Service>) {
     return (
         <DeleteItemDialog
-            renderMessage={(service) => <Typography>You are about to delete the service: {service.name}</Typography>}
-            renderTitle={(service) => <Typography>Delete {service.name}</Typography>}
+            renderMessage={(service) => <Typography>You are about to delete the service: {service?.name}</Typography>}
+            renderTitle={(service) => <Typography>Delete {service?.name}</Typography>}
             {...props}
         />
     )
@@ -26,8 +26,7 @@ interface DeleteItemDialogProps<T> {
     item: T, open: boolean, onClose: () => void, onSuccess: (item: T) => void, renderTitle?: (item: T) => ReactNode, renderMessage?: (item: T) => ReactNode
 }
 
-function DeleteItemDialog(props: DeleteItemDialogProps<any>) {
-
+export function DeleteItemDialog(props: DeleteItemDialogProps<any>) {
     const { renderTitle, renderMessage, item } = props
     return (
         <Dialog

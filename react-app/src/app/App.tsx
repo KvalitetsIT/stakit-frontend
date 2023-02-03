@@ -27,6 +27,8 @@ import getEnvironment from '../config/env';
 import UserFactory from '../feature/authentication/logic/UserFactory';
 import PrivateRoute from '../components/PrivateRoute';
 import keycloak from 'keycloak-js';
+import { AnnouncementsPage, DetailedAnnouncementPage } from '../pages/announcements/announcements';
+import { TestPage } from '../pages/test';
 
 
 export default function App() {
@@ -83,6 +85,7 @@ export default function App() {
                                     <Route path="login" element={<LoginPage />} />
                                     <Route path="register" element={<RegistrationPage />} />
                                     <Route path="subscribe" element={<SubscribePage />} />
+                                    <Route path="test" element={<TestPage />} />
 
                                 </Route>
 
@@ -101,6 +104,18 @@ export default function App() {
                                         <Route path="edit" element={<EditGroup />} />
                                     </Route>
                                 </Route>
+
+                                <Route path='/announcements'>
+                                    <Route index element={<AnnouncementsPage />} />
+                                    <Route path=':id' >
+                                        <Route index element={<DetailedAnnouncementPage/>} />
+                                        <Route path="edit" element={<EditGroup />} />
+                                    </Route>
+                                </Route>
+
+
+
+
 
                                 <Route path="*" element={<PageNotFound />} />
                             </Routes>
