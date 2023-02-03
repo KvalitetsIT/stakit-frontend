@@ -5,7 +5,7 @@ import { Mode } from "./Mode"
 // TODO: Actions should be a component 
 export interface Action { title: string, icon: ReactNode, secondaryIcon?: ReactNode, mode: Mode }
 
-export interface BaseCardProps<T> extends Omit<CardProps, "resource"> {
+export interface BaseCardProps<T> {
     mode?: Mode
     isLoading?: boolean
     actions?: Action[]
@@ -28,7 +28,7 @@ export function BaseCard<T>(props: BaseCardProps<T>) {
     return (
         <Card>
             <CardActionArea>
-                <LinearProgress color="secondary" variant={isLoading ? "indeterminate" : "determinate"} />
+                <LinearProgress color="secondary" variant={isLoading ? "indeterminate" : "determinate"} value={isLoading ? 0 : 100} />
             </CardActionArea>
             <CardHeader
                 title={header}

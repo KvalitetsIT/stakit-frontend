@@ -1,7 +1,7 @@
 import { group } from "console"
 import { RandomUUIDOptions } from "crypto"
 import { ReactNode } from "react"
-import { Group } from "./group"
+import {  Group } from "./group"
 
 export class Resource {
     uuid?: string
@@ -42,7 +42,7 @@ export class Service extends Resource {
 }
 
 export enum Status {
-    OK, NOT_OK, UKNOWN
+    OK = "OK", NOT_OK = "NOT_OK", UKNOWN = "UKNOWN"
 }
 
 export interface Action {

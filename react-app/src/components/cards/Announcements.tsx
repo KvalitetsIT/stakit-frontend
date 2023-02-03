@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardContent, List, ListItemButton, ListItem, ListItemText, IconButton, Tooltip, Collapse, Typography, CardActionArea, LinearProgress } from "@mui/material";
 import { Announcement } from "../../models/types";
 import ReplayIcon from '@mui/icons-material/Replay';
-import { Add, Delete } from "@mui/icons-material";
+import { Add, Delete, Refresh } from "@mui/icons-material";
 import { Action } from "../input/actions/Action";
 import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";
 import { AnnouncementForm } from "../forms/announcement";
@@ -65,7 +65,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
-    const user = useContext(UserContext)
+    const reload = () => {refetch(); console.log("reloading")}
 
     const Actions = () => <></>
     
@@ -101,6 +101,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     return (
         <ResourcesCard
+            onRefresh={() => reload()}
             isLoading={isLoading}
             mode={mode}
             header={"Announcements"}

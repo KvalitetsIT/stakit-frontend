@@ -22,7 +22,7 @@ interface SubscriptionFormProps extends FormProps<Subscription> {
 export function SubscriptionForm(props: SubscriptionFormProps) {
 
 
-    const {optionalGroups} = props
+    const { optionalGroups } = props
 
     const [loading, setLoading] = useState()
 
@@ -49,7 +49,7 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                 onSubmit={(values) => props.onSubmit(values.subscription)}
                 validationSchema={validationSchema}
             >
-                {({ errors, touched, values, handleChange }) => (
+                {({ errors, touched, values, handleChange, setFieldValue }) => (
                     <Form>
                         <Stack spacing={2}>
                             <ValidatedTextField
@@ -62,17 +62,18 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                             >
                             </ValidatedTextField>
 
-                         {/*    <ValidatedAutoComplete
-                                options={props.optionalGroups} 
-                                //value={values.subscription.groups}
-                                name={"subscription.groups"} 
-                                label={t("Groups")} 
+                            <ValidatedAutoComplete
+                                multiple
+                                options={props.optionalGroups ?? []}
+                                value={values.subscription.groups}
+                                name={"subscription.groups"}
+                                label={t("Groups")}
                                 error={errors.subscription?.groups && touched.subscription?.groups ? errors.subscription?.groups : undefined}
                                 getOptionLabel={(option: Group) => option.name}
-                            />
-                             */}
-
-
+                                noOptionsText={"Non available groups"}
+                                onChange={(e, selected) => {console.log("selected", selected); setFieldValue("subscription.groups", selected) }}
+                                
+                            />                
 
                             <Stack spacing={2} direction={"row"}>
                                 <Button

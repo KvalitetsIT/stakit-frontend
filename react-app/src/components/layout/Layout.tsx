@@ -46,8 +46,8 @@ export default function Layout(props: LayoutProps) {
         <Sidebar width={sidebarWidth} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} logo={<Title color={theme.palette.primary.contrastText} />}>
           <SidebarSection hideDivider title={"Public"}>
             <SidebarItem title="Dashboard" icon={<SwapVertIcon />} href={"/"} />
-            <SidebarItem title='Login' icon={<LoginIcon />} href={"/login"} />
-            <SidebarItem title='Register' icon={<LogoutIcon />} href={"/register"} />
+            {/* <SidebarItem title='Login' icon={<LoginIcon />} href={"/login"} />
+            <SidebarItem title='Register' icon={<LogoutIcon />} href={"/register"} /> */}
             <SidebarItem title='Subcribe' icon={<NotificationsActiveIcon />} href={"/subscribe"} />
           </SidebarSection>
           <SidebarSection title={"Authorized"}>

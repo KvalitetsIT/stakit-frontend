@@ -10,16 +10,16 @@ import { useGetAllServicesQuery } from "../feature/stakit/serviceSlice";
 export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group, key?: string }) {
 
 
-    const serviceIds = props.group.services ?? []
+    const groupServices: string[] | Service[] = props.group.services ?? []
 
-    const { data: allServices, isLoading } = useGetAllServicesQuery(undefined)
-
-    const services: Service[] = (allServices && allServices.filter((service: Service) => service.uuid && serviceIds.includes(service.uuid))) ?? []
+    const services = groupServices.map(service => { return service as Service}) // Could result in failures
 
     const up: number = services.filter(service => service.status === Status.OK).length
 
-    const actions: { name: string, callback: () => void }[] = [{ name: "Edit", callback: () => { } }, { name: "Edit", callback: () => { } }, { name: "Details", callback: () => { } }, { name: "Delete", callback: () => { } }]
+    //const actions: { name: string, callback: () => void }[] = [{ name: "Edit", callback: () => { } }, { name: "Edit", callback: () => { } }, { name: "Details", callback: () => { } }, { name: "Delete", callback: () => { } }]
 
+    console.log("services",services)
+    console.log("status", services[0].status == Status.OK )
     return (
 
 
