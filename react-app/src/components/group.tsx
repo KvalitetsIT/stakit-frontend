@@ -18,8 +18,6 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group,
 
     //const actions: { name: string, callback: () => void }[] = [{ name: "Edit", callback: () => { } }, { name: "Edit", callback: () => { } }, { name: "Details", callback: () => { } }, { name: "Delete", callback: () => { } }]
 
-    console.log("services",services)
-    console.log("status", services[0].status == Status.OK )
     return (
 
 
