@@ -26,9 +26,6 @@ export function DashboardPage() {
 
     const numberOfServicesDown = services && services.map((service: Service) => service.status === Status.NOT_OK).length
 
-    console.log("groups", groups.map(group => group.services.map(service => service)))
-
-
     const level = numberOfServicesDown === 0 ? "success" : "warning"
 
     const successMsg = "Alle systemer virker hensigtsmæssigt"
@@ -132,16 +129,14 @@ function StatusMessage(props: { msg: string, level?: "success" | "warning", refr
     }
     return (
 
-        <Card
-            sx={{ backgroundColor: "warning" }}
-        >
+        <Card>
             <CardActionArea>
-                <Tooltip title={"Time to next refresh"}>
+                {/* <Tooltip title={"Time to next refresh"}> */}
                     <LinearProgress color={"secondary"} variant={"determinate"} value={progress} />
-                </Tooltip>
+                {/* </Tooltip> */}
             </CardActionArea>
             <CardHeader
-                title={props.level === "success" ? <p>Perfekt &#x1F44D;</p> : <p>Advarsel &#x1F44E;</p>}
+                title={props.level === "success" ? <p style={{margin: 0}}>Perfekt &#x1F44D;</p> : <p style={{margin: 0}}>Advarsel &#x1F44E;</p>}
                 subheader={props.msg}
                 action={
                     <Tooltip title="Refresh">

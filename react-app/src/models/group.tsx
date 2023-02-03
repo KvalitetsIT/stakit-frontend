@@ -5,7 +5,7 @@ export class Group extends Resource {
     display_order: number 
     description?: string
     status?: Status
-    services: string[]
+    services: string[] 
     
     constructor(name: string, display_order: number, servies?: string[]){
         super()

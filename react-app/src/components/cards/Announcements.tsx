@@ -21,10 +21,13 @@ interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
 export function AnnouncementCard(props: AnnouncementCardProps) {
     const [mode, setMode] = useState(props.mode ?? Mode.NORMAL)
     const remove = useDeleteAnnouncementMutation()[0]
+    
+    const {resource: announcement} = props
+
     return (
         <ResourceCard
             header={props.resource?.subject ?? ""}
-            subHeader={props.resource?.message ?? ""}
+            subHeader={<>{dateToText(new Date(announcement?.from_datetime!))} - {dateToText(new Date(announcement?.to_datetime!))}</> ?? ""}
             mode={mode}
             onModeChange={(x) => setMode(x)}
             onDelete={(announcement) => remove(announcement)}
@@ -95,9 +98,6 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
         )
     }
 
-    const dateToText = (date: Date): string => {
-        return date.toLocaleDateString() + " " + date.toLocaleTimeString()
-    }
 
     return (
         <ResourcesCard
@@ -123,3 +123,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 }
 
 
+
+const dateToText = (date: Date): string => {
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString()
+}

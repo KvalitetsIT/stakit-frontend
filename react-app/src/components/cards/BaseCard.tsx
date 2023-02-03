@@ -1,5 +1,5 @@
 import { CardProps, Card, CardActionArea, LinearProgress, CardHeader, IconButton, Collapse, CardContent, Divider, Tooltip } from "@mui/material"
-import { ReactNode } from "react"
+import { ReactElement, ReactNode } from "react"
 import { Mode } from "./Mode"
 
 // TODO: Actions should be a component 
@@ -15,7 +15,7 @@ export interface BaseCardProps<T> extends Omit<CardProps, "resource"> {
     renderForm?: (resource?: T) => ReactNode
     onModeChange?: (mode: Mode) => void
     onRefresh?: () => void
-    renderContent?: ReactNode
+    renderContent?: JSX.Element
     padding?: number
 }
 

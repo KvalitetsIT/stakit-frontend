@@ -7,7 +7,7 @@ export function SidebarSection(props: { hideDivider?: boolean, title?: string | 
     return (
         <>
             {props.hideDivider ? <></> : <Divider textAlign={"left"} flexItem={true} color={theme.palette.primary.contrastText}>{props.title}</Divider>}
-            <List>
+            <List sx={{paddingTop: 0}}>
                 {props.children}
             </List>
         </>

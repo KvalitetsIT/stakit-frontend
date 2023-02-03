@@ -16,6 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Modes } from "../../components/service";
 import { ServiceCard } from "../../components/cards/Services";
 import { Mode } from "../../components/cards/Mode";
+import { randomInt } from "crypto";
 
 
 export function ServiceDetails() {
@@ -82,12 +83,15 @@ export function Header(props: { service: Service, showPath?: boolean }) {
 
 
 function HistorySection() {
+
+    const days = Array.from({length: 90}, (_, i) => Math.random() * 100)
+
     return (
         <Card sx={{ marginTop: 2 }}>
             <CardHeader title={"History"} subheader={<Typography>The chart below shows the status corrosponding to the last 90 days</Typography>}>
             </CardHeader>
             <CardContent>
-                {/* <History days={mock.days.map(day => ({ date: new Date(), percentage: day }))}></History> */}
+                 <History days={days.map(day => ({ date: new Date(), percentage: day }))}></History>
             </CardContent >
         </Card >
     )
@@ -130,7 +134,7 @@ export function History(props: { days: Day[] }) {
 
         <Grid container>
             <Grid item xs={0.5} alignContent={"center"}>
-                {/* <Typography>{mock.days.length} %</Typography> */}
+                <Typography>{props.days.length} %</Typography>
             </Grid>
             <Grid item xs={11.5}>
                 <Stack direction={"row"}>
