@@ -3,21 +3,21 @@ import { useState } from "react";
 import { SubscriptionForm } from "../components/forms/subscribe";
 import { CenteredContent } from "../components/layout/CenteredContent";
 import { useGetAllGroupsQuery } from "../feature/stakit/groupsSlice";
-import { useCreateSubscriptionMutation } from "../feature/stakit/publicSlice";
+import { useCreateSubscriptionMutation, useGetStatusOfGroupsQuery } from "../feature/stakit/publicSlice";
 import {  Subscription } from "../models/types";
 import { Mode } from "../components/cards/Mode";
 
 export function SubscribePage() {
 
     const createSubscription = useCreateSubscriptionMutation()[0]
-    const getAllGroups = useGetAllGroupsQuery(undefined)
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     const onSubscribtion = (subscription: Subscription) => {
+        console.log("subscription", subscription)
         createSubscription(subscription).then(() => setMode(Mode.SUCCESS))
     }
 
-    const {isLoading, data:groups} = useGetAllGroupsQuery(undefined) ?? []
+    const {isLoading, data:groups} = useGetStatusOfGroupsQuery(undefined) ?? []
 
     switch (mode) {
         case Mode.SUCCESS: return (

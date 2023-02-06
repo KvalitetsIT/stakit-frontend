@@ -17,10 +17,10 @@ const defineAbility = (user: User) => {
     user.roles.forEach(role => {
         switch (role) {
             case Role.UNKNOWN:
-                can(Operation.READ, Announcement)
+                can(Operation.READ, "public")
                 break;
             case Role.ADMIN:
-                can(Operation.READ, Announcement)
+                can([Operation.READ, Operation.DELETE, Operation.MANAGE, Operation.UPDATE, Operation.DETAILS], Announcement)
                 break;
             case Role.ORG_SUPER:
                 can(Operation.MANAGE, User)

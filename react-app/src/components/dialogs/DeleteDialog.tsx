@@ -23,7 +23,7 @@ export function DeleteServiceDialog(props: DeleteItemDialogProps<Service>) {
 }
 
 interface DeleteItemDialogProps<T> {
-    item: T, open: boolean, onClose: () => void, onSuccess: (item: T) => void, renderTitle?: (item: T) => ReactNode, renderMessage?: (item: T) => ReactNode
+    item?: T, open: boolean, onClose: () => void, onSuccess: (item: T) => void, renderTitle?: (item: T) => ReactNode, renderMessage?: (item: T) => ReactNode
 }
 
 export function DeleteItemDialog(props: DeleteItemDialogProps<any>) {

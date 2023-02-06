@@ -21,9 +21,6 @@ interface SubscriptionFormProps extends FormProps<Subscription> {
 
 export function SubscriptionForm(props: SubscriptionFormProps) {
 
-
-    const { optionalGroups } = props
-
     const [loading, setLoading] = useState()
 
     const validationSchema = yup.object().shape({
@@ -46,7 +43,15 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => props.onSubmit(values.subscription)}
+                onSubmit={(values) => {
+                    const groups = values.subscription.groups as unknown as Group[]
+                    console.log("values.subscription", values.subscription)
+                    const subscription = {
+                        email: values.subscription.email!,
+                        groups: groups?.map(group => group.uuid!)    
+                    }
+                    props.onSubmit(subscription)
+                }}
                 validationSchema={validationSchema}
             >
                 {({ errors, touched, values, handleChange, setFieldValue }) => (
@@ -71,8 +76,12 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                                 error={errors.subscription?.groups && touched.subscription?.groups ? errors.subscription?.groups : undefined}
                                 getOptionLabel={(option: Group) => option.name}
                                 noOptionsText={"Non available groups"}
-                                onChange={(e, selected) => {console.log("selected", selected); setFieldValue("subscription.groups", selected) }}
-                                
+                                onChange={(e, selected) => {
+                                    console.log("selected", selected); 
+                                    
+                                    const groups = selected as Group[]
+                                    setFieldValue("subscription.groups", groups) }}
+                            
                             />                
 
                             <Stack spacing={2} direction={"row"}>

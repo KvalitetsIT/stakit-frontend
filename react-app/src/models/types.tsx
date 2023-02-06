@@ -53,7 +53,7 @@ export interface Action {
 
 export interface Subscription {
     email?: string,
-    groups?: Group[]
+    groups?: string[]
 }
 
 export class Announcement extends Resource {

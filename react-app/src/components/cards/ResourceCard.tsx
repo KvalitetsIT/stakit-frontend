@@ -9,7 +9,7 @@ import { Action, BaseCard, BaseCardProps } from "./BaseCard"
 
 
 export interface ResourceCardProps<T> extends BaseCardProps<T> {
-    resource: T
+    resource?: T
     onDelete?: (resource: T) => void
     onUpdate?: (resource: T) => void
 

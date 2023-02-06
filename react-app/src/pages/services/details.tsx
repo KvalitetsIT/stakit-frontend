@@ -1,38 +1,22 @@
-import { Breadcrumbs, Button, Card, CardContent, CardHeader, Collapse, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Stack, Tooltip, Typography } from "@mui/material";
-import { ReactNode, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-
+import { Breadcrumbs, Card, CardContent, CardHeader, Container, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Service } from "../../models/types";
-
-import { Loading } from "../../components/feedback/loading";
-import { ServiceForm } from "../../components/forms/service";
-
-import EditOffIcon from '@mui/icons-material/EditOff';
-import { Delete } from "@mui/icons-material";
-import { useDeleteServiceMutation, useGetServiceQuery, useUpdateServiceMutation } from "../../feature/stakit/serviceSlice";
-import { DeleteServiceDialog } from "../../components/dialogs/DeleteDialog";
-
-import EditIcon from '@mui/icons-material/Edit';
-import { Modes } from "../../components/service";
+import { useGetServiceQuery } from "../../feature/stakit/serviceSlice";
 import { ServiceCard } from "../../components/cards/Services";
-import { Mode } from "../../components/cards/Mode";
-import { randomInt } from "crypto";
+import { useMemo } from "react";
 
 
 export function ServiceDetails() {
 
-
     const params = useParams();
 
-    const { isLoading, data } = useGetServiceQuery(params.id!)
-   
-
-    const service: Service = data! // mock.services[0]
-
+    const { isLoading, data: service } = useGetServiceQuery(params.id!)
+    
     return (
         <>
             <Container sx={{ paddingTop: 4 }}>
-                <ServiceCard resource={service} isLoading={isLoading}/>
+                <ServiceCard resource={service} isLoading={isLoading} />
                 <HistorySection />
             </Container >
         </>
@@ -84,14 +68,14 @@ export function Header(props: { service: Service, showPath?: boolean }) {
 
 function HistorySection() {
 
-    const days = Array.from({length: 90}, (_, i) => Math.random() * 100)
+    const days = Array.from({ length: 90 }, (_, i) => Math.random() * 100)
 
     return (
         <Card sx={{ marginTop: 2 }}>
             <CardHeader title={"History"} subheader={<Typography>The chart below shows the status corrosponding to the last 90 days</Typography>}>
             </CardHeader>
             <CardContent>
-                 <History days={days.map(day => ({ date: new Date(), percentage: day }))}></History>
+                <History days={days.map(day => ({ date: new Date(), percentage: day }))}></History>
             </CardContent >
         </Card >
     )
@@ -99,9 +83,9 @@ function HistorySection() {
 
 interface Day { percentage: number, date: Date }
 
-export function History(props: { days: Day[] }) {
+export function History(props: { days: Day[]}) {
 
-    const Pill = (props: Day) => {
+    const Pill = (props: Day, key?: string) => {
 
         const GREEN = "#00e6c8"
         const BLUE = "#122A4C"
@@ -111,7 +95,7 @@ export function History(props: { days: Day[] }) {
         const date = props.date;
 
         return (
-            <Tooltip title={
+            <Tooltip {...props} title={
                 <>
                     <Typography>{date.toLocaleDateString()}</Typography>
                     <Typography variant="h6">{props.percentage + "%"}</Typography>
@@ -138,9 +122,9 @@ export function History(props: { days: Day[] }) {
             </Grid>
             <Grid item xs={11.5}>
                 <Stack direction={"row"}>
-                    {props.days.map((day) => {
+                    {props.days.map((day, index) => {
                         return (
-                            <Pill percentage={day.percentage} date={day.date}></Pill>
+                            <Pill percentage={day.percentage} date={day.date} key={"pill_"+index}></Pill>
                         )
                     })}
                 </Stack>

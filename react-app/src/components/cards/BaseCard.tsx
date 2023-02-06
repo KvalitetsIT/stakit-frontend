@@ -9,7 +9,7 @@ export interface BaseCardProps<T> {
     mode?: Mode
     isLoading?: boolean
     actions?: Action[]
-    resource: T | T[]
+    resource?: T | T[]
     header?: ReactNode
     subHeader?: ReactNode
     renderForm?: (resource?: T) => ReactNode

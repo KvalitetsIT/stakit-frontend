@@ -5,14 +5,39 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Group } from "../models/group";
 import { QuestionMarkOutlined } from "@mui/icons-material";
-import { useGetAllServicesQuery } from "../feature/stakit/serviceSlice";
+import { server } from "typescript";
+import { useGetAllServicesQuery, useGetServiceQuery } from "../feature/stakit/serviceSlice";
+
+
+function getServices(groupServices: string[] | Service[], allServices: Service[]) : Service[]{
+
+    if(typeof groupServices[0] === "string") {
+
+        const services = new Map<string, Service>()
+
+        allServices?.forEach(service => services.set(service.uuid!, service))
+        
+        return (groupServices as string[]).map(id => services.get(id)).filter((service): service is Service  => !!service)
+
+    }
+    return groupServices.map(service => { return service as Service})
+    
+}
+
 
 export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group, key?: string }) {
 
 
     const groupServices: string[] | Service[] = props.group.services ?? []
 
-    const services = groupServices.map(service => { return service as Service}) // Could result in failures
+    // Check if the groupServices are string or an actual service 
+    // if it is an array of strings map them into Services 
+    // otherwise do nothing 
+
+
+    const {data: allServices} = useGetAllServicesQuery(undefined)
+
+    const services = getServices(groupServices, allServices!) // Could result in failures
 
     const up: number = services.filter(service => service.status === Status.OK).length
 
@@ -20,9 +45,8 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group: Group,
 
     return (
 
-
-        <Accordion disableGutters defaultExpanded={props.defaultExpanded} sx={{ marginTop: 2 }} disabled={services.length <= 0}>
-            <AccordionSummary>
+        <Accordion disableGutters defaultExpanded={props.defaultExpanded} sx={{ marginTop: 2, borderRadius: 1}} disabled={services.length <= 0}>
+            <AccordionSummary >
                 <Stack direction={"row"} justifyContent="space-between" alignItems="stretch" width={"100%"}>
                     <Stack>
                         <Typography variant="h6">{props.group.name}</Typography>

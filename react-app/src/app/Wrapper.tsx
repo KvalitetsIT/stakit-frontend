@@ -16,19 +16,14 @@ export const AppWrapper = () => {
             <Provider store={store}>
                 <ReactKeycloakProvider
                     initOptions={{
-                        onLoad: 'login-required',
+                        // onLoad: 'login-required',
                         checkLoginIframe: false
                     }}
                     authClient={keycloak}
                     autoRefreshToken={true}
                 >
                     <StrictMode>
-                        
-
-                                {/* <StrictMode> */}
-                                <App />
-                                {/* </StrictMode> */}
-                           
+                        <App />
                     </StrictMode>
                 </ReactKeycloakProvider>
             </Provider>

@@ -11,7 +11,17 @@ import { useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
 import { t } from "i18next";
 
 interface ServiceFormProps extends FormProps<Service> {
-    service?: Service
+    service: Service
+}
+
+ServiceForm.defaultProps = {
+    service: {
+        service_identifier: "",
+        name: "",
+        description: "",
+        group: {},
+        ignore_service_name: false
+    }
 }
 
 export function ServiceForm(props: ServiceFormProps) {
@@ -32,20 +42,14 @@ export function ServiceForm(props: ServiceFormProps) {
     const defaultGroup = groups && groups.find(group => group.name === "Default")?.uuid
 
     const initialValues = {
-        service: props.service ?? {
-            service_identifier: "",
-            name: "",
-            description: "",
-            group: defaultGroup,
-            ignore_service_name: false
-        }
+        service: props.service 
     }
 
     return (
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => { console.log("values", values); props.onSubmit(values.service) }}
+                onSubmit={(values) => { props.onSubmit(values.service) }}
                 validationSchema={validationSchema}
             >
                 {({ errors, touched, values, setFieldValue }) => {

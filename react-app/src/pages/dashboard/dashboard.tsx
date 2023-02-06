@@ -9,7 +9,6 @@ import { AnnouncementsCard } from "../../components/cards/Announcements";
 import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
 import { Service, Status } from "../../models/types";
 import { Group } from "../../models/group";
-import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 
 
@@ -22,8 +21,7 @@ export function DashboardPage() {
 
     const groups: Group[] = data ?? []
 
-    const { data: services } = useGetAllServicesQuery(undefined)
-
+    const services: Service[] = groups.flatMap(group => group.services.map(service => service as Service) )
     
     const numberOfServicesDown = services && services.filter((service: Service) => service.status === Status.NOT_OK).length
 
@@ -45,8 +43,6 @@ export function DashboardPage() {
                     {groups && groups.map((serviceGroup, index) => (
                         <GroupAccordion group={serviceGroup} key={"group_" + index} ></GroupAccordion>
                     ))}
-
-
                     { user === undefined && <SubscibeButton />}
                 </Grid>
                 <Grid item xs={12} lg={6}>

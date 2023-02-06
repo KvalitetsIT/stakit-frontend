@@ -24,12 +24,10 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
     }
 
     const deleteService = useDeleteServiceMutation()[0]
-    const serviceGetter = useGetAllServicesQuery(undefined)
+    const {data, refetch} = useGetAllServicesQuery(undefined)
 
     const remove = () => {
-        deleteService(props.service).then(
-            serviceGetter.refetch
-        )
+        deleteService(props.service).then(() => refetch())
         setMode(Modes.NORMAL)
     }
 

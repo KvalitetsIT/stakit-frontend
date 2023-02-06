@@ -1,4 +1,5 @@
 
+import { request } from 'http';
 import {  Group } from '../../models/group';
 import { Announcement, Subscription } from '../../models/types';
 import HandleQuery from '../../redux/EndpointQueryHandler';
@@ -29,11 +30,13 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
             providesTags: ["statusOfGroups"]
         }),
         createSubscription: builder.mutation<string, Subscription>({
-            query: () => HandleQuery({
+            query: (request) => HandleQuery({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
                 url: `subscribe`,
                 method: "POST",
+                body: request,
                 responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not create subscription" }),
+                
             }),
             invalidatesTags: ["subscription"]
         }),

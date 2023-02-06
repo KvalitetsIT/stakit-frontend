@@ -1,14 +1,25 @@
+import { Typography } from "@mui/material";
 import { useKeycloak } from "@react-keycloak/web";
-import { ReactNode } from "react";
+import { ReactNode, useContext, useMemo } from "react";
+import getEnvironment from "../config/env";
+import { GetJWTToken, UserContext } from "../feature/authentication/logic/FetchUser";
+import UserFactory from "../feature/authentication/logic/UserFactory";
+import { User } from "../models/types";
 
 interface PrivateRouteProps {
-    children: JSX.Element | JSX.Element[] 
+    children: JSX.Element
 }
 function PrivateRoute(props: PrivateRouteProps) {
 
-    const { keycloak } = useKeycloak()
+    const keycloak = useKeycloak()
 
-    const isLoggedIn = keycloak.authenticated;
+    if( ! keycloak.initialized  ) return<></>
+    
+    const isLoggedIn = keycloak.initialized && keycloak.keycloak.authenticated ;
+
+    console.log("isLoggedIn", isLoggedIn)
+
+    if(!isLoggedIn  ) keycloak.keycloak?.login({})
 
     return isLoggedIn ? props.children : null;
 };

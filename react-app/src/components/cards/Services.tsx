@@ -21,20 +21,22 @@ export function ServiceCard(props: ServiceCardProps) {
 
     const location = useLocation()
     const [mode, setMode] = useState( location.state?.mode ?? Mode.NORMAL)
+
     const updateService = useUpdateServiceMutation()[0]
     const removeService = useDeleteServiceMutation()[0]
 
-    const { resource: service } = props
+    const { resource: service, isLoading } = props
 
     return (
         <ResourceCard
+            isLoading={isLoading}
             header={service?.name ?? ""}
             subHeader={service?.description ?? ""}
             mode={mode}
             onModeChange={(x) => setMode(x)}
             onDelete={removeService}
             onUpdate={updateService}
-            renderForm={(service) => (
+            renderForm={(service: Service) => (
                 <ServiceForm
                     service={service}
                     onCancel={() => setMode(Mode.NORMAL)}
@@ -58,8 +60,8 @@ export function ServiceCard(props: ServiceCardProps) {
 interface ServicesCardProps extends Omit<ResourceCardProps<Service>, "resource"> {}
 
 ServicesCard.defaultProps = {
-    title: "Services",
-    subTitle: "A list of the latest announcenements",
+    header: "Services",
+    subHeader: "A list of the latest announcenements",
 }
 
 export function ServicesCard(props: ServicesCardProps) {
@@ -88,8 +90,6 @@ export function ServicesCard(props: ServicesCardProps) {
         <ResourcesCard
             isLoading={isLoading}
             mode={mode}
-            header={"Services"}
-            subHeader={"A list of the latest services"}
             onModeChange={(x) => setMode(x)}
             resources={services}
             renderForm={() => <ServiceForm
@@ -103,6 +103,7 @@ export function ServicesCard(props: ServicesCardProps) {
             renderItem={(item) => <ServiceItem service={item} />}
             extractKey={(service, index) => "service_" + index}
             extractPath={(service) => "/services/" + service.uuid}
+            {...props}
         />
     )
 }

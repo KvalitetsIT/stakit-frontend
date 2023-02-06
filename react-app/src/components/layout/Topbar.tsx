@@ -6,6 +6,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Logo } from "../icons/logo";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import TagFacesIcon from '@mui/icons-material/TagFaces';
+import keycloak from "../../feature/authentication/Keycloak";
+import { LoginOutlined } from "@mui/icons-material";
 
 interface TopbarProps { width: number | string, logo?: ReactNode, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void }
 export function Topbar(props: TopbarProps) {
@@ -61,14 +63,24 @@ export function Topbar(props: TopbarProps) {
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
 
                 <Box sx={{ flexGrow: 0 }}>
-                    <Link to={"/profile"} style={{ textDecoration: "none", color: "inherit" }}>
+
+                    {keycloak.authenticated ? (
                         <IconButton sx={{ p: 0 }}>
-                            <Chip clickable color="secondary" icon={<TagFacesIcon  />} /* avatar={<Avatar>{user?.firstName?.charAt(0)}</Avatar>} */ label={user?.firstName} />
+                            <Chip color="secondary" icon={<TagFacesIcon />} /* avatar={<Avatar>{user?.firstName?.charAt(0)}</Avatar>} */ label={user?.firstName} />
                         </IconButton>
-                    </Link>
+                    ) : (
+                        <IconButton sx={{ p: 0 }} onClick={() => keycloak.login({})}>
+                            <Chip color="secondary" icon={<LoginOutlined />} /* avatar={<Avatar>{user?.firstName?.charAt(0)}</Avatar>} */ label={"Login"}/>
+                        </IconButton>
+                    )
+                    }
+                    {/* <Link to={"/profile"} style={{ textDecoration: "none", color: "inherit" }}> */}
+
+                    {/* </Link> */}
                 </Box>
 
             </Toolbar>
         </AppBar>
     )
+
 }
