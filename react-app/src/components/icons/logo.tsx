@@ -21,6 +21,7 @@ export const Logo = createSvgIcon(
         enableBackground={"new 0 0 512 240"}
         xmlSpace="preserve"
         x="0px" y="0px"
+        width={"100%"}
         >
         <g>
             <g>

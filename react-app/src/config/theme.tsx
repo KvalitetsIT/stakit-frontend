@@ -43,12 +43,7 @@ export const theme = createTheme({
             dark: '#c62828',
             contrastText: '#000000',
         },
-        info: {
-            light: '#ef5350',
-            main: "#d32f2f",
-            dark: '#c62828',
-            contrastText: '#000000',
-        },
+   
     },
     components: {
         MuiPaper: {

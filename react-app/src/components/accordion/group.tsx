@@ -52,9 +52,10 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
                         justifyContent: "center"
                     }}>
                         <Chip
-                            avatar={<Icon><StatusIcon variant="outlined" status={getStatusOfGroup()} /></Icon>}
+                            avatar={<Icon sx={{"": {color: "warning"}}}><StatusIcon variant="outlined" status={getStatusOfGroup()} /></Icon>}
                             color={useGetColorTagByStatus(getStatusOfGroup())}
-                            label={<Typography>{serviceWhichAreOk} / {services.length}</Typography>}
+                            label={<Typography color={"white"}>{serviceWhichAreOk} / {services.length}</Typography>}
+
                         />
                     </Box>
                 </Stack>
@@ -94,17 +95,3 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
     )
 }
 
-function getServices(groupServices: string[] | Service[], allServices: Service[]): Service[] {
-
-    if (typeof groupServices[0] === "string") {
-
-        const services = new Map<string, Service>()
-
-        allServices?.forEach(service => services.set(service.uuid!, service))
-
-        return (groupServices as string[]).map(id => services.get(id)).filter((service): service is Service => !!service)
-
-    }
-    return groupServices.map(service => { return service as Service })
-
-}
