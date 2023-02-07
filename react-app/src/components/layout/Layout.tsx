@@ -12,6 +12,7 @@ import { Topbar } from './Topbar';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import { Logo } from '../icons/logo';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
+import { useKeycloak } from '@react-keycloak/web';
 type LayoutProps = {
   children: JSX.Element
 }
@@ -19,31 +20,32 @@ type LayoutProps = {
 
 export default function Layout(props: LayoutProps) {
 
-  // const user = new User()
-
-  // user.name = "bob bobson"
-  // user.username = "bobby"
-  // user.phone = "123456789"
-  // user.latest_login = new Date()
-  // user.roles = [Role.ADMIN]
-  // user.roleToString = () => "admin"
-
-  // const loggedInAs: User | undefined = user
-
 
   const sidebarWidth = 250
   const theme = useTheme()
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const keycloak = useKeycloak()
+
+  const disableSidebar = !keycloak.initialized || !keycloak.keycloak.authenticated
 
   return (
 
     <>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <Topbar width={sidebarWidth} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}></Topbar>
-        <Sidebar width={sidebarWidth} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} logo={<Title color={theme.palette.primary.contrastText} />}>
+        <Topbar
+          sidebarDisabled={disableSidebar}
+          width={sidebarWidth}
+          mobileOpen={mobileOpen}
+          setMobileOpen={setMobileOpen}></Topbar>
+        <Sidebar
+          disabled={disableSidebar}
+          width={sidebarWidth}
+          mobileOpen={mobileOpen}
+          setMobileOpen={setMobileOpen}
+          logo={<Title color={theme.palette.primary.contrastText} />}>
           <SidebarSection hideDivider title={"Public"}>
             <SidebarItem title="Dashboard" icon={<SwapVertIcon />} href={"/"} />
             {/* <SidebarItem title='Login' icon={<LoginIcon />} href={"/login"} />
@@ -51,7 +53,7 @@ export default function Layout(props: LayoutProps) {
             <SidebarItem title='Subcribe' icon={<NotificationsActiveIcon />} href={"/subscribe"} />
           </SidebarSection>
           <SidebarSection title={"Authorized"}>
-            <SidebarItem title="Services" icon={<MiscellaneousServicesIcon/>} href={"/services"} />
+            <SidebarItem title="Services" icon={<MiscellaneousServicesIcon />} href={"/services"} />
             <SidebarItem title="Groups" icon={<WorkspacesIcon />} href={"/groups"} />
             <SidebarItem title="Announcements" icon={<AnnouncementIcon />} href={"/announcements"} />
           </SidebarSection>
@@ -60,7 +62,7 @@ export default function Layout(props: LayoutProps) {
           <Toolbar />
           {props.children}
         </Container>
-
+        n
       </Box>
     </>
   )
@@ -81,10 +83,10 @@ function Title(props: { color?: string }) {
         letterSpacing: '.3rem',
         color: 'inherit',
         textDecoration: 'none',
-        
+
       }}
     >
-      <span style={{ color: props.color ?? theme.palette.primary.main}}>Sta</span><Logo />
+      <span style={{ color: props.color ?? theme.palette.primary.main }}>Sta</span><Logo />
     </Typography>
   )
 }

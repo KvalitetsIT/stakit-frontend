@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from "@mui/material";
 import { Container } from "@mui/system";
 import { useParams } from "react-router-dom";
 import { GroupForm } from "../../components/forms/group";
-import { useGetGroupQuery, useUpdateGroupMutation } from "../../feature/stakit/groupsSlice";
+import { useGetGroupQuery, usePutGroupMutation } from "../../feature/stakit/groupsSlice";
 import { Group } from "../../models/group";
 
 
@@ -17,7 +17,7 @@ export function EditGroup() {
     const group: Group | undefined =  data
 
 
-    const updateGroup = useUpdateGroupMutation()[0]
+    const updateGroup = usePutGroupMutation()[0]
 
     return (
 

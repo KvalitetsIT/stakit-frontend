@@ -1,34 +1,31 @@
 import { FormControl, Stack, Button } from "@mui/material";
 
-import { Formik, Form } from "formik";
+import { Formik, Form, useFormik } from "formik";
 import { Service } from "../../models/types";
 import * as yup from 'yup';
 import { ValidatedTextField } from "../input/validatedTextField";
 import { FormProps } from "./subscribe";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { Group } from "../../models/group";
-import { useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
+import { useGetAllGroupsQuery, useGetGroupQuery } from "../../feature/stakit/groupsSlice";
 import { t } from "i18next";
+import { Loading } from "../feedback/loading";
+import { group } from "console";
 
 interface ServiceFormProps extends FormProps<Service> {
-    service: Service
+    service?: Service
 }
 
-ServiceForm.defaultProps = {
-    service: {
-        service_identifier: "",
-        name: "",
-        description: "",
-        group: {},
-        ignore_service_name: false
-    }
-}
 
 export function ServiceForm(props: ServiceFormProps) {
 
     const { isLoading, data } = useGetAllGroupsQuery(undefined) ?? []
 
     const groups = data ?? []
+
+    let service: Service | undefined = structuredClone(props.service)
+
+    if (service) service.group = groups.find(group => group.uuid === props.service?.group as string)
 
     const validationSchema = yup.object().shape({
         service: yup.object().shape({
@@ -39,18 +36,31 @@ export function ServiceForm(props: ServiceFormProps) {
         })
     })
 
-    const defaultGroup = groups && groups.find(group => group.name === "Default")?.uuid
+    const defaultGroup = groups && groups.find(group => group.name === "Default")
 
+
+    const defaultValues: Service = {
+        service_identifier: "",
+        name: "",
+        description: "",
+        group: defaultGroup,
+        ignore_service_name: false
+    }
+
+    if (props.isLoading || isLoading) return (<></>)
+    
     const initialValues = {
-        service: props.service 
+        service: service ?? defaultValues
     }
 
     return (
+
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => { props.onSubmit(values.service) }}
                 validationSchema={validationSchema}
+                enableReinitialize
             >
                 {({ errors, touched, values, setFieldValue }) => {
                     return (
@@ -80,12 +90,12 @@ export function ServiceForm(props: ServiceFormProps) {
                                     value={values.service.group}
                                     onChange={(e, selected) => {
                                         const uuid = (selected as unknown as { id: string }).id
-                                        setFieldValue("service.group", uuid)
+                                        setFieldValue("service.group", selected)
                                     }}
                                     defaultValue={initialValues.service.group}
-                                    noOptionsText={""+ t("Non available groups")}
+                                    noOptionsText={"" + t("Non available groups")}
                                     error={touched.service?.group && errors.service?.group ? errors.service?.group : undefined}
-                                    isOptionEqualToValue={(option, value) => option.uuid == value.uuid}
+                                //isOptionEqualToValue={(option, value) => option.uuid == value.uuid}
                                 />
 
                                 <ValidatedTextField
@@ -112,5 +122,6 @@ export function ServiceForm(props: ServiceFormProps) {
 
             </Formik>
         </FormControl >
+
     )
 }

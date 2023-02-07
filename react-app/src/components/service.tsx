@@ -1,13 +1,17 @@
-import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Grid, ListItemIcon } from "@mui/material";
-import { useState } from "react";
+import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Grid, ListItemIcon, ListItemAvatar, Avatar } from "@mui/material";
+import { ReactNode, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Service } from "../models/types";
 import { Header } from "../pages/services/details";
-import { StatusIcon } from "./status";
+import { StatusAvatar, StatusIcon } from "./status";
 
 import EditIcon from '@mui/icons-material/Edit';
 import { useDeleteServiceMutation, useGetAllServicesQuery } from "../feature/stakit/serviceSlice";
 import { DeleteServiceDialog } from "./dialogs/DeleteDialog";
+import { Can } from "@casl/react";
+import { Operation, Asset } from "../feature/authentication/config/ability";
+import { UserContext } from "../feature/authentication/logic/FetchUser";
+import { useKeycloak } from "@react-keycloak/web";
 
 
 export enum Modes {
@@ -16,63 +20,57 @@ export enum Modes {
 
 export function ServiceItem(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
 
-
-    const [mode, setMode] = useState<Modes>(Modes.NORMAL)
-
-    const resetMode = () => {
-        setMode(Modes.NORMAL)
-    }
-
-    const deleteService = useDeleteServiceMutation()[0]
-    const {data, refetch} = useGetAllServicesQuery(undefined)
-
-    const remove = () => {
-        deleteService(props.service).then(() => refetch())
-        setMode(Modes.NORMAL)
-    }
+    const user = useContext(UserContext)!
+    const keycloak = useKeycloak()
 
     const Actions = () => (
         <>
-            <Tooltip title={"Edit"}>
-                <Link to={"/services/" + props.service.uuid} state={{ mode: Modes.EDIT }} >
-                    <IconButton edge="end" aria-label="Edit" onClick={(e) => { setMode(Modes.EDIT) }}>
-                        <EditIcon />
-                    </IconButton>
-                </Link>
-            </Tooltip>
+            <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.RESOURCE}>
+                <Tooltip title={"Edit"}>
+                    <Link to={"/services/" + props.service.uuid} state={{ mode: Modes.EDIT }} >
+                        <IconButton edge="end" aria-label="Edit">
+                            <EditIcon />
+                        </IconButton>
+                    </Link>
+                </Tooltip>
+            </Can>
+
         </>
     )
 
+    const authenticated = keycloak.initialized && keycloak.keycloak.authenticated
+
     return (
         <>
-
-            <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={"/services/" + props.service.uuid}>
-
+            <ItemWithLink disabled={!authenticated} to={"/services/" + props.service.uuid}>
                 <ListItem
                     key={"item_" + props.service.uuid}
-                    disablePadding
+                    
                     secondaryAction={<Actions />}
                 >
-                    <ListItemButton dense >
-                        <ListItemIcon>
-                            <StatusIcon status={props.service.status} />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={<Header {...props} />}
-                            secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : ".")}
-                        />
-                    </ListItemButton>
+                    <ListItemAvatar>
+                        <StatusAvatar status={props.service.status} />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={<Header {...props} />}
+                        secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : ".")}
+                    />
                 </ListItem>
-            </Link>
-
-            <DeleteServiceDialog
-                open={mode === Modes.DELETE}
-                item={props.service}
-                onSuccess={remove}
-                onClose={resetMode}
-            />
-
+            </ItemWithLink>
         </>
+    )
+}
 
+function ItemWithLink(props: { to: string, disabled?: boolean, children: JSX.Element }) {
+
+    if (props.disabled) return props.children
+    return (
+        <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={props.to}>
+            <ListItemButton dense disableGutters disableRipple>
+
+                {props.children}
+
+            </ListItemButton>
+        </Link>
     )
 }

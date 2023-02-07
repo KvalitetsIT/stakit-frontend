@@ -72,7 +72,7 @@ export default function App() {
                                     {/* <Route path="register" element={<RegistrationPage />} /> */}
                                     <Route path="subscribe" element={<SubscribePage />} />
                                 </Route>
-
+                                
                                 <Route path="/services">
                                     <Route index element={<PrivateRoute><ServicesPage /></PrivateRoute>} />
                                     <Route path=":id">

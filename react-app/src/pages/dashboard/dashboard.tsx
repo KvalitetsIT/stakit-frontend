@@ -1,5 +1,5 @@
 import { Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea } from "@mui/material";
-import { GroupAccordion } from "../../components/group";
+import { GroupAccordion } from "../../components/accordion/group";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Link } from "react-router-dom";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -10,19 +10,21 @@ import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
 import { Service, Status } from "../../models/types";
 import { Group } from "../../models/group";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
+import { Can } from "../../feature/authentication/logic/Can";
+import { Operation } from "../../feature/authentication/config/ability";
 
 
 export function DashboardPage() {
 
 
-    const user = useContext(UserContext)
+    const user = useContext(UserContext)!
 
     const { data, refetch } = useGetStatusOfGroupsQuery(undefined)
 
     const groups: Group[] = data ?? []
 
-    const services: Service[] = groups.flatMap(group => group.services.map(service => service as Service) )
-    
+    const services: Service[] = groups.flatMap(group => group.services.map(service => service as Service))
+
     const numberOfServicesDown = services && services.filter((service: Service) => service.status === Status.NOT_OK).length
 
     const level = numberOfServicesDown === 0 ? "success" : "warning"
@@ -43,7 +45,9 @@ export function DashboardPage() {
                     {groups && groups.map((serviceGroup, index) => (
                         <GroupAccordion group={serviceGroup} key={"group_" + index} ></GroupAccordion>
                     ))}
-                    { user === undefined && <SubscibeButton />}
+                    <Can ability={user?.getAbility()} I={Operation.READ} a={"public"}>
+                        <SubscibeButton />
+                    </Can>
                 </Grid>
                 <Grid item xs={12} lg={6}>
                     <AnnouncementsCard />
@@ -60,7 +64,7 @@ export function SubscibeButton() {
             <Tooltip title="Subscribe">
                 <SpeedDial
                     ariaLabel="Subscribe"
-                    sx={{ position: 'absolute', bottom: 16, right: 16 }}
+                    sx={{ position: 'fixed', bottom: 16, right: 16 }}
                     icon={<SpeedDialIcon icon={<NotificationsIcon />} openIcon={<NotificationsActiveIcon />} />}
                     FabProps={{
                         sx: {
@@ -83,8 +87,6 @@ StatusMessage.defaultProps = {
 }
 
 function StatusMessage(props: { msg: string, level?: "success" | "warning", refreshRate?: number, callback?: () => void }) {
-
-    const [loading, setLoading] = useState(false)
 
     const refreshRate = props.refreshRate ?? 60000
 
@@ -129,11 +131,11 @@ function StatusMessage(props: { msg: string, level?: "success" | "warning", refr
         <Card>
             <CardActionArea>
                 {/* <Tooltip title={"Time to next refresh"}> */}
-                    <LinearProgress color={"secondary"} variant={"determinate"} value={progress} />
+                <LinearProgress color={"secondary"} variant={"determinate"} value={progress} />
                 {/* </Tooltip> */}
             </CardActionArea>
             <CardHeader
-                title={props.level === "success" ? <p style={{margin: 0}}>Perfekt &#x1F44D;</p> : <p style={{margin: 0}}>Advarsel &#x1F44E;</p>}
+                title={props.level === "success" ? <p style={{ margin: 0 }}>Perfekt &#x1F44D;</p> : <p style={{ margin: 0 }}>Advarsel &#x1F44E;</p>}
                 subheader={props.msg}
                 action={
                     <Tooltip title="Refresh">

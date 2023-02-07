@@ -17,8 +17,6 @@ function PrivateRoute(props: PrivateRouteProps) {
     
     const isLoggedIn = keycloak.initialized && keycloak.keycloak.authenticated ;
 
-    console.log("isLoggedIn", isLoggedIn)
-
     if(!isLoggedIn  ) keycloak.keycloak?.login({})
 
     return isLoggedIn ? props.children : null;

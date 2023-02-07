@@ -12,16 +12,14 @@ export interface ResourceCardProps<T> extends BaseCardProps<T> {
     resource?: T
     onDelete?: (resource: T) => void
     onUpdate?: (resource: T) => void
-
     deleteDialog?: ReactElement<typeof DeleteItemDialog>
-
+    
 }
 
 export function ResourceCard(props: ResourceCardProps<any>) {
     const actions: Action[] = [
         { title: "Edit", icon: <EditIcon />, mode: Mode.EDIT },
         { title: "Delete", icon: <Delete />, mode: Mode.DELETE },
-        { title: "Refresh", icon: <Refresh />, mode: Mode.NORMAL }
     ]
     const { mode, onModeChange, resource } = props
 
@@ -48,19 +46,18 @@ export function ResourceCard(props: ResourceCardProps<any>) {
 export interface ResourcesCardProps<T> extends Omit<BaseCardProps<T>, "resource"> {
     resources: T[]
     onAdd?: (resource: T) => void
-    renderItem: (resource: T) => ReactNode
-    extractKey: (resource: T, index: number) => string
+    renderItem?: (resource: T) => ReactNode
+    extractKey?: (resource: T, index: number) => string
     extractPath?: (resource: T) => string
 }
- 
 
 export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
 
     const actions: Action[] = [
         { title: "Add", icon: <Add />, mode: Mode.ADD },
-        { title: "Refresh", icon: <Refresh />, mode: Mode.NORMAL }
     ]
     const { renderItem, resources, extractPath, extractKey } = props
+
     return (
         <BaseCard
             resource={resources}
@@ -68,10 +65,10 @@ export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
             padding={0}
             renderContent={
                 <List>
-                    {resources?.map((resource, index: number) => extractPath ?
+                    {renderItem && resources?.map((resource, index: number) => extractPath ?
                         <Link
                             style={{ color: 'inherit', textDecoration: 'inherit' }}
-                            key={extractKey(resource, index)}
+                            key={extractKey && extractKey(resource, index)}
                             to={extractPath(resource)}
                         >
                             {renderItem(resource)}

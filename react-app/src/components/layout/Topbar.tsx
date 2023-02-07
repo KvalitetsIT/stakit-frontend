@@ -8,11 +8,13 @@ import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import TagFacesIcon from '@mui/icons-material/TagFaces';
 import keycloak from "../../feature/authentication/Keycloak";
 import { LoginOutlined } from "@mui/icons-material";
+import { Can } from "../../feature/authentication/logic/Can";
+import { Asset, Operation } from "../../feature/authentication/config/ability";
 
-interface TopbarProps { width: number | string, logo?: ReactNode, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void }
+interface TopbarProps { width: number | string, logo?: ReactNode, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void, sidebarDisabled?: boolean }
 export function Topbar(props: TopbarProps) {
 
-    const { width, setMobileOpen, mobileOpen } = props
+    const { width, setMobileOpen, mobileOpen, sidebarDisabled } = props
 
     const handleDrawerToggle = () => setMobileOpen ? setMobileOpen(!mobileOpen ?? false) : {};
 
@@ -23,8 +25,8 @@ export function Topbar(props: TopbarProps) {
         <AppBar
             position="fixed"
             sx={{
-                backgroundColor: { sm: theme.palette.primary.main, md: theme.palette.background.default },
-                width: { md: `calc(100% - ${width}px)` },
+                backgroundColor: { sm: theme.palette.primary.main, md: sidebarDisabled ? theme.palette.primary.main : theme.palette.background.default },
+                width: { md: sidebarDisabled ? `100%` : `calc(100% - ${width}px)` },
                 ml: { sm: `${width}px` },
             }}
         >
@@ -34,19 +36,18 @@ export function Topbar(props: TopbarProps) {
                     aria-label="open menu"
                     edge="start"
                     onClick={handleDrawerToggle}
-                    sx={{ mr: 2, display: { md: 'none' } }}
+                    sx={{ mr: 2, display: sidebarDisabled ? 'none' : { md: 'none' } }}
                 >
+
                     <MenuIcon />
                 </IconButton>
-
                 <Typography
                     variant="h5"
                     noWrap
                     component="a"
-                    align='center'
                     sx={{
                         mr: 2,
-                        display: { xs: 'flex', md: 'none' },
+                        display: { xs: 'flex', md: sidebarDisabled ? 'flex' : 'none' },
                         flexGrow: 1,
                         fontFamily: 'monospace',
                         fontWeight: 700,
@@ -59,24 +60,18 @@ export function Topbar(props: TopbarProps) {
                         Sta<Logo />
                     </Link>
                 </Typography>
-
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
-
                 <Box sx={{ flexGrow: 0 }}>
-
-                    {keycloak.authenticated ? (
+                    <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.PRIVATE}>
                         <IconButton sx={{ p: 0 }}>
                             <Chip color="secondary" icon={<TagFacesIcon />} /* avatar={<Avatar>{user?.firstName?.charAt(0)}</Avatar>} */ label={user?.firstName} />
                         </IconButton>
-                    ) : (
+                    </Can>
+                    <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.PUBLIC}>
                         <IconButton sx={{ p: 0 }} onClick={() => keycloak.login({})}>
-                            <Chip color="secondary" icon={<LoginOutlined />} /* avatar={<Avatar>{user?.firstName?.charAt(0)}</Avatar>} */ label={"Login"}/>
+                            <Chip clickable color="secondary" icon={<LoginOutlined />} /* avatar={<Avatar>{user?.firstName?.charAt(0)}</Avatar>} */ label={"Login"} />
                         </IconButton>
-                    )
-                    }
-                    {/* <Link to={"/profile"} style={{ textDecoration: "none", color: "inherit" }}> */}
-
-                    {/* </Link> */}
+                    </Can>
                 </Box>
 
             </Toolbar>

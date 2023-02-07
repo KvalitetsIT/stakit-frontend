@@ -1,4 +1,4 @@
-import { Button, CircularProgress, FormControl, MenuItem, Stack } from "@mui/material";
+import { Button, CircularProgress, FormControl, FormControlLabel, FormGroup, MenuItem, Stack } from "@mui/material";
 import { Form, Formik } from "formik";
 import { t } from "i18next";
 import { useState } from "react";
@@ -8,10 +8,14 @@ import { ValidatedSelect } from "../input/validatedSelect";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { ValidatedTextField } from "../input/validatedTextField";
 import { Group } from "../../models/group";
+import { ValidatedCheck } from "../input/validatedCheck";
+
 
 export interface FormProps<T> {
     onSubmit: (submission: T) => Promise<void>
     onCancel: () => void,
+    isLoading?: boolean
+
 }
 
 interface SubscriptionFormProps extends FormProps<Subscription> {
@@ -21,22 +25,25 @@ interface SubscriptionFormProps extends FormProps<Subscription> {
 
 export function SubscriptionForm(props: SubscriptionFormProps) {
 
-    const [loading, setLoading] = useState()
-
     const validationSchema = yup.object().shape({
         subscription: yup.object().shape({
             email: yup.string().required(t("email is required")).email(t("email is not valid")),
             groups: yup.array().required("groups is required").min(1, t("Atleast one group is needed")),
+            announcements: yup.bool().required(t("checkbox is required")),
         }),
-        checked: yup.bool().required(t("checkbox is required")),
+
     })
 
+    const defaultValues: Subscription = {
+        email: "",
+        groups: [],
+        announcements: false
+    }
+
+
     const initialValues = {
-        subscription: props.subscription ?? {
-            email: "",
-            groups: []
-        },
-        checked: false
+        subscription: props.subscription ?? defaultValues,
+
     }
 
     return (
@@ -45,14 +52,15 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                 initialValues={initialValues}
                 onSubmit={(values) => {
                     const groups = values.subscription.groups as unknown as Group[]
-                    console.log("values.subscription", values.subscription)
                     const subscription = {
                         email: values.subscription.email!,
-                        groups: groups?.map(group => group.uuid!)    
+                        groups: groups?.map(group => group.uuid!),
+                        announcements: values.subscription.announcements
                     }
                     props.onSubmit(subscription)
                 }}
                 validationSchema={validationSchema}
+                enableReinitialize
             >
                 {({ errors, touched, values, handleChange, setFieldValue }) => (
                     <Form>
@@ -66,7 +74,6 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                                 onChange={handleChange}
                             >
                             </ValidatedTextField>
-
                             <ValidatedAutoComplete
                                 multiple
                                 options={props.optionalGroups ?? []}
@@ -77,20 +84,28 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                                 getOptionLabel={(option: Group) => option.name}
                                 noOptionsText={"Non available groups"}
                                 onChange={(e, selected) => {
-                                    console.log("selected", selected); 
-                                    
                                     const groups = selected as Group[]
-                                    setFieldValue("subscription.groups", groups) }}
-                            
-                            />                
+                                    setFieldValue("subscription.groups", groups)
+                                }}
 
+                            />
+                            
+
+                            <ValidatedCheck
+                                label={"Announcements"}
+                                name={"subscription.announcements"}
+                                error={errors.subscription?.announcements && touched.subscription?.announcements ? errors.subscription.announcements : undefined}
+                            
+                                //checked
+                                //onChange={() => console.log("change")}
+                            />
                             <Stack spacing={2} direction={"row"}>
                                 <Button
                                     type={"submit"}
                                     variant="contained"
                                     fullWidth={true}
                                 >
-                                    {loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("subscribe")}</>}
+                                    {props.isLoading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("subscribe")}</>}
                                 </Button>
 
                                 <Button fullWidth={true} onClick={props.onCancel} variant="outlined">Cancel</Button>

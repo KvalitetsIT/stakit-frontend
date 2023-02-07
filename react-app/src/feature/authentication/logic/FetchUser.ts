@@ -10,8 +10,12 @@ export async function GetJWTToken(keycloak: Keycloak): Promise<JWTToken | undefi
 }
 
 
-export const UserContext = createContext<User | undefined>(undefined);
+const createUserContext = () => {
+    const userFactory = new UserFactory()
+    return createContext<User | undefined>(userFactory.createGuestUser());
+}
 
+export const UserContext = createUserContext()
 
 export function LoginBasedOnToken(token: JWTToken): User {
     let userFactory = new UserFactory();

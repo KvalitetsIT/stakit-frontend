@@ -45,13 +45,14 @@ interface ResponsiveDrawerProps {
     width?: number | string
     mobileOpen?: boolean
     setMobileOpen?: (open: boolean) => void
+    disabled?: boolean
 }
 
 export function Sidebar(props: ResponsiveDrawerProps) {
 
     const width = props.width ?? 300
 
-    const { mobileOpen, setMobileOpen } = props
+    const { mobileOpen, setMobileOpen, disabled } = props
 
     const drawerContent = (
         <div>
@@ -62,6 +63,8 @@ export function Sidebar(props: ResponsiveDrawerProps) {
     const handleDrawerToggle = () => setMobileOpen ? setMobileOpen(!mobileOpen ?? false) : {};
 
     const paperProps = { sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width } }
+
+    if(disabled) return <></>
 
     return (
 

@@ -4,7 +4,7 @@ import { IconButton, ListItem, ListItemButton, ListItemText, Tooltip, Typography
 import { ReactNode, useContext, useState } from "react"
 import { Operation } from "../../feature/authentication/config/ability"
 import { UserContext } from "../../feature/authentication/logic/FetchUser"
-import { useUpdateServiceMutation, useGetAllServicesQuery, useDeleteServiceMutation, useCreateServiceMutation } from "../../feature/stakit/serviceSlice"
+import { usePutServiceMutation, useGetAllServicesQuery, useDeleteServiceMutation, useCreateServiceMutation } from "../../feature/stakit/serviceSlice"
 import { Resource, Service } from "../../models/types"
 import { Mode } from "./Mode"
 import { DeleteServiceDialog } from "../dialogs/DeleteDialog"
@@ -14,30 +14,35 @@ import { ResourceCard, ResourceCardProps, ResourcesCard, ResourcesCardProps } fr
 import ReplayIcon from '@mui/icons-material/Replay';
 import { ServiceItem } from "../service"
 import { useLocation, useParams } from "react-router-dom"
+import { StatusAvatar } from "../status"
 
 interface ServiceCardProps extends ResourceCardProps<Service> { }
 
 export function ServiceCard(props: ServiceCardProps) {
 
-    const location = useLocation()
-    const [mode, setMode] = useState( location.state?.mode ?? Mode.NORMAL)
-
-    const updateService = useUpdateServiceMutation()[0]
-    const removeService = useDeleteServiceMutation()[0]
 
     const { resource: service, isLoading } = props
 
+    const location = useLocation()
+    const [mode, setMode] = useState(location.state?.mode ?? Mode.NORMAL)
+
+    const updateService = usePutServiceMutation()[0]
+    const removeService = useDeleteServiceMutation()[0]
+    const { refetch } = useGetAllServicesQuery(undefined);
+
     return (
         <ResourceCard
-            isLoading={isLoading}
+            avatar={<StatusAvatar status={service?.status} />}
             header={service?.name ?? ""}
             subHeader={service?.description ?? ""}
             mode={mode}
             onModeChange={(x) => setMode(x)}
             onDelete={removeService}
             onUpdate={updateService}
+
             renderForm={(service: Service) => (
                 <ServiceForm
+                    isLoading={isLoading}
                     service={service}
                     onCancel={() => setMode(Mode.NORMAL)}
                     onSubmit={async (service) => { updateService(service); setMode(Mode.NORMAL) }} />
@@ -50,6 +55,7 @@ export function ServiceCard(props: ServiceCardProps) {
                 }}
                 onSuccess={function (item: Service): void {
                     removeService(item)
+                    refetch()
                     window.history.go(-1)
                 }} />
             }
@@ -57,7 +63,7 @@ export function ServiceCard(props: ServiceCardProps) {
         />
     )
 }
-interface ServicesCardProps extends Omit<ResourceCardProps<Service>, "resource"> {}
+interface ServicesCardProps extends Omit<ResourceCardProps<Service>, "resource"> { }
 
 ServicesCard.defaultProps = {
     header: "Services",
@@ -68,23 +74,10 @@ export function ServicesCard(props: ServicesCardProps) {
 
     const { isLoading, data, refetch } = useGetAllServicesQuery(undefined)
     const create = useCreateServiceMutation()
-    
+
     const services = data ?? []
 
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
-
-    const user = useContext(UserContext)
-
-    const Actions = () => (
-        <>
-            <Action title="Refresh" icon={<Add />} onClick={() => setMode(Mode.ADD)} />
-            {user &&
-                <Can ability={user.getAbility()} I={Operation.READ} a={Service}>
-                    <Action title="Refresh" icon={<ReplayIcon />} onClick={() => refetch()} />
-                </Can>
-            }
-        </>
-    )
 
     return (
         <ResourcesCard
@@ -92,6 +85,7 @@ export function ServicesCard(props: ServicesCardProps) {
             mode={mode}
             onModeChange={(x) => setMode(x)}
             resources={services}
+            onRefresh={() => { refetch() }}
             renderForm={() => <ServiceForm
                 onSubmit={async (sub) => {
                     await create[0](sub);

@@ -11,16 +11,23 @@ export enum Operation {
     MANAGE = "manage"
 }
 
+export enum Asset {
+    RESOURCE = "resource",
+    FEATURE = "feature",
+    PUBLIC = "public",
+    PRIVATE= "private"
+}
+
 const defineAbility = (user: User) => {
     const { can, cannot, build } = new AbilityBuilder(Ability);
 
     user.roles.forEach(role => {
         switch (role) {
             case Role.UNKNOWN:
-                can(Operation.READ, "public")
+                can(Operation.READ, Asset.PUBLIC)
                 break;
             case Role.ADMIN:
-                can([Operation.READ, Operation.DELETE, Operation.MANAGE, Operation.UPDATE, Operation.DETAILS], Announcement)
+                can([Operation.MANAGE], [Asset.RESOURCE, Asset.PRIVATE])
                 break;
             case Role.ORG_SUPER:
                 can(Operation.MANAGE, User)

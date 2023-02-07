@@ -5,13 +5,13 @@ export const stakitApiSlice = createApi({
     reducerPath: 'stakit_api',
     tagTypes: [
         'services', 'service',
-        'groups', 'group',
+        'groups', 'group', "group-services",
         'users', 'user',
         "announcements", "announcement",
-        "statusOfGroups", "subscription", "confirmSubscription"
+        "statusOfGroups", "subscription", "confirmSubscription",
         
     ],
-    
+    refetchOnMountOrArgChange: true,
     baseQuery: fetchDefaultBaseQuery(),
     endpoints: () => ({}),
 })

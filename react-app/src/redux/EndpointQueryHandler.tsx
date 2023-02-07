@@ -8,7 +8,6 @@ class propsStuff {
 
 export default function HandleQuery(args: FetchArgs & propsStuff): FetchArgs {
     args.body = JSON.stringify(args.body)
-
     // if (args.pagination)
     //     args.url = args.pagination.getQuery(args.url)
 

@@ -18,8 +18,8 @@ interface GroupFormProps extends FormProps<Group> {
 export function GroupForm(props: GroupFormProps) {
 
     //const services = useGetAllServicesCascaded()
-    const {isLoading, data: services} = useGetAllServicesQuery(undefined) // data?.filter(service => service.group == undefined) ?? []
-    
+    const { isLoading, data: services } = useGetAllServicesQuery(undefined) // data?.filter(service => service.group == undefined) ?? []
+
     const validationSchema = yup.object().shape({
         group: yup.object().shape({
             name: yup.string().required(t("Name is required")),
@@ -28,8 +28,12 @@ export function GroupForm(props: GroupFormProps) {
         })
     })
 
+    let group: Group | undefined = structuredClone(props.group)
+
+    if(!isLoading && services && group ) group.services = services.filter(service => (props.group?.services as string[]).includes(service.uuid!))
+   
     const initialValues = {
-        group: props.group ?? {
+        group: group ?? {
             name: "",
             display_order: 1,
             services: [],
@@ -38,17 +42,15 @@ export function GroupForm(props: GroupFormProps) {
     }
 
 
-
-    const [loading, setLoading] = useState<boolean>(false)
-
     return (
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => props.onSubmit(values.group)}
                 validationSchema={validationSchema}
+                enableReinitialize
             >
-                {({ errors, touched, values, submitForm, handleChange, setFieldValue}) => (
+                {({ errors, touched, values, submitForm, handleChange, setFieldValue }) => (
                     <Form>
                         <Stack spacing={2}>
                             <Stack spacing={2} direction={"row"}>
@@ -72,8 +74,8 @@ export function GroupForm(props: GroupFormProps) {
                                 id="tags-standard"
                                 label="Services"
                                 name="group.services"
-                                options={services??[]}
-                                onChange={(e, selected) => {console.log("selected", selected); setFieldValue("group.services", selected) }}
+                                options={services ?? []}
+                                onChange={(e, selected) => { setFieldValue("group.services", selected) }}
                                 getOptionLabel={(option: Service) => option.name}
                                 defaultValue={initialValues.group.services}
                                 noOptionsText={"Non available services"}
@@ -90,14 +92,13 @@ export function GroupForm(props: GroupFormProps) {
                                 error={touched.group?.description && errors.group?.description ? errors.group?.description : undefined}
                             />
 
-
                             <Stack spacing={2} direction={"row"}>
                                 <Button
                                     type={"submit"}
                                     variant="contained"
                                     fullWidth={true}
                                 >
-                                    {loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : "" + t("Save")}
+                                    {t("Save")+""}
                                 </Button>
                                 <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{"" + t("Cancel")}</Button>
                             </Stack>

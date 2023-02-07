@@ -7,7 +7,7 @@ import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";
 import { AnnouncementForm } from "../forms/announcement";
 import { useContext, useState } from "react";
 import { Mode } from "./Mode";
-import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/stakit/announcementSlice";
+import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation, useGetAnnouncementQuery } from "../../feature/stakit/announcementSlice";
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
 import { Can } from "@casl/react";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
@@ -21,9 +21,9 @@ interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
 export function AnnouncementCard(props: AnnouncementCardProps) {
     const [mode, setMode] = useState(props.mode ?? Mode.NORMAL)
     const remove = useDeleteAnnouncementMutation()[0]
+    const { resource: announcement } = props
+    const {refetch} = useGetAllAnnouncementsQuery(undefined)
     
-    const {resource: announcement} = props
-
     return (
         <ResourceCard
             header={props.resource?.subject ?? ""}
@@ -31,6 +31,7 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
             mode={mode}
             onModeChange={(x) => setMode(x)}
             onDelete={(announcement) => remove(announcement)}
+            renderContent={<Typography>{announcement?.message}</Typography>}
             renderForm={() => (
                 <AnnouncementForm
                     onSubmit={async (submission: Announcement) => {
@@ -40,6 +41,19 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
                     announcement={props.resource ?? undefined}
                 />
             )}
+            deleteDialog={
+                <DeleteAnnouncementDialog
+                    item={announcement}
+                    open={mode === Mode.DELETE}
+                    onClose={function (): void {
+                        setMode(Mode.NORMAL)
+                    }}
+                    onSuccess={function (item: Announcement): void {
+                        remove(item)
+                        refetch()
+                        window.history.go(-1)
+                    }} />
+            }
             {...props}
         />
     )
@@ -65,10 +79,10 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
-    const reload = () => {refetch(); console.log("reloading")}
+    const reload = () => { refetch(); console.log("reloading") }
 
     const Actions = () => <></>
-    
+
     const Item = (props: { announcement: Announcement }) => {
 
         const { announcement } = props

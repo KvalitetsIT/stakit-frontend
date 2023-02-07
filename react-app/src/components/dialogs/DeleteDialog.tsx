@@ -1,12 +1,24 @@
 import { Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material"
 import { ReactNode } from "react"
+import { Group } from "../../models/group"
 import { Announcement, Service } from "../../models/types"
 
 export function DeleteAnnouncementDialog(props: DeleteItemDialogProps<Announcement>) {
     return (
         <DeleteItemDialog
-            renderMessage={(announcement) => <Typography>You are about to delete the announcement: {announcement.subject}</Typography>}
-            renderTitle={(announcement) => <Typography>Delete {announcement.name}</Typography>}
+            renderMessage={(announcement) => <Typography>You are about to delete the announcement: {announcement?.subject}</Typography>}
+            renderTitle={(announcement) => <Typography>Delete announcement</Typography>}
+            {...props}
+        />
+    )
+}
+
+
+export function DeleteGroupDialog(props: DeleteItemDialogProps<Group>) {
+    return (
+        <DeleteItemDialog
+            renderMessage={(group) => <Typography>You are about to delete the group: {group?.name}</Typography>}
+            renderTitle={(group) => <Typography>Delete {group?.name}</Typography>}
             {...props}
         />
     )
@@ -46,10 +58,10 @@ export function DeleteItemDialog(props: DeleteItemDialogProps<any>) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={props.onClose}>No</Button>
                 <Button onClick={() => { props.onSuccess(props.item) }} autoFocus>
                     Yes
                 </Button>
+                <Button onClick={props.onClose}>No</Button>
             </DialogActions>
         </Dialog>
     )

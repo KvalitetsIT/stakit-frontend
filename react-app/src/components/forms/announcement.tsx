@@ -22,22 +22,24 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
         }),
     })
 
-    const initialValues = {
-        announcement: props.announcement ?? {
-            message: "",
-            subject: "",
-            from_datetime: new Date(),
-            to_datetime: new Date(),
-        },
-        checked: false
+    const defaultValues: Announcement = {
+        message: "",
+        subject: "",
+        from_datetime: new Date(),
+        to_datetime: new Date(),
     }
 
+    if (props.isLoading) return (<></>)
     return (
         <FormControl fullWidth>
             <Formik
-                initialValues={initialValues}
-                onSubmit={(values) => {values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!);  props.onSubmit(values.announcement)}}
+                initialValues={{
+                    announcement: props.announcement ?? defaultValues,
+                    checked: false
+                }}
+                onSubmit={(values) => { values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!); props.onSubmit(values.announcement) }}
                 validationSchema={validationSchema}
+                enableReinitialize
 
             >
                 {({ errors, touched, values, handleChange }) => (
@@ -74,8 +76,6 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                     value={values.announcement?.from_datetime}
                                     onChange={handleChange}
                                 />
-
-
 
                                 <ValidatedTextField
                                     type={"datetime-local"}
