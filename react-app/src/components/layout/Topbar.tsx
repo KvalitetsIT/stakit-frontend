@@ -11,7 +11,7 @@ import { LoginOutlined } from "@mui/icons-material";
 import { Can } from "../../feature/authentication/logic/Can";
 import { Asset, Operation } from "../../feature/authentication/config/ability";
 
-interface TopbarProps { width: number | string, logo?: ReactNode, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void, sidebarDisabled?: boolean }
+interface TopbarProps { width: number | string, logo?: JSX.Element, mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void, sidebarDisabled?: boolean }
 export function Topbar(props: TopbarProps) {
 
     const { width, setMobileOpen, mobileOpen, sidebarDisabled } = props
@@ -20,6 +20,7 @@ export function Topbar(props: TopbarProps) {
 
 
     const user = useContext(UserContext)
+
 
     return (
         <AppBar
@@ -56,9 +57,9 @@ export function Topbar(props: TopbarProps) {
                         textDecoration: 'none',
                     }}
                 >
-                    <Link style={{ textDecoration: 'none', color: "inherit" }} to={"/"}>
-                        Sta<Logo />
-                    </Link>
+                    
+                    {props.logo}
+                  
                 </Typography>
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
                 <Box sx={{ flexGrow: 0 }}>

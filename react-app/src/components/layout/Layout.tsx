@@ -13,6 +13,7 @@ import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices
 import { Logo } from '../icons/logo';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import { useKeycloak } from '@react-keycloak/web';
+import { Stack } from '@mui/system';
 type LayoutProps = {
   children: JSX.Element
 }
@@ -36,6 +37,7 @@ export default function Layout(props: LayoutProps) {
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <Topbar
+          logo={<><Title color={theme.palette.primary.contrastText} /></>}
           sidebarDisabled={disableSidebar}
           width={sidebarWidth}
           mobileOpen={mobileOpen}
@@ -71,23 +73,29 @@ export default function Layout(props: LayoutProps) {
 
 function Title(props: { color?: string }) {
   return (
-    <Typography
-      variant="h4"
-      noWrap
-      component="a"
-      sx={{
-        mr: 2,
-        display: { xs: 'none', md: 'flex' },
-        fontFamily: 'monospace',
-        fontWeight: 700,
-        letterSpacing: '.3rem',
-        color: 'inherit',
-        textDecoration: 'none',
 
-      }}
-    >
-      <span style={{ color: props.color ?? theme.palette.primary.main }}>Sta</span><Logo />
-    </Typography>
+    <Stack direction={"row"}>
+
+    <Typography
+        variant="h3"
+        noWrap
+        component="a"
+        sx={{
+          mr: 2,
+          display: { xs: 'flex', md: 'flex' },
+          fontFamily: 'monospace',
+          fontWeight: 1000,
+          letterSpacing: '.3rem',
+          color: 'inherit',
+          textDecoration: 'none',
+         
+
+        }}
+      >
+        <span style={{ color: props.color ?? theme.palette.primary.main }}>STA</span><Logo />
+      </Typography>
+    </Stack>
+  
   )
 }
 

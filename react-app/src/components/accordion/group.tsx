@@ -37,7 +37,12 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
         <Accordion
             disableGutters
             defaultExpanded={props.defaultExpanded}
-            sx={{ marginTop: 2, borderRadius: 1, "&.MuiAccordion-root:before": { backgroundColor: "rgba(0,0,0,0)" } }}
+            sx={{ 
+                marginTop: 2, 
+                borderRadius: 1, 
+                "&.MuiAccordion-root:before": { backgroundColor: "rgba(0,0,0,0)" }, 
+                pointerEvents: services.length === 0 ? 'none' : 'auto' 
+            }}
 
         >
             <AccordionSummary expandIcon={<ExpandMoreIcon />} >
