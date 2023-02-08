@@ -77,18 +77,18 @@ function Title(props: { color?: string }) {
     <Stack direction={"row"}>
 
     <Typography
-        variant="h3"
+        
         noWrap
         component="a"
         sx={{
-          mr: 2,
+          //mr: 2,
           display: { xs: 'flex', md: 'flex' },
           fontFamily: 'monospace',
-          fontWeight: 1000,
-          letterSpacing: '.3rem',
+          fontWeight: 700,
+          //letterSpacing: '.3rem',
           color: 'inherit',
           textDecoration: 'none',
-         
+          fontSize: 40
 
         }}
       >
