@@ -42,8 +42,7 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
         <>
             <ItemWithLink disabled={!authenticated} to={"/services/" + props.service.uuid}>
                 <ListItem
-                    key={"item_" + props.service.uuid}
-                    
+                    key={"item_" + props.service.uuid}    
                     secondaryAction={<Actions />}
                 >
                     <ListItemAvatar>
@@ -51,7 +50,7 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
                     </ListItemAvatar>
                     <ListItemText
                         primary={<Header {...props} />}
-                        secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : ".")}
+                        secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : "")}
                     />
                 </ListItem>
             </ItemWithLink>
@@ -59,7 +58,7 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
     )
 }
 
-function ItemWithLink(props: { to: string, disabled?: boolean, children: JSX.Element }) {
+export function ItemWithLink(props: { to: string, disabled?: boolean, children: JSX.Element }) {
 
     if (props.disabled) return props.children
     return (

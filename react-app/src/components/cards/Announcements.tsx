@@ -9,6 +9,7 @@ import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
 import { ResourceCard, ResourceCardProps, ResourcesCard } from "./ResourceCard";
 import { t } from "i18next";
 import { Action } from "./BaseCard";
+import { useKeycloak } from "@react-keycloak/web";
 
 
 interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
@@ -17,8 +18,8 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
     const [mode, setMode] = useState(props.mode ?? Mode.NORMAL)
     const remove = useDeleteAnnouncementMutation()[0]
     const { resource: announcement } = props
-    const {refetch} = useGetAllAnnouncementsQuery(undefined)
-    
+    const { refetch } = useGetAllAnnouncementsQuery(undefined)
+
     return (
         <ResourceCard
             header={props.resource?.subject ?? ""}
@@ -75,18 +76,17 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     const Actions = () => <></>
 
-    const Item = (props: { announcement: Announcement }) => {
+    const AnnouncementItem = (props: { announcement: Announcement }) => {
 
         const { announcement } = props
 
-        return (
 
-            <ListItem
-                key={"item_" + announcement.uuid}
-                disablePadding
-                secondaryAction={<Actions />}
-            >
-                <ListItemButton>
+        return (
+            <>
+                <ListItem
+                    key={"item_" + announcement.uuid}
+                    secondaryAction={<Actions />}
+                >
                     <ListItemText
                         primary={
                             <>
@@ -98,15 +98,19 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                             <Typography>{dateToText(new Date(announcement.from_datetime!))} - {dateToText(new Date(announcement.to_datetime!))}</Typography>
                         </>}
                     />
-                </ListItemButton>
-            </ListItem>
 
+                </ListItem>
+
+            </>
         )
     }
 
+    const keycloak = useKeycloak()
+    const authenticated = keycloak.initialized && keycloak.keycloak.authenticated
 
     return (
         <ResourcesCard
+            disableLinks={!authenticated}
             onRefresh={() => reload()}
             isLoading={isLoading}
             mode={mode}
@@ -120,7 +124,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                 onCancel={() => {
                     setMode(Mode.NORMAL);
                 }} />}
-            renderItem={(item) => <Item announcement={item}></Item>}
+            renderItem={(item) => <AnnouncementItem announcement={item}></AnnouncementItem>}
             extractKey={(announcement: Announcement, index) => "announcement_" + index}
             extractPath={(announcement) => "/announcements/" + announcement.uuid}
             {...props}

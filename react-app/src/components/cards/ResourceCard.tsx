@@ -1,12 +1,12 @@
 import { Add, Delete } from "@mui/icons-material"
 import { List } from "@mui/material"
-import { ReactElement, ReactNode } from "react"
+import { ReactElement } from "react"
 import { Mode } from "./Mode";
 import EditIcon from '@mui/icons-material/Edit';
 import { DeleteItemDialog } from "../dialogs/DeleteDialog"
-import { Link } from "react-router-dom"
 import { Action, BaseCard, BaseCardProps } from "./BaseCard"
 import { t } from "i18next";
+import { ItemWithLink } from "../service";
 
 
 export interface ResourceCardProps<T> extends BaseCardProps<T> {
@@ -47,10 +47,11 @@ export function ResourceCard(props: ResourceCardProps<any>) {
 export interface ResourcesCardProps<T> extends Omit<BaseCardProps<T>, "resource"> {
     resources: T[]
     onAdd?: (resource: T) => void
-    renderItem?: (resource: T) => ReactNode
+    renderItem?: (resource: T) => JSX.Element
     extractKey?: (resource: T, index: number) => string
     extractPath?: (resource: T) => string
     actions?: Action[]
+    disableLinks?: boolean
 }
 
 ResourcesCard.defaultProps= {
@@ -62,7 +63,7 @@ ResourcesCard.defaultProps= {
 export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
 
     
-    const { actions, renderItem, resources, extractPath, extractKey } = props
+    const { actions, renderItem, resources, extractPath, extractKey, disableLinks} = props
 
     return (
         <BaseCard
@@ -72,13 +73,13 @@ export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
             renderContent={
                 <List>
                     {renderItem && resources?.map((resource, index: number) => extractPath ?
-                        <Link
-                            style={{ color: 'inherit', textDecoration: 'inherit' }}
+                        <ItemWithLink
+                            disabled={disableLinks}
                             key={extractKey && extractKey(resource, index)}
                             to={extractPath(resource)}
                         >
                             {renderItem(resource)}
-                        </Link>
+                        </ItemWithLink>
                         : renderItem(resource))}
                 </List>
             }
