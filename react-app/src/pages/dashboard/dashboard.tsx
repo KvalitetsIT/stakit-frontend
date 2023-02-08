@@ -139,7 +139,7 @@ function StatusMessage(props: { msg: string, level?: "success" | "warning", refr
                 title={props.level === "success" ? <p style={{ margin: 0 }}>Perfekt &#x1F44D;</p> : <p style={{ margin: 0 }}>Advarsel &#x1F44E;</p>}
                 subheader={props.msg}
                 action={
-                    <Tooltip title="Refresh">
+                    <Tooltip title={<>{t("Refresh"+"")}</>}>
                         <IconButton onClick={() => refresh()}>
                             <ReplayIcon></ReplayIcon>
                         </IconButton>
