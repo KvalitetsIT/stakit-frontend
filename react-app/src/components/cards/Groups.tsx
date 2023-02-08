@@ -3,7 +3,7 @@ import { List } from "@mui/material"
 import { t } from "i18next"
 import { useState } from "react"
 import { useLocation } from "react-router-dom"
-import { useCreateGroupMutation, useDeleteGroupMutation, useGetAllGroupsQuery, useGetServicesByGroupQuery, usePatchServicesOfGroupMutation, usePutGroupMutation } from "../../feature/stakit/groupsSlice"
+import { useCreateGroupMutation, useDeleteGroupMutation, useGetAllGroupsQuery, usePutGroupMutation } from "../../feature/stakit/groupsSlice"
 import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice"
 import { Group } from "../../models/group"
 import { Service } from "../../models/types"
@@ -37,8 +37,7 @@ export function GroupCard(props: GroupCardProps) {
     const [mode, setMode] = useState(location.state?.mode ?? Mode.NORMAL)
 
     const put = usePutGroupMutation()[0]
-    const patchGroup = usePatchServicesOfGroupMutation()[0]
-
+    
     const remove = useDeleteGroupMutation()[0]
     const { refetch } = useGetAllGroupsQuery(undefined);
 
@@ -47,7 +46,6 @@ export function GroupCard(props: GroupCardProps) {
 
     const save = (group: Group) =>{
         put(group)
-        patchGroup(group)
         refetch()
     }
     return (

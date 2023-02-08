@@ -29,21 +29,29 @@ export const groupSlice = stakitApiSlice.injectEndpoints({
       providesTags: ["groups"]
     }),
     createGroup: builder.mutation<Group, Group>({
-      query: (request) => HandleQuery({
+      query: (request) => {
+        
+        const body = groupToDTO(request)
+
+        return HandleQuery({
         url: `groups`,
         responseHandler: (res) => handleResponse({ response: res, toastSuccessText: "Group was created", toastErrorText: "Group could not be created" }),
         method: 'POST',
-        body: request,
-      }),
+        body: body,
+      })},
       invalidatesTags: ['groups'],
     }),
     putGroup: builder.mutation<Group, Group>({
-      query: (request) => HandleQuery({
+      query: (request) => {
+        
+        const body = groupToDTO(request)
+
+        return HandleQuery({
         url: `groups/${request.uuid}`,
         responseHandler: (res) => handleResponse({ response: res, toastSuccessText: "Group was updated", toastErrorText: "Group could not be created" }),
         method: 'PUT',
-        body: request,
-      }),
+        body: body,
+      })},
       invalidatesTags: ["groups"]
     }),
     deleteGroup: builder.mutation<undefined, string>({
@@ -74,7 +82,7 @@ export const groupSlice = stakitApiSlice.injectEndpoints({
   })
 })
 
-export const { usePatchServicesOfGroupMutation, useLazyGetGroupQuery, useCreateGroupMutation, useGetServicesByGroupQuery, useDeleteGroupMutation, useGetAllGroupsQuery, usePutGroupMutation, useGetGroupQuery} = groupSlice
+export const { useLazyGetGroupQuery, useCreateGroupMutation, useGetServicesByGroupQuery, useDeleteGroupMutation, useGetAllGroupsQuery, usePutGroupMutation, useGetGroupQuery} = groupSlice
 
 
 function groupToDTO(group: Group): Group{
