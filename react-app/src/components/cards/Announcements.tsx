@@ -8,6 +8,7 @@ import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "..
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
 import { ResourceCard, ResourceCardProps, ResourcesCard } from "./ResourceCard";
 import { t } from "i18next";
+import { Action } from "./BaseCard";
 
 
 interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
@@ -54,8 +55,7 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
 }
 
 interface AnnouncementsCardProps {
-    title?: string
-    subTitle?: string
+    actions?: Action[]
 }
 
 AnnouncementsCard.defaultProps = {
@@ -67,7 +67,8 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     const { isLoading, data, refetch } = useGetAllAnnouncementsQuery(undefined)
     const create = useCreateAnnouncementMutation()
-    
+    const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
+
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     const reload = () => { refetch(); console.log("reloading") }

@@ -50,14 +50,19 @@ export interface ResourcesCardProps<T> extends Omit<BaseCardProps<T>, "resource"
     renderItem?: (resource: T) => ReactNode
     extractKey?: (resource: T, index: number) => string
     extractPath?: (resource: T) => string
+    actions?: Action[]
+}
+
+ResourcesCard.defaultProps= {
+    actions: [
+        { title: t("Add"), icon: <Add />, mode: Mode.ADD },
+    ]
 }
 
 export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
 
-    const actions: Action[] = [
-        { title: t("Add"), icon: <Add />, mode: Mode.ADD },
-    ]
-    const { renderItem, resources, extractPath, extractKey } = props
+    
+    const { actions, renderItem, resources, extractPath, extractKey } = props
 
     return (
         <BaseCard

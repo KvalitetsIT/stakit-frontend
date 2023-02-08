@@ -1,7 +1,6 @@
-import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, Drawer, Toolbar, Button } from "@mui/material"
-import { t } from "i18next"
+import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, Drawer, Toolbar } from "@mui/material"
 import { ReactNode, ReactElement, useState } from "react"
-import { Link, NavLink, useLocation, useNavigation } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { theme } from "../../config/theme"
 
 export function SidebarSection(props: { hideDivider?: boolean, title?: string | ReactNode, children: ReactElement<typeof SidebarItem> | ReactElement<typeof SidebarItem>[] }) {
@@ -86,7 +85,7 @@ export function Sidebar(props: ResponsiveDrawerProps) {
                 sx={{
                     display: { xs: 'block', md: 'none' }
                 }}
-                PaperProps={paperProps}
+                PaperProps={{ sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width} }}
             >
                 <Toolbar />
                 {drawerContent}

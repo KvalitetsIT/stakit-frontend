@@ -51,7 +51,7 @@ export function DashboardPage() {
                     </Can>
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <AnnouncementsCard />
+                    <AnnouncementsCard actions={[]} />
                 </Grid>
             </Grid>
         </Box>
