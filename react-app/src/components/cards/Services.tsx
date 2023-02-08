@@ -1,20 +1,14 @@
-import { Can } from "@casl/react"
-import { Add, Delete } from "@mui/icons-material"
-import { IconButton, ListItem, ListItemButton, ListItemText, Tooltip, Typography } from "@mui/material"
-import { ReactNode, useContext, useState } from "react"
-import { Operation } from "../../feature/authentication/config/ability"
-import { UserContext } from "../../feature/authentication/logic/FetchUser"
+import { useState } from "react"
 import { usePutServiceMutation, useGetAllServicesQuery, useDeleteServiceMutation, useCreateServiceMutation } from "../../feature/stakit/serviceSlice"
-import { Resource, Service } from "../../models/types"
+import { Service } from "../../models/types"
 import { Mode } from "./Mode"
 import { DeleteServiceDialog } from "../dialogs/DeleteDialog"
 import { ServiceForm } from "../forms/service"
-import { Action } from "../input/actions/Action"
-import { ResourceCard, ResourceCardProps, ResourcesCard, ResourcesCardProps } from "./ResourceCard"
-import ReplayIcon from '@mui/icons-material/Replay';
+import { ResourceCard, ResourceCardProps, ResourcesCard } from "./ResourceCard"
 import { ServiceItem } from "../service"
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { StatusAvatar } from "../status"
+import { t } from "i18next"
 
 interface ServiceCardProps extends ResourceCardProps<Service> { }
 
@@ -66,8 +60,8 @@ export function ServiceCard(props: ServiceCardProps) {
 interface ServicesCardProps extends Omit<ResourceCardProps<Service>, "resource"> { }
 
 ServicesCard.defaultProps = {
-    header: "Services",
-    subHeader: "A list of the latest announcenements",
+    header: t("Services"),
+    subHeader: t("A list of all services"),
 }
 
 export function ServicesCard(props: ServicesCardProps) {

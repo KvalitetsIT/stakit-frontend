@@ -12,6 +12,7 @@ import { Group } from "../../models/group";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import { Can } from "../../feature/authentication/logic/Can";
 import { Operation } from "../../feature/authentication/config/ability";
+import { t } from "i18next";
 
 
 export function DashboardPage() {
@@ -29,9 +30,9 @@ export function DashboardPage() {
 
     const level = numberOfServicesDown === 0 ? "success" : "warning"
 
-    const successMsg = "Alle systemer virker hensigtsmæssigt"
+    const successMsg = t("All systems works appropriately")
 
-    const warningMsg = "Et eller flere systemer oplever problemer"
+    const warningMsg = t("One or more systems are experiencing problems")
 
     return (
         <Box>
@@ -146,7 +147,7 @@ function StatusMessage(props: { msg: string, level?: "success" | "warning", refr
                 }
             />
             <CardContent>
-                <Typography textAlign={"right"}>Sidst opdateret: {lastRefresh.toLocaleTimeString()}</Typography>
+                <Typography textAlign={"right"}><>{t("Last updated")}:</> {lastRefresh.toLocaleTimeString()}</Typography>
             </CardContent>
         </Card>
 

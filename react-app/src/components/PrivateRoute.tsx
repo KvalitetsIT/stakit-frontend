@@ -1,10 +1,4 @@
-import { Typography } from "@mui/material";
 import { useKeycloak } from "@react-keycloak/web";
-import { ReactNode, useContext, useMemo } from "react";
-import getEnvironment from "../config/env";
-import { GetJWTToken, UserContext } from "../feature/authentication/logic/FetchUser";
-import UserFactory from "../feature/authentication/logic/UserFactory";
-import { User } from "../models/types";
 
 interface PrivateRouteProps {
     children: JSX.Element

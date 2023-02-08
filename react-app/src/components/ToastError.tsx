@@ -10,7 +10,7 @@ interface ToastErrorProps {
     toastErrorText?: string
 }
 export default function ToastError(props: ToastErrorProps) {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
 
     const error = props.error;
     const statusText = error.status ? getReasonPhrase(error.status) : "No status";

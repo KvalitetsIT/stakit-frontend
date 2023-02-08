@@ -1,9 +1,7 @@
 import { AppBar, Toolbar, IconButton, Typography, Box, Chip } from "@mui/material";
-import { ReactNode, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
 import { theme } from "../../config/theme";
 import MenuIcon from '@mui/icons-material/Menu';
-import { Logo } from "../icons/logo";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import TagFacesIcon from '@mui/icons-material/TagFaces';
 import keycloak from "../../feature/authentication/Keycloak";

@@ -1,10 +1,8 @@
-import { Button, CircularProgress, FormControl, FormControlLabel, FormGroup, MenuItem, Stack } from "@mui/material";
+import { Button, CircularProgress, FormControl, Stack } from "@mui/material";
 import { Form, Formik } from "formik";
 import { t } from "i18next";
-import { useState } from "react";
 import * as yup from 'yup';
 import { Subscription } from "../../models/types";
-import { ValidatedSelect } from "../input/validatedSelect";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { ValidatedTextField } from "../input/validatedTextField";
 import { Group } from "../../models/group";
@@ -27,9 +25,9 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
 
     const validationSchema = yup.object().shape({
         subscription: yup.object().shape({
-            email: yup.string().required(t("email is required")).email(t("email is not valid")),
-            groups: yup.array().required("groups is required").min(1, t("Atleast one group is needed")),
-            announcements: yup.bool().required(t("checkbox is required")),
+            email: yup.string().required(t("Email") +" "+t("is required")).email(t("Email") +" "+ t("is not valid")),
+            groups: yup.array().required(t("Groups") +" "+ t("is required")),
+            announcements: yup.bool().required(t("Announcemets")+" "+ t("is required")),
         }),
 
     })
@@ -68,7 +66,7 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                             <ValidatedTextField
                                 type={"email"}
                                 error={errors.subscription?.email && touched.subscription?.email ? errors.subscription.email : undefined}
-                                label="Email"
+                                label={t("Email")}
                                 name="subscription.email"
                                 value={values.subscription?.email}
                                 onChange={handleChange}
@@ -90,14 +88,10 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
 
                             />
                             
-
                             <ValidatedCheck
-                                label={"Announcements"}
+                                label={t("Announcements")}
                                 name={"subscription.announcements"}
                                 error={errors.subscription?.announcements && touched.subscription?.announcements ? errors.subscription.announcements : undefined}
-                            
-                                //checked
-                                //onChange={() => console.log("change")}
                             />
                             <Stack spacing={2} direction={"row"}>
                                 <Button
@@ -105,10 +99,9 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
                                     variant="contained"
                                     fullWidth={true}
                                 >
-                                    {props.isLoading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("subscribe")}</>}
+                                    {props.isLoading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("Subscribe")}</>}
                                 </Button>
-
-                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">Cancel</Button>
+                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{t("Cancel")+""}</Button>
                             </Stack>
                         </Stack>
                     </Form>

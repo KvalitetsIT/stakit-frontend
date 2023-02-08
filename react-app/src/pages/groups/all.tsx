@@ -1,8 +1,7 @@
 import { Container } from "@mui/material";
-import { useCreateGroupMutation, useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
+import { useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
 import { GroupAccordion } from "../../components/accordion/group";
 import { GroupsCard } from "../../components/cards/Groups";
-import { Loading } from "../../components/feedback/loading";
 import { Group } from "../../models/group";
 import { Service } from "../../models/types";
 import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";

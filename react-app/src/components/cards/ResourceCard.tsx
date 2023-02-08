@@ -1,11 +1,12 @@
-import { Add, Delete, Refresh } from "@mui/icons-material"
+import { Add, Delete } from "@mui/icons-material"
 import { List } from "@mui/material"
 import { ReactElement, ReactNode } from "react"
-import { Mode as Mode } from "./Mode";
+import { Mode } from "./Mode";
 import EditIcon from '@mui/icons-material/Edit';
 import { DeleteItemDialog } from "../dialogs/DeleteDialog"
 import { Link } from "react-router-dom"
 import { Action, BaseCard, BaseCardProps } from "./BaseCard"
+import { t } from "i18next";
 
 
 export interface ResourceCardProps<T> extends BaseCardProps<T> {
@@ -18,8 +19,8 @@ export interface ResourceCardProps<T> extends BaseCardProps<T> {
 
 export function ResourceCard(props: ResourceCardProps<any>) {
     const actions: Action[] = [
-        { title: "Edit", icon: <EditIcon />, mode: Mode.EDIT },
-        { title: "Delete", icon: <Delete />, mode: Mode.DELETE },
+        { title: t("Edit"), icon: <EditIcon />, mode: Mode.EDIT },
+        { title: t("Delete"), icon: <Delete />, mode: Mode.DELETE },
     ]
     const { mode, onModeChange, resource } = props
 
@@ -29,7 +30,7 @@ export function ResourceCard(props: ResourceCardProps<any>) {
             <BaseCard actions={actions} {...props} />
 
             {props.deleteDialog ?? <DeleteItemDialog
-                item={props.resource}
+                item={resource}
                 open={mode === Mode.DELETE}
                 onClose={function (): void {
                     onModeChange && onModeChange(Mode.NORMAL)
@@ -54,7 +55,7 @@ export interface ResourcesCardProps<T> extends Omit<BaseCardProps<T>, "resource"
 export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
 
     const actions: Action[] = [
-        { title: "Add", icon: <Add />, mode: Mode.ADD },
+        { title: t("Add"), icon: <Add />, mode: Mode.ADD },
     ]
     const { renderItem, resources, extractPath, extractKey } = props
 

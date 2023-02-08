@@ -1,19 +1,13 @@
-import { Card, CardHeader, CardContent, List, ListItemButton, ListItem, ListItemText, IconButton, Tooltip, Collapse, Typography, CardActionArea, LinearProgress } from "@mui/material";
+import { ListItemButton, ListItem, ListItemText, Typography } from "@mui/material";
 import { Announcement } from "../../models/types";
-import ReplayIcon from '@mui/icons-material/Replay';
-import { Add, Delete, Refresh } from "@mui/icons-material";
-import { Action } from "../input/actions/Action";
 import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";
 import { AnnouncementForm } from "../forms/announcement";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Mode } from "./Mode";
-import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation, useGetAnnouncementQuery } from "../../feature/stakit/announcementSlice";
+import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/stakit/announcementSlice";
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
-import { Can } from "@casl/react";
-import { UserContext } from "../../feature/authentication/logic/FetchUser";
-import { Operation } from "../../feature/authentication/config/ability";
-import { Link } from "react-router-dom";
 import { ResourceCard, ResourceCardProps, ResourcesCard } from "./ResourceCard";
+import { t } from "i18next";
 
 
 interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
@@ -65,18 +59,15 @@ interface AnnouncementsCardProps {
 }
 
 AnnouncementsCard.defaultProps = {
-    title: "Announcements",
-    subTitle: "A list of the latest announcenements",
+    header: t("Announcements"),
+    subHeader: t("A list of the latest announcenements"),
 }
 
 export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
-    const { title, subTitle } = props
-
     const { isLoading, data, refetch } = useGetAllAnnouncementsQuery(undefined)
     const create = useCreateAnnouncementMutation()
-    const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
-
+    
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     const reload = () => { refetch(); console.log("reloading") }
@@ -118,8 +109,6 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
             onRefresh={() => reload()}
             isLoading={isLoading}
             mode={mode}
-            header={"Announcements"}
-            subHeader={"A list of the latest announcenements"}
             onModeChange={(x) => setMode(x)}
             resources={data!}
             renderForm={() => <AnnouncementForm
@@ -133,6 +122,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
             renderItem={(item) => <Item announcement={item}></Item>}
             extractKey={(announcement: Announcement, index) => "announcement_" + index}
             extractPath={(announcement) => "/announcements/" + announcement.uuid}
+            {...props}
         />
     )
 }

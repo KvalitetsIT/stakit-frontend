@@ -1,5 +1,6 @@
 
 import { List } from "@mui/material"
+import { t } from "i18next"
 import { useState } from "react"
 import { useLocation } from "react-router-dom"
 import { useCreateGroupMutation, useDeleteGroupMutation, useGetAllGroupsQuery, useGetServicesByGroupQuery, usePatchServicesOfGroupMutation, usePutGroupMutation } from "../../feature/stakit/groupsSlice"
@@ -95,8 +96,8 @@ export function GroupCard(props: GroupCardProps) {
 interface GroupsCardProps extends Omit<ResourceCardProps<Group>, "resource"> { }
 
 GroupsCard.defaultProps = {
-    header: "Groups",
-    subHeader: "A list of the latest groups",
+    header: t("Groups"),
+    subHeader: t("A list of all groups"),
 }
 
 export function GroupsCard(props: GroupsCardProps) {

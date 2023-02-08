@@ -1,17 +1,15 @@
-import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Grid, ListItemIcon, ListItemAvatar, Avatar } from "@mui/material";
-import { ReactNode, useContext, useState } from "react";
+import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, ListItemAvatar } from "@mui/material";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Service } from "../models/types";
 import { Header } from "../pages/services/details";
-import { StatusAvatar, StatusIcon } from "./status";
-
+import { StatusAvatar } from "./status";
 import EditIcon from '@mui/icons-material/Edit';
-import { useDeleteServiceMutation, useGetAllServicesQuery } from "../feature/stakit/serviceSlice";
-import { DeleteServiceDialog } from "./dialogs/DeleteDialog";
 import { Can } from "@casl/react";
 import { Operation, Asset } from "../feature/authentication/config/ability";
 import { UserContext } from "../feature/authentication/logic/FetchUser";
 import { useKeycloak } from "@react-keycloak/web";
+import { t } from "i18next";
 
 
 export enum Modes {
@@ -26,9 +24,9 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
     const Actions = () => (
         <>
             <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.RESOURCE}>
-                <Tooltip title={"Edit"}>
+                <Tooltip title={<>{t("Edit")}</>}>
                     <Link to={"/services/" + props.service.uuid} state={{ mode: Modes.EDIT }} >
-                        <IconButton edge="end" aria-label="Edit">
+                        <IconButton edge="end">
                             <EditIcon />
                         </IconButton>
                     </Link>

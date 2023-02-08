@@ -1,9 +1,8 @@
-import { FormControl, Stack, Button, CircularProgress } from "@mui/material";
+import { FormControl, Stack, Button } from "@mui/material";
 import { Formik, Form } from "formik";
 import { Service } from "../../models/types";
 import * as yup from 'yup';
 import { ValidatedTextField } from "../input/validatedTextField";
-import { useState } from "react";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { FormProps } from "./subscribe";
 import { Group } from "../../models/group";
@@ -22,9 +21,9 @@ export function GroupForm(props: GroupFormProps) {
 
     const validationSchema = yup.object().shape({
         group: yup.object().shape({
-            name: yup.string().required(t("Name is required")),
-            display_order: yup.string().required(t("Display-order is required")),
-            description: yup.string().required(t("Description is required"))
+            name: yup.string().required(t("Name") +" "+ t("is required")),
+            display_order: yup.string().required(t("Display-order") +" "+ t("is required")),
+            description: yup.string().required(t("Description") +" "+ t("is required"))
         })
     })
 
@@ -72,7 +71,7 @@ export function GroupForm(props: GroupFormProps) {
                             <ValidatedAutoComplete
                                 multiple
                                 id="tags-standard"
-                                label="Services"
+                                label={t("Services")}
                                 name="group.services"
                                 options={services ?? []}
                                 onChange={(e, selected) => { setFieldValue("group.services", selected) }}

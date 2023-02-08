@@ -1,6 +1,4 @@
 
-import { useTab } from "@mui/base";
-import getEnvironment from "../../../config/env";
 import { Role, User } from "../../../models/User";
 import { getRoleFromStringArray, JWTToken } from "./FetchUser";
 
@@ -25,20 +23,9 @@ export default class UserFactory {
         return user
     }
 
-
-
-
-
     createGuestUser(): User {
         const user = new User();
-/* 
-        if (getEnvironment().REACT_APP_NODE_ENV === "dev") {
-            user.name = "Jens Jensen";
-            user.roles.push(Role.UNKNOWN)
-            return user;
-        }
- */
-        user.name = "";
+        user.name = "Guest";
         user.roles.push(Role.UNKNOWN)
         return user;
     }

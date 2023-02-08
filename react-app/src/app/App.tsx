@@ -18,8 +18,7 @@ import { User } from '../models/User';
 import { GetJWTToken, UserContext } from '../feature/authentication/logic/FetchUser';
 import UserFactory from '../feature/authentication/logic/UserFactory';
 import { AnnouncementsPage, DetailedAnnouncementPage } from '../pages/announcements/announcements';
-import { Typography } from '@mui/material';
-import { ReactKeycloakProvider, useKeycloak } from '@react-keycloak/web';
+import { useKeycloak } from '@react-keycloak/web';
 import getEnvironment from '../config/env';
 import { AbilityContext } from '../feature/authentication/logic/Can';
 import PrivateRoute from '../components/PrivateRoute';
@@ -42,7 +41,8 @@ export default function App() {
                setUser(userFactory.createUserFromJWT(jwt!))
                // getUserRolesLazyTrigger();
            }
-       }, [keycloak.initialized])
+       }, [keycloak.initialized, keycloak.keycloak])
+
        let timeInterval = setInterval(() => {
            let lastAcivity = localStorage.getItem('lastActvity')
            const maxInactivity = parseInt(getEnvironment().REACT_APP_INACTIVITY_MAX_MINUTES ?? 1)

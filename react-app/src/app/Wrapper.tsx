@@ -4,8 +4,6 @@ import keycloak from '../feature/authentication/Keycloak';
 import { StrictMode } from "react"
 import { Provider } from "react-redux"
 import { theme } from "../config/theme"
-import { AbilityContext } from "../feature/authentication/logic/Can"
-import { UserContext } from "../feature/authentication/logic/FetchUser"
 import store from "../redux/store"
 import App from "./App"
 

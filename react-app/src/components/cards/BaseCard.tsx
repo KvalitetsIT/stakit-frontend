@@ -1,10 +1,10 @@
 import { Replay } from "@mui/icons-material"
-import { CardProps, Card, CardActionArea, LinearProgress, CardHeader, IconButton, Collapse, CardContent, Divider, Tooltip, Typography } from "@mui/material"
-import { ReactElement, ReactNode, useContext } from "react"
+import { Card, CardActionArea, LinearProgress, CardHeader, IconButton, Collapse, CardContent, Divider, Tooltip, Typography } from "@mui/material"
+import { t } from "i18next"
+import { ReactNode, useContext } from "react"
 import { Operation } from "../../feature/authentication/config/ability"
 import { Can } from "../../feature/authentication/logic/Can"
 import { UserContext } from "../../feature/authentication/logic/FetchUser"
-import { StatusAvatar } from "../status"
 import { Mode } from "./Mode"
 
 // TODO: Actions should be a component 
@@ -62,10 +62,10 @@ export function BaseCard<T>(props: BaseCardProps<T>) {
                         {
                             props.onRefresh && (
 
-                                <Tooltip title={"Refresh"}>
+                                <Tooltip title={<>{t("Refresh")}</>}>
                                     <IconButton
                                         disabled={mode !== Mode.NORMAL}
-                                        aria-label={"Refresh"}
+                                        aria-label={t("Refresh")}
                                         onClick={() => props.onRefresh && props.onRefresh()}
                                     >
                                         <Replay></Replay>

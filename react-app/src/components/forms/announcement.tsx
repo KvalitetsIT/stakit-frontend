@@ -1,10 +1,18 @@
-import { FormControl, Stack, Button, CircularProgress, TextField } from "@mui/material"
-import { Formik, Form } from "formik"
-import { t } from "i18next"
-import { ValidatedTextField } from "../input/validatedTextField"
+import { FormControl, Stack, Button, CircularProgress, Box } from "@mui/material";
+import { Formik, Form } from "formik";
+import { t } from "i18next";
+import { ValidatedTextField } from "../input/validatedTextField";
 import * as yup from 'yup';
-import { Announcement } from "../../models/types"
-import { FormProps } from "./subscribe"
+import { Announcement } from "../../models/types";
+import { FormProps } from "./subscribe";
+import { ValidatedDateTimePicker } from "../input/validatedDateTimePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import 'dayjs/locale/fr';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/de';
+import 'dayjs/locale/ar-sa';
+import 'dayjs/locale/da';
 
 interface AnnouncementFormProps extends FormProps<Announcement> {
     announcement?: Announcement
@@ -15,18 +23,18 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
 
     const validationSchema = yup.object().shape({
         announcement: yup.object().shape({
-            subject: yup.string().required(t("subject is required")),
-            message: yup.string().required(t("message is required")),
-            from_datetime: yup.date().required(t("from is required")),
-            to_datetime: yup.date().required(t("to is required")),
+            subject: yup.string().required(t("Subject") +" "+ t("is required")),
+            message: yup.string().required(t("Message") +" "+ t("is required")),
+            from_datetime: yup.date().required(t("From") +" "+ t("is required")),
+            to_datetime: yup.date().required(t("To") +" "+ t("is required")),
         }),
     })
 
     const defaultValues: Announcement = {
         message: "",
         subject: "",
-        from_datetime: new Date(),
-        to_datetime: new Date(),
+        from_datetime: undefined,
+        to_datetime: undefined,
     }
 
     if (props.isLoading) return (<></>)
@@ -42,13 +50,13 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                 enableReinitialize
 
             >
-                {({ errors, touched, values, handleChange }) => (
+                {({ errors, touched, values, handleChange, setFieldValue }) => (
                     <Form>
                         <Stack spacing={2}>
                             <ValidatedTextField
                                 type={"text"}
                                 error={errors.announcement?.subject && touched.announcement?.subject ? errors.announcement.subject : undefined}
-                                label="Subject"
+                                label={t("Subject")}
                                 name="announcement.subject"
                                 value={values.announcement?.subject}
                                 onChange={handleChange}
@@ -59,35 +67,35 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                 multiline
                                 rows={3}
                                 error={errors.announcement?.message && touched.announcement?.message ? errors.announcement.message : undefined}
-                                label="Message"
+                                label={t("Message")}
                                 name="announcement.message"
                                 value={values.announcement?.message}
                                 onChange={handleChange}
                             />
 
+
                             <Stack spacing={2} direction={"row"}>
-
-
-                                <ValidatedTextField
-                                    type={"datetime-local"}
-                                    error={errors.announcement?.from_datetime && touched.announcement?.from_datetime ? errors.announcement.from_datetime : undefined}
-                                    label="From"
-                                    name="announcement.from_datetime"
-                                    value={values.announcement?.from_datetime}
-                                    onChange={handleChange}
-                                />
-
-                                <ValidatedTextField
-                                    type={"datetime-local"}
-                                    error={errors.announcement?.to_datetime && touched.announcement?.to_datetime ? errors.announcement.to_datetime : undefined}
-                                    label="To"
-                                    name="announcement.to_datetime"
-                                    value={values.announcement?.to_datetime}
-                                    onChange={handleChange}
-                                />
-
+                                    <ValidatedDateTimePicker
+                                        error={errors.announcement?.from_datetime && touched.announcement?.from_datetime ? errors.announcement.from_datetime : undefined}
+                                        label={t("From")}
+                                        name="announcement.from_datetime"
+                                        onChange={(newValue) => {
+                                            setFieldValue("announcement.from_datetime", newValue);
+                                        }}
+                                        value={values.announcement.from_datetime}
+                                    />
+                                    <ValidatedDateTimePicker
+                                        error={errors.announcement?.to_datetime && touched.announcement?.to_datetime ? errors.announcement.to_datetime : undefined}
+                                        label={t("To")}
+                                        name="announcement.to_datetime"
+                                        onChange={(newValue) => {
+                                            setFieldValue("announcement.to_datetime", newValue);
+                                        }}
+                                        value={values.announcement.to_datetime}
+                                    />
 
                             </Stack>
+
                             <Stack spacing={2} direction={"row"}>
                                 <Button
                                     type={"submit"}
@@ -98,7 +106,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                     {props.loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("Submit")}</>}
                                 </Button>
 
-                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">Cancel</Button>
+                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{t("Cancel")+""}</Button>
                             </Stack>
                         </Stack>
                     </Form>

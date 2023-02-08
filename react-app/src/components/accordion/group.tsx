@@ -1,22 +1,17 @@
-import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Stack, Divider, Chip, Box, IconButton, Avatar, Icon, Tooltip, AccordionActions } from "@mui/material";
+import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Stack, Divider, Chip, Box, IconButton, Icon, Tooltip, AccordionActions } from "@mui/material";
 import { Service, Status } from "../../models/types";
 import { Modes, ServiceItem } from "../service";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { Group } from "../../models/group";
-import { Edit, QuestionMarkOutlined } from "@mui/icons-material";
-import { server } from "typescript";
-import { useGetAllServicesQuery, useGetServiceQuery } from "../../feature/stakit/serviceSlice";
-import { StatusAvatar, StatusIcon, useGetColorByStatus, useGetColorTagByStatus } from "../status";
+import { Edit } from "@mui/icons-material";
+import { StatusIcon, useGetColorTagByStatus } from "../status";
 import { Link } from "react-router-dom";
 
 import { useContext } from "react";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import { Can } from "../../feature/authentication/logic/Can";
 import { Operation } from "../../feature/authentication/config/ability";
-import { group } from "console";
-import { Serializable } from "child_process";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { t } from "i18next";
 
 
 export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group, key?: string }) {
@@ -27,7 +22,7 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
     const serviceWhichAreOk: number = services.filter((service: Service) => service.status === Status.OK).length
 
     const getStatusOfGroup = () => {
-        return services.length == 0 ? Status.UKNOWN : services.every((service: Service) => service.status === Status.OK) ? Status.OK : Status.NOT_OK
+        return services.length === 0 ? Status.UKNOWN : services.every((service: Service) => service.status === Status.OK) ? Status.OK : Status.NOT_OK
     }
 
     const user = useContext(UserContext)!
@@ -65,9 +60,9 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
                 </Stack>
                 <AccordionActions>
                     <Can ability={user.getAbility()} I={Operation.MANAGE} a="resource">
-                        <Tooltip title={"Edit"}>
+                        <Tooltip title={<>{t("Edit")}</>}>
                             <Link to={"/groups/" + props.group?.uuid} state={{ mode: Modes.EDIT }} >
-                                <IconButton edge="end" aria-label="Edit" sx={{ marginRight: 1, marginLeft: 2 }}/* onClick={(e) => { setMode(Modes.EDIT) }} */>
+                                <IconButton edge="end" sx={{ marginRight: 1, marginLeft: 2 }}/* onClick={(e) => { setMode(Modes.EDIT) }} */>
                                     <Edit />
                                 </IconButton>
                             </Link>

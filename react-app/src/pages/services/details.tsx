@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Service } from "../../models/types";
 import { useGetServiceQuery } from "../../feature/stakit/serviceSlice";
 import { ServiceCard } from "../../components/cards/Services";
-import { useMemo } from "react";
+import { t } from "i18next";
 
 
 export function ServiceDetails() {
@@ -72,7 +72,7 @@ function HistorySection() {
 
     return (
         <Card sx={{ marginTop: 2 }}>
-            <CardHeader title={"History"} subheader={<Typography>The chart below shows the status corrosponding to the last 90 days</Typography>}>
+            <CardHeader title={<>{t("History")}</>} subheader={<Typography>{t("The chart below shows the status corrosponding to the last 90 days")+""}</Typography>}>
             </CardHeader>
             <CardContent>
                 <History days={days.map(day => ({ date: new Date(), percentage: day }))}></History>
@@ -106,7 +106,7 @@ export function History(props: { days: Day[]}) {
                     width={12}
                     height={25}
                     fillOpacity={isMouseOver ? 0.5 : props.percentage / 100}
-                    fill={isMouseOver ? "#122A4C" : GREEN}
+                    fill={isMouseOver ? BLUE : GREEN}
                 >
                     <rect x={1} rx="4" ry="4" width={8} height={25} fill="inherit" />
                 </svg>

@@ -7,7 +7,7 @@ export class ApiError {
     timestamp?: Date
 
     static IsApiError(obj: any): boolean {
-        if (obj == undefined)
+        if (obj === undefined)
             return false
 
         let isApiError = true;

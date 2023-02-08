@@ -1,16 +1,13 @@
 import { FormControl, Stack, Button } from "@mui/material";
-
-import { Formik, Form, useFormik } from "formik";
+import { Formik, Form } from "formik";
 import { Service } from "../../models/types";
 import * as yup from 'yup';
 import { ValidatedTextField } from "../input/validatedTextField";
 import { FormProps } from "./subscribe";
 import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
 import { Group } from "../../models/group";
-import { useGetAllGroupsQuery, useGetGroupQuery } from "../../feature/stakit/groupsSlice";
+import { useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
 import { t } from "i18next";
-import { Loading } from "../feedback/loading";
-import { group } from "console";
 
 interface ServiceFormProps extends FormProps<Service> {
     service?: Service
@@ -29,9 +26,9 @@ export function ServiceForm(props: ServiceFormProps) {
 
     const validationSchema = yup.object().shape({
         service: yup.object().shape({
-            service_identifier: yup.string().required(),
-            name: yup.string().required(),
-            description: yup.string().required(),
+            service_identifier: yup.string().required(t("Identifier")+" "+t("is required")),
+            name: yup.string().required(t("Name")+" "+t("is required")),
+            description: yup.string().required(t("Description")+" "+t("is required")),
 
         })
     })
@@ -69,13 +66,13 @@ export function ServiceForm(props: ServiceFormProps) {
                                 <Stack direction={"row"} spacing={2}>
                                     <ValidatedTextField
                                         name="service.service_identifier"
-                                        label={"Identifier"}
+                                        label={t("Identifier")}
                                         value={values.service.service_identifier}
                                         error={touched.service?.service_identifier && errors.service?.service_identifier ? errors.service?.service_identifier : undefined}
                                     />
                                     <ValidatedTextField
                                         name="service.name"
-                                        label={"Name"}
+                                        label={t("Name")}
                                         value={values.service.name}
                                         error={touched.service?.name && errors.service?.name ? errors.service?.name : undefined}
                                     />
@@ -89,7 +86,6 @@ export function ServiceForm(props: ServiceFormProps) {
                                     getOptionLabel={(option: Group) => option.name ?? ""}
                                     value={values.service.group}
                                     onChange={(e, selected) => {
-                                        const uuid = (selected as unknown as { id: string }).id
                                         setFieldValue("service.group", selected)
                                     }}
                                     defaultValue={initialValues.service.group}
@@ -100,7 +96,7 @@ export function ServiceForm(props: ServiceFormProps) {
 
                                 <ValidatedTextField
                                     name="service.description"
-                                    label={"Description"}
+                                    label={t("Description")}
                                     multiline
                                     rows={3}
                                     value={values.service.description}
@@ -112,8 +108,8 @@ export function ServiceForm(props: ServiceFormProps) {
                                         type={"submit"}
                                         variant="contained"
                                         fullWidth={true}
-                                    >Gem</Button>
-                                    <Button fullWidth={true} onClick={props.onCancel} variant="outlined">Cancel</Button>
+                                    >{t("Save")+""}</Button>
+                                    <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{t("Cancel")+""}</Button>
                                 </Stack>
                             </Stack>
                         </Form>
