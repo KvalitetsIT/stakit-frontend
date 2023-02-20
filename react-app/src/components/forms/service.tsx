@@ -1,113 +1,123 @@
-import { FormControl, Stack, Button, CircularProgress } from "@mui/material"
-
-import { Formik, Form } from "formik"
-import { Group, Service } from "../../models/types"
+import { FormControl, Stack, Button } from "@mui/material";
+import { Formik, Form } from "formik";
+import { Service } from "../../models/types";
 import * as yup from 'yup';
 import { ValidatedTextField } from "../input/validatedTextField";
-import { useState } from "react";
 import { FormProps } from "./subscribe";
-import { toast } from "react-toastify";
+import { ValidatedAutoComplete } from "../input/validatedAutocomplete";
+import { Group } from "../../models/group";
+import { useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
 import { t } from "i18next";
 
 interface ServiceFormProps extends FormProps<Service> {
-    service?: Service,
-    optionalGroups: Group[],
-
+    service?: Service
 }
+
 
 export function ServiceForm(props: ServiceFormProps) {
 
+    const { isLoading, data } = useGetAllGroupsQuery(undefined) ?? []
+
+    const groups = data ?? []
+
+    let service: Service | undefined = structuredClone(props.service)
+
+    if (service) service.group = groups.find(group => group.uuid === props.service?.group as string)
 
     const validationSchema = yup.object().shape({
         service: yup.object().shape({
-            name: yup.string().required(),
-            description: yup.string().required(),
-            group: yup.array().min(1)
+            service_identifier: yup.string().required(t("Identifier")+" "+t("is required")),
+            name: yup.string().required(t("Name")+" "+t("is required")),
+            description: yup.string().required(t("Description")+" "+t("is required")),
+
         })
     })
 
-    const [loading, setLoading] = useState<boolean>(false)
+    const defaultGroup = groups && groups.find(group => group.name === "Default")
 
+
+    const defaultValues: Service = {
+        service_identifier: "",
+        name: "",
+        description: "",
+        group: defaultGroup,
+        ignore_service_name: false
+    }
+
+    if (props.isLoading || isLoading) return (<></>)
+    
     const initialValues = {
-        service: props.service ?? {
-            name: "",
-            description: "",
-            group: undefined
-
-        }
+        service: service ?? defaultValues
     }
 
     return (
-        <FormControl fullWidth>
 
+        <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => {
+                onSubmit={(values) => { props.onSubmit(values.service) }}
+                validationSchema={validationSchema}
+                enableReinitialize
+            >
+                {({ errors, touched, values, setFieldValue }) => {
+                    return (
+                        <Form>
+                            <Stack spacing={2}>
+                                <Stack direction={"row"} spacing={2}>
+                                    <ValidatedTextField
+                                        name="service.service_identifier"
+                                        label={t("Identifier")}
+                                        value={values.service.service_identifier}
+                                        error={touched.service?.service_identifier && errors.service?.service_identifier ? errors.service?.service_identifier : undefined}
+                                    />
+                                    <ValidatedTextField
+                                        name="service.name"
+                                        label={t("Name")}
+                                        value={values.service.name}
+                                        error={touched.service?.name && errors.service?.name ? errors.service?.name : undefined}
+                                    />
+                                </Stack>
 
-                    toast.promise(
-                        async () => {
-                            await props.onSubmit(values.service)
-                        },
-                        {
-                            pending: t('processing subscription'),
-                            success: t(" successfully subscribed"),
-                            error: t('subscription rejected')
-                        }
+                                <ValidatedAutoComplete
+                                    loading={isLoading}
+                                    options={groups}
+                                    name={"service.group"}
+                                    label={t("Group")}
+                                    getOptionLabel={(option: Group) => option.name ?? ""}
+                                    value={values.service.group}
+                                    onChange={(e, selected) => {
+                                        setFieldValue("service.group", selected)
+                                    }}
+                                    defaultValue={initialValues.service.group}
+                                    noOptionsText={"" + t("Non available groups")}
+                                    error={touched.service?.group && errors.service?.group ? errors.service?.group : undefined}
+                                //isOptionEqualToValue={(option, value) => option.uuid == value.uuid}
+                                />
+
+                                <ValidatedTextField
+                                    name="service.description"
+                                    label={t("Description")}
+                                    multiline
+                                    rows={3}
+                                    value={values.service.description}
+                                    error={touched.service?.description && errors.service?.description ? errors.service?.description : undefined}
+                                />
+
+                                <Stack spacing={2} direction={"row"}>
+                                    <Button
+                                        type={"submit"}
+                                        variant="contained"
+                                        fullWidth={true}
+                                    >{t("Save")+""}</Button>
+                                    <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{t("Cancel")+""}</Button>
+                                </Stack>
+                            </Stack>
+                        </Form>
                     )
                 }}
-                validationSchema={validationSchema}
-            >
-                {({ errors, touched, values, setFieldValue }) => (
-                    <Form>
-                        <Stack spacing={2}>
-                            <ValidatedTextField
-                                name="service.name"
-                                label={"Name"}
-                                value={values.service.name}
-                                error={touched.service?.name && errors.service?.name ? errors.service?.name : undefined}
-                            />
-
-                            {/* <ValidatedSelect
-                                name="service.groups"
-                                label="Groups"
-                                multiple
-                                error={errors.service?.group && touched.service?.group ? errors.service?.group : undefined}
-                            >
-                                {props.optionalGroups.map(group => (
-                                    <MenuItem value={group.id}>{group.name}</MenuItem>
-                                ))}
-                            </ValidatedSelect> */}
-
-                            <ValidatedTextField
-                                name="service.description"
-                                label={"Description"}
-                                multiline
-                                rows={3}
-                                value={values.service.description}
-                                error={touched.service?.description && errors.service?.description ? errors.service?.description : undefined}
-                            />
-
-                            <Stack spacing={2} direction={"row"}>
-                                <Button
-                                    type={"submit"}
-                                    variant="contained"
-                                    fullWidth={true}
-                                >
-                                    {loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : "Gem"}
-                                </Button>
-
-                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">Cancel</Button>
-
-                            </Stack>
-                        </Stack>
-                    </Form>
-                )}
 
             </Formik>
         </FormControl >
-    )
-}
 
-ServiceForm.defaultProps = {
-    group: {}
+    )
 }

@@ -1,4 +1,4 @@
-import { CircularProgress, Divider, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ApiError } from "../models/API/Error";
 import {
@@ -10,7 +10,7 @@ interface ToastErrorProps {
     toastErrorText?: string
 }
 export default function ToastError(props: ToastErrorProps) {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
 
     const error = props.error;
     const statusText = error.status ? getReasonPhrase(error.status) : "No status";

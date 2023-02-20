@@ -1,4 +1,9 @@
 import { ReactNode } from "react"
+import { Group } from "./group"
+
+export class Resource {
+    uuid?: string
+}
 
 export interface Credentials {
     email: string,
@@ -18,25 +23,24 @@ export enum Gender {
     male, female, other
 }
 
-export interface Service {
-    id?: number,
-    name: string,
+export class Service extends Resource {
+    service_identifier: string
+    name: string
     status?: Status
+    ignore_service_name: boolean
     description?: string
-    group?: Group
-}
+    group?: string | Group
 
-export interface Group {
-    id: number,
-    name: string,
-    description: string,
-    status: Status
-    services: Service[]
+    constructor(service_identifier: string, name: string, ignore_service_name: boolean){
+        super()
+        this.service_identifier=service_identifier
+        this.name=name
+        this.ignore_service_name=ignore_service_name   
+    }
 }
-
 
 export enum Status {
-    UP, DOWN, UKNOWN
+    OK = "OK", NOT_OK = "NOT_OK", UKNOWN = "UKNOWN"
 }
 
 export interface Action {
@@ -47,14 +51,13 @@ export interface Action {
 
 export interface Subscription {
     email?: string,
-    groups?: Group[]
+    groups?: string[],
+    announcements?: boolean
 }
 
-
-
-export interface Announcement {
-    id?: number
-    from?: Date,
-    to?: Date,
-    content: string
+export class Announcement extends Resource {
+    from_datetime?: Date
+    to_datetime?: Date
+    message?: string
+    subject?: string
 }

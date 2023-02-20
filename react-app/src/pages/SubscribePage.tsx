@@ -1,53 +1,49 @@
 import { Container, Typography } from "@mui/material";
-import { wait } from "@testing-library/user-event/dist/utils";
-import { t } from "i18next";
-import { toast } from "react-toastify";
+import { useState } from "react";
 import { SubscriptionForm } from "../components/forms/subscribe";
 import { CenteredContent } from "../components/layout/CenteredContent";
-import { mock } from "../MockedData";
-import { Group, Subscription } from "../models/types";
+import { useCreateSubscriptionMutation, useGetStatusOfGroupsQuery } from "../feature/stakit/publicSlice";
+import { Subscription } from "../models/types";
+import { Mode } from "../components/cards/Mode";
+import { t } from "i18next";
 
 export function SubscribePage() {
 
-    const onSubscribtion = (subscription: Subscription) => {
+    const request = useCreateSubscriptionMutation()[0]
 
-        toast.promise(
-            async () => {
-                await wait(1000) // Do something
-            },
-            {
-                pending: t('processing subscription'),
-                success: subscription.email + t(" successfully subscribed"),
-                error: t('subscription rejected')
-            }
-        )
+    const [mode, setMode] = useState<Mode>(Mode.NORMAL)
+
+    const onSubscribtion = (subscription: Subscription) => {
+        request(subscription)
     }
 
+    const { isLoading: isStatusOfGroupsQueryLoading, data: groups } = useGetStatusOfGroupsQuery(undefined) ?? []
 
-
-    const groups: Group[] = mock.groups
-
-
-    return (
-        <>
+    switch (mode) {
+        case Mode.SUCCESS: return (
             <CenteredContent>
                 <Container maxWidth="sm">
-                    <Typography variant="h3" textAlign={"center"}>Subscribe</Typography>
-                    <Typography variant="h6">Fill out the form below in order to get notified</Typography>
-
-
+                    <Typography variant="h3" textAlign={"center"}>{t("Success")+""}</Typography>
+                    <Typography variant="h6">{t("Check your email. You should recieve a confirmation")+""}</Typography>
+                </Container>
+            </CenteredContent>
+        )
+        default: return (
+            <CenteredContent>
+                <Container maxWidth="sm">
+                    <Typography variant="h3" textAlign={"center"}>{t("Subscribe")+""}</Typography>
+                    <Typography variant="h6" marginBottom={2}>{t("Fill out the form below in order to get notified")+""}</Typography>
                     <SubscriptionForm
                         optionalGroups={groups}
                         onSubmit={async (subscription) => onSubscribtion(subscription)}
                         onCancel={() => window.history.go(-1)}
                     ></SubscriptionForm>
                 </Container>
-
-
-
             </CenteredContent>
-        </>
-    )
+        )
+    }
+
+
 
 }
 

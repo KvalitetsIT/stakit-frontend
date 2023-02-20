@@ -1,31 +1,41 @@
 import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, Drawer, Toolbar } from "@mui/material"
-import { ReactNode, ReactElement } from "react"
-import { Link } from "react-router-dom"
-import { theme } from "../../theme"
+import { ReactNode, ReactElement, useState } from "react"
+import { Link, NavLink } from "react-router-dom"
+import { theme } from "../../config/theme"
 
 export function SidebarSection(props: { hideDivider?: boolean, title?: string | ReactNode, children: ReactElement<typeof SidebarItem> | ReactElement<typeof SidebarItem>[] }) {
     return (
         <>
             {props.hideDivider ? <></> : <Divider textAlign={"left"} flexItem={true} color={theme.palette.primary.contrastText}>{props.title}</Divider>}
-            <List>
+            <List sx={{paddingTop: 0}}>
                 {props.children}
             </List>
         </>
     )
 }
 
-export function SidebarItem(props: { title: string, icon: ReactNode, href: string, active?: boolean }) {
+export function SidebarItem(props: { title: string, icon: ReactNode, href: string }) {
+
+    const [isActive, setIsActive] = useState(false)
+
     return (
-        <Link to={props.href} style={{ textDecoration: "none", color: "inherit" }}>
-            <ListItem key={props.title} disablePadding>
-                <ListItemButton selected={props.active} >
+        <NavLink to={props.href} style={({ isActive }) => { setIsActive(isActive); return ({ textDecoration: "none", color: "inherit" }) }}>
+            <ListItem
+                key={props.title}
+                disablePadding
+                sx={{
+                    borderLeft: 3,
+                    borderColor: isActive ? theme.palette.secondary.main : theme.palette.primary.main,
+                    backgroundColor: isActive ? theme.palette.primary.light : theme.palette.primary.main
+                }} >
+                <ListItemButton selected={isActive} >
                     <ListItemIcon sx={{ color: "inherit" }}>
                         {props.icon}
                     </ListItemIcon>
                     <ListItemText primary={props.title} />
                 </ListItemButton>
             </ListItem>
-        </Link>
+        </NavLink>
     )
 }
 
@@ -35,13 +45,14 @@ interface ResponsiveDrawerProps {
     width?: number | string
     mobileOpen?: boolean
     setMobileOpen?: (open: boolean) => void
+    disabled?: boolean
 }
 
 export function Sidebar(props: ResponsiveDrawerProps) {
 
     const width = props.width ?? 300
 
-    const { mobileOpen, setMobileOpen } = props
+    const { mobileOpen, setMobileOpen, disabled } = props
 
     const drawerContent = (
         <div>
@@ -50,6 +61,10 @@ export function Sidebar(props: ResponsiveDrawerProps) {
     );
 
     const handleDrawerToggle = () => setMobileOpen ? setMobileOpen(!mobileOpen ?? false) : {};
+
+    const paperProps = { sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width } }
+
+    if(disabled) return <></>
 
     return (
 
@@ -70,7 +85,7 @@ export function Sidebar(props: ResponsiveDrawerProps) {
                 sx={{
                     display: { xs: 'block', md: 'none' }
                 }}
-                PaperProps={{ sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width } }}
+                PaperProps={{ sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width} }}
             >
                 <Toolbar />
                 {drawerContent}
@@ -82,7 +97,7 @@ export function Sidebar(props: ResponsiveDrawerProps) {
                 sx={{
                     display: { xs: 'none', md: 'block' }
                 }}
-                PaperProps={{ sx: { color: 'primary.contrastText', background: theme.palette.primary.main, boxSizing: 'border-box', width: width } }}
+                PaperProps={paperProps}
                 open
             >
                 <Toolbar><Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>{props.logo}</Link></Toolbar>

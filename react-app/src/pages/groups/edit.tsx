@@ -1,14 +1,23 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
 import { Container } from "@mui/system";
 import { useParams } from "react-router-dom";
-import { EditGroupForm } from "../../components/forms/group";
-import { mock } from "../../MockedData";
-import { Group } from "../../models/types";
+import { GroupForm } from "../../components/forms/group";
+import { useGetGroupQuery, usePutGroupMutation } from "../../feature/stakit/groupsSlice";
+import { Group } from "../../models/group";
+
 
 export function EditGroup() {
 
-    const params = useParams();
-    const group: Group | undefined = mock.groups.find(group => group.id === parseInt(params.id!))
+    const id = useParams().id;
+
+    const {data, isError} = useGetGroupQuery(id!) // <-- might be undefined or wrong 
+
+    // if(idIsMissing || idNotExisting) go back.. or redirect to "/groups"
+
+    const group: Group | undefined =  data
+
+
+    const updateGroup = usePutGroupMutation()[0]
 
     return (
 
@@ -16,10 +25,10 @@ export function EditGroup() {
             <Card>
                 <CardHeader title={group?.name} />
                 <CardContent>
-                    <EditGroupForm
+                    <GroupForm
                         group={group}
-                        onSubmit={(group) => {
-                            console.log("group", group)
+                        onSubmit={async (group) => {
+                            updateGroup(group)
                         }}
                         onCancel={() => { window.history.go(-1) }}
                     />

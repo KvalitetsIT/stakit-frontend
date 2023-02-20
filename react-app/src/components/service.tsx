@@ -1,79 +1,73 @@
-import { Delete } from "@mui/icons-material";
-import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, Avatar, ListItemAvatar, Grid } from "@mui/material";
-import { useState } from "react";
+import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, ListItemAvatar } from "@mui/material";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Service } from "../models/types";
-import { DeleteServiceDialog, Header } from "../pages/services/details";
-import { StatusIcon } from "./status";
-
+import { Header } from "../pages/services/details";
+import { StatusAvatar } from "./status";
 import EditIcon from '@mui/icons-material/Edit';
+import { Can } from "@casl/react";
+import { Operation, Asset } from "../feature/authentication/config/ability";
+import { UserContext } from "../feature/authentication/logic/FetchUser";
+import { useKeycloak } from "@react-keycloak/web";
+import { t } from "i18next";
 
-export function ServicePreview(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
 
-    enum Modes {
-        NORMAL, DELETE, Edit
-    }
+export enum Modes {
+    NORMAL, DELETE, EDIT
+}
 
-    const [mode, setMode] = useState<Modes>(Modes.NORMAL)
+export function ServiceItem(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
 
-    const resetMode = () => {
-        setMode(Modes.NORMAL)
-    }
-
-    const deleteService = () => {
-        setMode(Modes.NORMAL)
-    }
+    const user = useContext(UserContext)!
+    const keycloak = useKeycloak()
 
     const Actions = () => (
         <>
-            <Grid container>
-                <Grid item xs={6}>
-                    <Tooltip title={"Delete"}>
-                        <IconButton edge="end" aria-label="Delete" onClick={() => setMode(Modes.DELETE)}>
-                            <Delete />
+            <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.RESOURCE}>
+                <Tooltip title={<>{t("Edit")}</>}>
+                    <Link to={"/services/" + props.service.uuid} state={{ mode: Modes.EDIT }} >
+                        <IconButton edge="end">
+                            <EditIcon />
                         </IconButton>
-                    </Tooltip>
-                </Grid>
-                <Grid item xs={6}>
-                    <Tooltip title={"Edit"}>
-                        <Link to={"/services/" + props.service.id + "/edit"}>
-                            <IconButton edge="end" aria-label="Edit" onClick={() => setMode(Modes.Edit)}>
-                                <EditIcon />
-                            </IconButton>
-                        </Link>
-                    </Tooltip>
-                </Grid>
+                    </Link>
+                </Tooltip>
+            </Can>
 
-            </Grid>
         </>
     )
 
+    const authenticated = keycloak.initialized && keycloak.keycloak.authenticated
+
     return (
         <>
-            <ListItem
-                key={"item_" + props.service.id}
-                disablePadding
-                secondaryAction={<Actions />}
-            >
-                <ListItemButton dense>
-                    <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={"/services/" + props.service.id}>
-
-                        <ListItemAvatar>
-                            <Avatar>
-                                <StatusIcon status={props.service.status} ></StatusIcon>
-                            </Avatar>
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            primary={<Header {...props} />}
-                            secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : ".")}
-                        />
-                    </Link>
-
-                </ListItemButton>
-            </ListItem>
-            <DeleteServiceDialog open={mode === Modes.DELETE} service={props.service} onSuccess={deleteService} onClose={resetMode}></DeleteServiceDialog>
+            <ItemWithLink disabled={!authenticated} to={"/services/" + props.service.uuid}>
+                <ListItem
+                    key={"item_" + props.service.uuid}    
+                    secondaryAction={<Actions />}
+                >
+                    <ListItemAvatar>
+                        <StatusAvatar status={props.service.status} />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={<Header {...props} />}
+                        secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : "")}
+                    />
+                </ListItem>
+            </ItemWithLink>
         </>
+    )
+}
 
+export function ItemWithLink(props: { to: string, disabled?: boolean, children: JSX.Element }) {
+
+    if (props.disabled) return props.children
+    return (
+        <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={props.to}>
+            <ListItemButton dense disableGutters disableRipple>
+
+                {props.children}
+
+            </ListItemButton>
+        </Link>
     )
 }
