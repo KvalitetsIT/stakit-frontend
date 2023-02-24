@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { DashboardPage } from '../pages/dashboard/dashboard';
-import { SubscribePage } from '../pages/SubscribePage';
 import Layout from '../components/layout/Layout';
 import { ServiceDetails } from '../pages/services/details';
 import { PageNotFound } from '../pages/404';
@@ -22,6 +21,8 @@ import { useKeycloak } from '@react-keycloak/web';
 import getEnvironment from '../config/env';
 import { AbilityContext } from '../feature/authentication/logic/Can';
 import PrivateRoute from '../components/PrivateRoute';
+import { ConfirmSubscriptionPage } from '../pages/subscription/ConfirmationPage';
+import { SubscribePage } from '../pages/subscription/SubscribePage';
 
 
 
@@ -70,9 +71,14 @@ export default function App() {
                                     {/* <Route path='profile' element={<ProfilePage />} /> */}
                                     {/* <Route path="login" element={<LoginPage />} /> */}
                                     {/* <Route path="register" element={<RegistrationPage />} /> */}
-                                    <Route path="subscribe" element={<SubscribePage />} />
                                 </Route>
-                                
+                                <Route path="/subscribe">
+                                    <Route index element={<SubscribePage />} />
+                                    <Route path=":id" element={<ConfirmSubscriptionPage />} />
+                                </Route>
+
+
+
                                 <Route path="/services">
                                     <Route index element={<PrivateRoute><ServicesPage /></PrivateRoute>} />
                                     <Route path=":id">

@@ -34,14 +34,13 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
                 method: "POST",
                 body: request,
                 responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not create subscription" }),
-                
             }),
             invalidatesTags: ["subscription"]
         }),
         confirmSubscription: builder.query<undefined, string>({
             query: (id) => HandleQuery({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
-                url: `subscribe-confirmed`,
+                url: `subscribe-confirmed/${id}`,
                 method: "GET",
                 responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not confirm subscription" }),
             }),
@@ -52,4 +51,4 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery } = announcementSlice
+export const { useGetAllAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useConfirmSubscriptionQuery } = announcementSlice
