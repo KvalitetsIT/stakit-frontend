@@ -27,7 +27,7 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
             mode={mode}
             onModeChange={(x) => setMode(x)}
             onDelete={(announcement) => remove(announcement)}
-            renderContent={<Typography>{announcement?.message}</Typography>}
+            renderContent={<Typography style={{ whiteSpace: 'pre-line'}}>{announcement?.message}</Typography>}
             renderForm={() => (
                 <AnnouncementForm
                     onSubmit={async (submission: Announcement) => {
@@ -80,7 +80,6 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
         const { announcement } = props
 
-
         return (
             <>
                 <ListItem
@@ -91,7 +90,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                         primary={
                             <>
                                 <Typography fontWeight={"bold"}>{announcement.subject}</Typography>
-                                <Typography>{announcement.message}</Typography>
+                                <Typography style={{ whiteSpace: 'pre-line'}}>{announcement.message}</Typography>
                             </>
                         }
                         secondary={<>

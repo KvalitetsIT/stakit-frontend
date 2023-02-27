@@ -42,7 +42,12 @@ const resources = {
       "Delete": "Slet",
       "Edit": "Rediger",
       "History": "Historik",
-      "The chart below shows the status corrosponding to the last 90 days": "Nedenstående graf viser status over de seneste 90 dage"
+      "The chart below shows the status corrosponding to the last 90 days": "Nedenstående graf viser status over de seneste 90 dage",
+      "Your subscription could unfortunately not be confirmed": "Dit abbonnement blev desværre ikke bekræftet",
+      "Your subscription has been confirmed": "Dit abbonement blev bekræftet",
+      "Success": "Success",
+      "Error": "Fejl" 
+
     }
   }
 };
