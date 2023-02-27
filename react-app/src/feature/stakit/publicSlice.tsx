@@ -40,7 +40,7 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
         confirmSubscription: builder.query<undefined, string>({
             query: (id) => HandleQuery({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
-                url: `subscribe-confirmed/${id}`,
+                url: `subscribe-confirm/${id}`,
                 method: "GET",
                 responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not confirm subscription" }),
             }),
