@@ -30,7 +30,7 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
         createSubscription: builder.mutation<string, Subscription>({
             query: (request) => HandleQuery({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
-                url: `subscribe`,
+                url: `subscriptions`,
                 method: "POST",
                 body: request,
                 responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not create subscription" }),
@@ -46,9 +46,19 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
             }),
             providesTags: ["confirmSubscription"]
         }),
+        unsubscribe: builder.query<undefined, string>({
+            query: (id) => HandleQuery({
+                //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
+                url: `subscriptions/${id}`,
+                method: "DELETE",
+                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not unsubscribe" }),
+            }),
+            providesTags: ["unsubscribe"]
+        }),
+
     })
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useConfirmSubscriptionQuery } = announcementSlice
+export const { useGetAllAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useConfirmSubscriptionQuery, useUnsubscribeQuery } = announcementSlice
