@@ -1,4 +1,4 @@
-import { ListItemButton, ListItem, ListItemText, Typography } from "@mui/material";
+import { ListItemButton, ListItem, ListItemText, Typography, Divider } from "@mui/material";
 import { Announcement } from "../../models/types";
 import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";
 import { AnnouncementForm } from "../forms/announcement";
@@ -70,8 +70,10 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     const create = useCreateAnnouncementMutation()
     const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
-    const reload = () => { refetch(); console.log("reloading") }
+    const reload = () => { refetch() }
     const Actions = () => <></>
+
+
 
     const AnnouncementItem = (props: { announcement: Announcement }) => {
 
@@ -89,7 +91,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     />
 
                 </ListItem>
-
+                
             </>
         )
     }
@@ -99,6 +101,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     return (
         <ResourcesCard
+            divider={<Divider variant={"middle"}/>}
             disableLinks={!authenticated}
             onRefresh={() => reload()}
             isLoading={isLoading}

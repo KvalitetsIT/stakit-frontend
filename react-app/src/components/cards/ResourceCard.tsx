@@ -14,7 +14,7 @@ export interface ResourceCardProps<T> extends BaseCardProps<T> {
     onDelete?: (resource: T) => void
     onUpdate?: (resource: T) => void
     deleteDialog?: ReactElement<typeof DeleteItemDialog>
-    
+
 }
 
 export function ResourceCard(props: ResourceCardProps<any>) {
@@ -52,9 +52,10 @@ export interface ResourcesCardProps<T> extends Omit<BaseCardProps<T>, "resource"
     extractPath?: (resource: T) => string
     actions?: Action[]
     disableLinks?: boolean
+    divider?: JSX.Element
 }
 
-ResourcesCard.defaultProps= {
+ResourcesCard.defaultProps = {
     actions: [
         { title: t("Add"), icon: <Add />, mode: Mode.ADD },
     ]
@@ -62,8 +63,8 @@ ResourcesCard.defaultProps= {
 
 export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
 
-    
-    const { actions, renderItem, resources, extractPath, extractKey, disableLinks} = props
+
+    const { actions, renderItem, resources, extractPath, extractKey, disableLinks } = props
 
     return (
         <BaseCard
@@ -72,7 +73,14 @@ export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
             padding={0}
             renderContent={
                 <List>
-                    {renderItem && resources?.map((resource, index: number) => renderItem(resource))}
+                    {renderItem && resources?.map((resource, index: number) => (
+                        <>
+                            {index > 0 && props.divider}
+                            {renderItem(resource)}
+                        </>
+                    )
+
+                    )}
                 </List>
             }
 
