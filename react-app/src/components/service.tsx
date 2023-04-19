@@ -60,7 +60,7 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
 
 export function ItemWithLink(props: { to: string, disabled?: boolean, children: JSX.Element }) {
 
-    if (props.disabled) return props.children
+    if (props.disabled) return <>{props.children}</>
     return (
         <Link style={{ color: 'inherit', textDecoration: 'inherit' }} to={props.to}>
             <ListItemButton dense disableGutters disableRipple>

@@ -2,12 +2,13 @@ import { Typography, Dialog, DialogTitle, DialogContent, DialogContentText, Dial
 import { ReactNode } from "react"
 import { Group } from "../../models/group"
 import { Announcement, Service } from "../../models/types"
+import { t } from "i18next"
 
 export function DeleteAnnouncementDialog(props: DeleteItemDialogProps<Announcement>) {
     return (
         <DeleteItemDialog
-            renderMessage={(announcement) => <Typography>You are about to delete the announcement: {announcement?.subject}</Typography>}
-            renderTitle={(announcement) => <Typography>Delete announcement</Typography>}
+            renderMessage={(announcement) => <Typography>{t("You are about to delete the announcement")}: {announcement?.subject}</Typography>}
+            renderTitle={(announcement) => <Typography>{t("Delete announcement")+""}</Typography>}
             {...props}
         />
     )
@@ -17,8 +18,8 @@ export function DeleteAnnouncementDialog(props: DeleteItemDialogProps<Announceme
 export function DeleteGroupDialog(props: DeleteItemDialogProps<Group>) {
     return (
         <DeleteItemDialog
-            renderMessage={(group) => <Typography>You are about to delete the group: {group?.name}</Typography>}
-            renderTitle={(group) => <Typography>Delete {group?.name}</Typography>}
+            renderMessage={(group) => <Typography>{t("You are about to delete the group")}: {group?.name}</Typography>}
+            renderTitle={(group) => <Typography>{t("Delete")} {group?.name}</Typography>}
             {...props}
         />
     )
@@ -27,8 +28,8 @@ export function DeleteGroupDialog(props: DeleteItemDialogProps<Group>) {
 export function DeleteServiceDialog(props: DeleteItemDialogProps<Service>) {
     return (
         <DeleteItemDialog
-            renderMessage={(service) => <Typography>You are about to delete the service: {service?.name}</Typography>}
-            renderTitle={(service) => <Typography>Delete {service?.name}</Typography>}
+            renderMessage={(service) => <Typography>{t("You are about to delete the service")}: {service?.name}</Typography>}
+            renderTitle={(service) => <Typography>{t("Delete")} {service?.name}</Typography>}
             {...props}
         />
     )

@@ -27,7 +27,7 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
             mode={mode}
             onModeChange={(x) => setMode(x)}
             onDelete={(announcement) => remove(announcement)}
-            renderContent={<Typography style={{ whiteSpace: 'pre-line'}}>{announcement?.message}</Typography>}
+            renderContent={<Typography style={{ whiteSpace: 'pre-line' }}>{announcement?.message}</Typography>}
             renderForm={() => (
                 <AnnouncementForm
                     onSubmit={async (submission: Announcement) => {
@@ -69,11 +69,8 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     const { isLoading, data, refetch } = useGetAllAnnouncementsQuery(undefined)
     const create = useCreateAnnouncementMutation()
     const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
-
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
-
     const reload = () => { refetch(); console.log("reloading") }
-
     const Actions = () => <></>
 
     const AnnouncementItem = (props: { announcement: Announcement }) => {
@@ -90,7 +87,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                         primary={
                             <>
                                 <Typography fontWeight={"bold"}>{announcement.subject}</Typography>
-                                <Typography style={{ whiteSpace: 'pre-line'}}>{announcement.message}</Typography>
+                                <Typography style={{ whiteSpace: 'pre-line' }}>{announcement.message}</Typography>
                             </>
                         }
                         secondary={<>

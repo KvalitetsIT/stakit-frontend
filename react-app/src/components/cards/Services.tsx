@@ -68,9 +68,7 @@ export function ServicesCard(props: ServicesCardProps) {
 
     const { isLoading, data, refetch } = useGetAllServicesQuery(undefined)
     const create = useCreateServiceMutation()
-
     const services = data ?? []
-
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
 
     return (
@@ -85,9 +83,7 @@ export function ServicesCard(props: ServicesCardProps) {
                     await create[0](sub);
                     setMode(Mode.NORMAL);
                 }}
-                onCancel={() => {
-                    setMode(Mode.NORMAL);
-                }} />}
+                onCancel={() => setMode(Mode.NORMAL)} />}
             renderItem={(item) => <ServiceItem service={item} />}
             extractKey={(service, index) => "service_" + index}
             extractPath={(service) => "/services/" + service.uuid}

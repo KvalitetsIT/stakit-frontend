@@ -72,15 +72,7 @@ export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
             padding={0}
             renderContent={
                 <List>
-                    {renderItem && resources?.map((resource, index: number) => extractPath ?
-                        <ItemWithLink
-                            disabled={disableLinks}
-                            key={extractKey && extractKey(resource, index)}
-                            to={extractPath(resource)}
-                        >
-                            {renderItem(resource)}
-                        </ItemWithLink>
-                        : renderItem(resource))}
+                    {renderItem && resources?.map((resource, index: number) => renderItem(resource))}
                 </List>
             }
 
