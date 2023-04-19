@@ -12,6 +12,7 @@ import AnnouncementIcon from '@mui/icons-material/Announcement';
 import { useKeycloak } from '@react-keycloak/web';
 import { Stack } from '@mui/system';
 import { t } from 'i18next';
+import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
 type LayoutProps = {
   children: JSX.Element
 }
@@ -52,6 +53,7 @@ export default function Layout(props: LayoutProps) {
             <SidebarItem title={t('Subscribe')} icon={<NotificationsActiveIcon />} href={"/subscribe"} />
           </SidebarSection>
           <SidebarSection hideDivider>
+            <SidebarItem title={t("Subscriptions")} icon={<ScheduleSendIcon />} href={"/subscriptions"} />
             <SidebarItem title={t("Services")} icon={<MiscellaneousServicesIcon />} href={"/services"} />
             <SidebarItem title={t("Groups")} icon={<WorkspacesIcon />} href={"/groups"} />
             <SidebarItem title={t("Announcements")} icon={<AnnouncementIcon />} href={"/announcements"} />

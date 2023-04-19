@@ -1,7 +1,7 @@
 import { Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material"
 import { ReactNode } from "react"
 import { Group } from "../../models/group"
-import { Announcement, Service } from "../../models/types"
+import { Announcement, Service, Subscription } from "../../models/types"
 import { t } from "i18next"
 
 export function DeleteAnnouncementDialog(props: DeleteItemDialogProps<Announcement>) {
@@ -29,6 +29,16 @@ export function DeleteServiceDialog(props: DeleteItemDialogProps<Service>) {
     return (
         <DeleteItemDialog
             renderMessage={(service) => <Typography>{t("You are about to delete the service")}: {service?.name}</Typography>}
+            renderTitle={(service) => <Typography>{t("Delete")} {service?.name}</Typography>}
+            {...props}
+        />
+    )
+}
+
+export function DeleteSubscriptionDialog(props: DeleteItemDialogProps<Subscription>) {
+    return (
+        <DeleteItemDialog
+            renderMessage={(service) => <Typography>{t("You are about to delete the subscription")+ ""}: "subscription?.name"</Typography>}
             renderTitle={(service) => <Typography>{t("Delete")} {service?.name}</Typography>}
             {...props}
         />

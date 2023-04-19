@@ -23,6 +23,8 @@ import { AbilityContext } from '../feature/authentication/logic/Can';
 import PrivateRoute from '../components/PrivateRoute';
 import { ConfirmSubscriptionPage } from '../pages/subscription/ConfirmationPage';
 import { SubscribePage } from '../pages/subscription/SubscribePage';
+import { SubscriptionsPage } from '../pages/subscription/SubscriptionsPage';
+import { SubscriptionPage } from '../pages/subscription/subscriptionPage';
 
 
 
@@ -77,6 +79,10 @@ export default function App() {
                                     <Route path=":id" element={<ConfirmSubscriptionPage />} />
                                 </Route>
 
+                                <Route path="/subscriptions">
+                                    <Route index element={<SubscriptionsPage />} />
+                                    <Route path=":id" element={<SubscriptionPage />} />
+                                </Route>
 
 
                                 <Route path="/services">
