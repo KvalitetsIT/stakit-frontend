@@ -1,4 +1,4 @@
-import { Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea } from "@mui/material";
+import { Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea, Divider } from "@mui/material";
 import { GroupAccordion } from "../../components/accordion/group";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Link } from "react-router-dom";
@@ -51,7 +51,7 @@ export function DashboardPage() {
                     </Can>
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <AnnouncementsCard actions={[]} />
+                    <AnnouncementsCard divider={<Divider variant={"middle"}/>} actions={[]} />
                 </Grid>
             </Grid>
         </Box>
@@ -139,7 +139,7 @@ function StatusMessage(props: { msg: string, level?: "success" | "warning", refr
                 title={props.level === "success" ? <p style={{ margin: 0 }}>Perfekt &#x1F44D;</p> : <p style={{ margin: 0 }}>Advarsel &#x1F44E;</p>}
                 subheader={props.msg}
                 action={
-                    <Tooltip title={<>{t("Refresh"+"")}</>}>
+                    <Tooltip title={<>{t("Refresh" + "")}</>}>
                         <IconButton onClick={() => refresh()}>
                             <ReplayIcon></ReplayIcon>
                         </IconButton>

@@ -57,6 +57,7 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
 
 interface AnnouncementsCardProps {
     actions?: Action[]
+    divider?: JSX.Element
 }
 
 AnnouncementsCard.defaultProps = {
@@ -101,7 +102,6 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     return (
         <ResourcesCard
-            divider={<Divider variant={"middle"}/>}
             disableLinks={!authenticated}
             onRefresh={() => reload()}
             isLoading={isLoading}

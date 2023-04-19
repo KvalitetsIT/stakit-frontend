@@ -6,7 +6,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { DeleteItemDialog } from "../dialogs/DeleteDialog"
 import { Action, BaseCard, BaseCardProps } from "./BaseCard"
 import { t } from "i18next";
-import { ItemWithLink } from "../service";
 
 
 export interface ResourceCardProps<T> extends BaseCardProps<T> {

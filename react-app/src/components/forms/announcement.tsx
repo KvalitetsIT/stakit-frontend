@@ -23,18 +23,18 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
 
     const validationSchema = yup.object().shape({
         announcement: yup.object().shape({
-            subject: yup.string().required(t("Subject") +" "+ t("is required")),
-            message: yup.string().required(t("Message") +" "+ t("is required")),
-            from_datetime: yup.date().required(t("From") +" "+ t("is required")),
-            to_datetime: yup.date().required(t("To") +" "+ t("is required")),
+            subject: yup.string().required(t("Subject") + " " + t("is required")),
+            message: yup.string().required(t("Message") + " " + t("is required")),
+            from_datetime: yup.date().required(t("From") + " " + t("is required")),
+            to_datetime: yup.date().required(t("To") + " " + t("is required")),
         }),
     })
 
     const defaultValues: Announcement = {
         message: "",
         subject: "",
-        from_datetime: undefined,
-        to_datetime: undefined,
+        from_datetime: new Date(),
+        to_datetime: new Date(),
     }
 
     if (props.isLoading) return (<></>)
@@ -43,38 +43,41 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
             <Formik
                 initialValues={{
                     announcement: props.announcement ?? defaultValues,
-                    checked: false
                 }}
-                onSubmit={(values) => { values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!); props.onSubmit(values.announcement) }}
+                onSubmit={(values) => {
+                    values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!);
+                    props.onSubmit(values.announcement)
+                }}
                 validationSchema={validationSchema}
                 enableReinitialize
 
             >
-                {({ errors, touched, values, handleChange, setFieldValue }) => (
-                    <Form>
-                        <Stack spacing={2}>
-                            <ValidatedTextField
-                                type={"text"}
-                                error={errors.announcement?.subject && touched.announcement?.subject ? errors.announcement.subject : undefined}
-                                label={t("Subject")}
-                                name="announcement.subject"
-                                value={values.announcement?.subject}
-                                onChange={handleChange}
-                            />
+                {({ errors, touched, values, handleChange, setFieldValue }) => { 
+                    return (
+                        <Form>
+                            <Stack spacing={2}>
+                                <ValidatedTextField
+                                    type={"text"}
+                                    error={errors.announcement?.subject && touched.announcement?.subject ? errors.announcement.subject : undefined}
+                                    label={t("Subject")}
+                                    name="announcement.subject"
+                                    value={values.announcement?.subject}
+                                    onChange={handleChange}
+                                />
 
-                            <ValidatedTextField
-                                type={"text"}
-                                multiline
-                                rows={3}
-                                error={errors.announcement?.message && touched.announcement?.message ? errors.announcement.message : undefined}
-                                label={t("Message")}
-                                name="announcement.message"
-                                value={values.announcement?.message}
-                                onChange={handleChange}
-                            />
+                                <ValidatedTextField
+                                    type={"text"}
+                                    multiline
+                                    rows={3}
+                                    error={errors.announcement?.message && touched.announcement?.message ? errors.announcement.message : undefined}
+                                    label={t("Message")}
+                                    name="announcement.message"
+                                    value={values.announcement?.message}
+                                    onChange={handleChange}
+                                />
 
 
-                            <Stack spacing={2} direction={"row"}>
+                                <Stack spacing={2} direction={"row"}>
                                     <ValidatedDateTimePicker
                                         error={errors.announcement?.from_datetime && touched.announcement?.from_datetime ? errors.announcement.from_datetime : undefined}
                                         label={t("From")}
@@ -94,23 +97,24 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                         value={values.announcement.to_datetime}
                                     />
 
-                            </Stack>
+                                </Stack>
 
-                            <Stack spacing={2} direction={"row"}>
-                                <Button
-                                    type={"submit"}
-                                    variant="contained"
-                                    disabled={props.loading}
-                                    fullWidth={true}
-                                >
-                                    {props.loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("Submit")}</>}
-                                </Button>
+                                <Stack spacing={2} direction={"row"}>
+                                    <Button
+                                        type={"submit"}
+                                        variant="contained"
+                                        disabled={props.loading}
+                                        fullWidth={true}
+                                    >
+                                        {props.loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("Submit")}</>}
+                                    </Button>
 
-                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{t("Cancel")+""}</Button>
+                                    <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{t("Cancel") + ""}</Button>
+                                </Stack>
                             </Stack>
-                        </Stack>
-                    </Form>
-                )}
+                        </Form>
+                    )}
+                }
 
             </Formik>
         </FormControl >
