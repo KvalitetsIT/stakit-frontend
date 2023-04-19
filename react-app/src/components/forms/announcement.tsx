@@ -1,4 +1,4 @@
-import { FormControl, Stack, Button, CircularProgress, Box } from "@mui/material";
+import { FormControl, Stack, Button, CircularProgress, TextField, makeStyles } from "@mui/material";
 import { Formik, Form } from "formik";
 import { t } from "i18next";
 import { ValidatedTextField } from "../input/validatedTextField";
@@ -6,14 +6,14 @@ import * as yup from 'yup';
 import { Announcement } from "../../models/types";
 import { FormProps } from "./subscribe";
 import { ValidatedDateTimePicker } from "../input/validatedDateTimePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import 'dayjs/locale/fr';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/de';
 import 'dayjs/locale/ar-sa';
 import 'dayjs/locale/da';
 
+import TextareaAutosize from '@mui/base/TextareaAutosize';
+import { ClassNames } from "@emotion/react";
 interface AnnouncementFormProps extends FormProps<Announcement> {
     announcement?: Announcement
     loading?: boolean
@@ -37,6 +37,8 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
         to_datetime: new Date(),
     }
 
+
+
     if (props.isLoading) return (<></>)
     return (
         <FormControl fullWidth>
@@ -52,7 +54,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                 enableReinitialize
 
             >
-                {({ errors, touched, values, handleChange, setFieldValue }) => { 
+                {({ errors, touched, values, handleChange, setFieldValue }) => {
                     return (
                         <Form>
                             <Stack spacing={2}>
@@ -74,6 +76,10 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                     name="announcement.message"
                                     value={values.announcement?.message}
                                     onChange={handleChange}
+                                    
+                                    resize="vertical"
+                                      
+                                    
                                 />
 
 
@@ -113,7 +119,8 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                 </Stack>
                             </Stack>
                         </Form>
-                    )}
+                    )
+                }
                 }
 
             </Formik>

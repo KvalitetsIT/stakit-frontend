@@ -92,7 +92,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     />
 
                 </ListItem>
-                
+
             </>
         )
     }
