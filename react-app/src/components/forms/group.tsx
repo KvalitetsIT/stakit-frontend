@@ -10,6 +10,7 @@ import { t } from "i18next";
 import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";
 
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { ValidatedCheck } from "../input/validatedCheck";
 
 interface GroupFormProps extends FormProps<Group> {
     group?: Group
@@ -32,16 +33,21 @@ export function GroupForm(props: GroupFormProps) {
 
     if (!isLoading && services && group) group.services = services.filter(service => (props.group?.services as string[]).includes(service.uuid!))
 
-    const initialValues = {
-        group: group ?? {
-            name: "",
-            display_order: 1,
-            services: [],
-            description: "",
-        }
+
+    const defaultValues = {
+        name: "",
+        display_order: 1,
+        services: [],
+        description: "",
+        show: true,
     }
 
+    const initialValues = {
+        group: group ?? defaultValues
+    }
 
+    console.log("initialValues", initialValues)
+    
     return (
         <FormControl fullWidth>
             <Formik
@@ -91,9 +97,12 @@ export function GroupForm(props: GroupFormProps) {
                                 value={values.group.description}
                                 error={touched.group?.description && errors.group?.description ? errors.group?.description : undefined}
                             />
-
-
-                            <FormControlLabel control={<Checkbox defaultChecked />} label="Vis på forsiden" />
+                            <ValidatedCheck
+                                name="group.show"
+                                label={t("Show on dashboard")}
+                                value={values.group.show}
+                                error={touched.group?.show && errors.group?.show ? errors.group?.show : undefined}
+                            />
 
 
                             <Stack spacing={2} direction={"row"}>

@@ -21,6 +21,7 @@ export function ValidatedCheck(props: ValidatedCheckProps) {
                         {...props}
                         error={props.error}
                         helperText={props.error}
+                        checked={props.value}
                     >
                     </Field>
                 }

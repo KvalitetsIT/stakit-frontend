@@ -50,7 +50,8 @@ const resources = {
       "You are about to delete the service": "Du er ved at slette tjenesten",
       "You are about to delete the group": "Du er ved at slette gruppen",
       "You are about to delete the announcement": "Du er ved at slette meddelelsen",
-      "Delete announcement": "Slet meddelelsen"
+      "Delete announcement": "Slet meddelelsen",
+      "Show on dashboard": "Vis på dashboard"
     }
   }
 };
