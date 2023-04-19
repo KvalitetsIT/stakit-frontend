@@ -24,6 +24,7 @@ const resources = {
       "Groups": "Grupper",
       "Services": "Tjenester",
       "Subscribe": "Abonner",
+      "Details": "Detajler",
       "All systems works appropriately": "Alle systemer virker hensigtsmæssigt",
       "One or more systems are experiencing problems": "Et eller flere systemer oplever problemer",
       "Last updated": "Sidst opdateret",

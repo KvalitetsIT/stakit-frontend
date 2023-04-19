@@ -1,4 +1,4 @@
-import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, ListItemAvatar } from "@mui/material";
+import { ListItem, ListItemButton, ListItemText, IconButton, Tooltip, ListItemAvatar, Box } from "@mui/material";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Service } from "../models/types";
@@ -43,7 +43,7 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
             <ItemWithLink disabled={!authenticated} to={"/services/" + props.service.uuid}>
                 <ListItem
                     key={"item_" + props.service.uuid}    
-                    secondaryAction={<Actions />}
+                    secondaryAction={<Box marginRight={1}><Actions /></Box>}
                 >
                     <ListItemAvatar>
                         <StatusAvatar status={props.service.status} />

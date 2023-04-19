@@ -1,10 +1,11 @@
-import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Stack, Divider, Chip, Box, IconButton, Icon, Tooltip, AccordionActions } from "@mui/material";
+import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Stack, Divider, Chip, Box, IconButton, Icon, Tooltip, AccordionActions, Avatar } from "@mui/material";
 import { Service, Status } from "../../models/types";
 import { Modes, ServiceItem } from "../service";
 import { Subscription } from "../../models/types";
 import { Edit } from "@mui/icons-material";
 import { StatusIcon, useGetColorTagByStatus } from "../status";
 import { Link } from "react-router-dom";
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
 import { useContext } from "react";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
@@ -15,7 +16,7 @@ import { t } from "i18next";
 import { group } from "console";
 import { GroupItem, SubscriptionItem } from "../cards/Subscription";
 import { Group } from "../../models/group";
-
+import SearchIcon from '@mui/icons-material/Search';
 
 export function SubscriptionAccordion(props: { defaultExpanded?: boolean, subscription?: Subscription, key?: string }) {
 
@@ -38,7 +39,7 @@ export function SubscriptionAccordion(props: { defaultExpanded?: boolean, subscr
                 <Stack direction={"row"} justifyContent="space-between" alignItems="stretch" width={"100%"}>
                     <Stack>
                         <Typography variant="h6">{props.subscription?.email}</Typography>
-                        <Typography>{props.subscription?.uuid}</Typography>
+                        <Typography >Some additional information</Typography>
                     </Stack>
                     <Box sx={{
                         display: "flex",
@@ -46,17 +47,17 @@ export function SubscriptionAccordion(props: { defaultExpanded?: boolean, subscr
                         justifyContent: "center"
                     }}>
                         <Chip
-                            avatar={<Icon sx={{ color: "warning"}}><StatusIcon variant="outlined" /></Icon>}
-                            label={<Typography color={"white"}>{props.subscription?.groups?.length}</Typography>}
+                            avatar={<Icon sx={{"": {color: "warning"}}}><WorkspacesIcon /></Icon>}
+                            label={<Typography color={"inherit"}>{props.subscription?.groups?.length}</Typography>}
                         />
                     </Box>
                 </Stack>
                 <AccordionActions>
                     <Can ability={user.getAbility()} I={Operation.MANAGE} a="resource">
-                        <Tooltip title={<>{t("Edit")}</>}>
-                            <Link to={"/subscriptions/" + props.subscription?.uuid} state={{ mode: Modes.EDIT }} >
+                        <Tooltip title={<>{t("Details")}</>}>
+                            <Link to={"/subscriptions/" + props.subscription?.uuid} >
                                 <IconButton edge="end" sx={{ marginRight: 1, marginLeft: 2 }}/* onClick={(e) => { setMode(Modes.EDIT) }} */>
-                                    <Edit />
+                                    <SearchIcon />
                                 </IconButton>
                             </Link>
                         </Tooltip>

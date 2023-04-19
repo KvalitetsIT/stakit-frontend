@@ -11,7 +11,7 @@ import { StatusAvatar } from "../status"
 import { t } from "i18next"
 import { SubscriptionForm } from "../forms/subscribe"
 import { Can } from "@casl/react"
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText, Tooltip } from "@mui/material"
+import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText, Tooltip } from "@mui/material"
 import { useKeycloak } from "@react-keycloak/web"
 
 import { Operation, Asset } from "../../feature/authentication/config/ability"
@@ -20,13 +20,14 @@ import { Header } from "../../pages/services/details"
 import { Modes, ItemWithLink } from "../service"
 import { Group } from "../../models/group"
 import { group } from "console"
+import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice"
 
 interface SubscriptionCardProps extends ResourceCardProps<Subscription> { }
 
 export function SubscriptionCard(props: SubscriptionCardProps) {
 
 
-    const { resource: subscription, isLoading } = props
+    const { resource: subscription } = props
 
     const location = useLocation()
     const [mode, setMode] = useState(location.state?.mode ?? Mode.NORMAL)
@@ -35,21 +36,32 @@ export function SubscriptionCard(props: SubscriptionCardProps) {
     const removeSubscription = useDeleteSubscriptionMutation()[0]
     const { refetch } = useGetAllSubscriptionsQuery(undefined);
 
+    const { isLoading: isLoadingGroups, data: optionalGroups } = useGetStatusOfGroupsQuery(undefined) ?? []
+
+    const isLoading = props.isLoading || isLoadingGroups
+
+
     return (
         <ResourceCard
-            header={"header"}
-            subHeader={"subHeader"}
+            header={subscription?.email ?? "Unknown"}
+            //subHeader={"subHeader"}
             mode={mode}
             onModeChange={(x) => setMode(x)}
             onDelete={removeSubscription}
             onUpdate={updateSubscription}
-
+            renderContent={
+                <List disablePadding>
+                    {subscription?.groups?.map(group => group as Group).map((group) => <GroupItem group={group} />)}
+                </List>
+            }
             renderForm={(subscription: Subscription) => (
                 <SubscriptionForm
+                    optionalGroups={optionalGroups}
                     isLoading={isLoading}
                     subscription={subscription}
                     onCancel={() => setMode(Mode.NORMAL)}
-                    onSubmit={async (subscription: Subscription) => { updateSubscription(subscription); setMode(Mode.NORMAL) }} />
+                    onSubmit={async (subscription: Subscription) => { updateSubscription(subscription); setMode(Mode.NORMAL) }}
+                />
             )}
             deleteDialog={<DeleteSubscriptionDialog
                 item={subscription}
@@ -76,10 +88,15 @@ SubscriptionsCard.defaultProps = {
 
 export function SubscriptionsCard(props: SubscriptionsCardProps) {
 
-    const { isLoading, data, refetch } = useGetAllSubscriptionsQuery(undefined)
+    const { isLoading: isLoadingSubscriptions, data, refetch } = useGetAllSubscriptionsQuery(undefined)
     const create = useCreateSubscriptionMutation()
     const subscriptions = data ?? []
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
+
+    const { isLoading: isLoadingGroups, data: optionalGroups } = useGetStatusOfGroupsQuery(undefined) ?? []
+
+    const isLoading = isLoadingSubscriptions || isLoadingGroups
+
 
     return (
         <ResourcesCard
@@ -89,11 +106,15 @@ export function SubscriptionsCard(props: SubscriptionsCardProps) {
             resources={subscriptions}
             onRefresh={() => { refetch() }}
             renderForm={() => <SubscriptionForm
+                isLoading={isLoading}
+                optionalGroups={optionalGroups}
+                onCancel={() => setMode(Mode.NORMAL)}
+
                 onSubmit={async (sub) => {
                     await create[0](sub);
                     setMode(Mode.NORMAL);
                 }}
-                onCancel={() => setMode(Mode.NORMAL)} />}
+            />}
             renderItem={(item) => <SubscriptionItem subscription={item} />}
             extractKey={(subscription, index) => "subscription_" + index}
             extractPath={(subscription) => "/subscriptions/" + subscription.uuid}
@@ -126,7 +147,7 @@ export function SubscriptionItem(props: { subscription: Subscription }) {
 
     return (
         <>
-            <ItemWithLink disabled={!authenticated} to={"/services/" + props.subscription.uuid}>
+            <ItemWithLink disabled={!authenticated} to={"/subscriptions/" + props.subscription.uuid}>
                 <ListItem
                     key={"item_" + props.subscription.uuid}
                     secondaryAction={<Actions />}
@@ -158,7 +179,7 @@ export function GroupItem(props: { group: Group, showActions?: boolean, showPath
 
     const Actions = () => (
         <>
-        
+
         </>
     )
 
@@ -166,7 +187,7 @@ export function GroupItem(props: { group: Group, showActions?: boolean, showPath
         <>
             <ItemWithLink disabled={!authenticated} to={"/groups/" + props.group.uuid}>
                 <ListItem
-                    key={"item_" + props.group.uuid}    
+                    key={"item_" + props.group.uuid}
                     secondaryAction={<Actions />}
                 >
                     <ListItemText
