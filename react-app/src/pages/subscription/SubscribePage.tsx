@@ -19,7 +19,7 @@ export function SubscribePage() {
     const onSubscribtion = (subscription: Subscription) => {
         setIsLoading(true)
         request(subscription).then(() => {
-            setMode(Mode.SUCCESS); 
+            setMode(Mode.SUCCESS);
         }).catch((error) => {
             console.error("error", error)
         })
@@ -42,7 +42,8 @@ export function SubscribePage() {
                 <Loading loading={isLoading}>
                     <Container maxWidth="sm">
                         <Typography variant="h3" textAlign={"center"}>{t("Subscribe") + ""}</Typography>
-                        <Typography variant="h6" marginBottom={2}>{t("Fill out the form below in order to get notified") + ""}</Typography>
+                        <Typography variant="h6" textAlign={"center"} marginBottom={2}>{t("Fill out the form below in order to get notified") + ""}</Typography>
+                        <Typography marginBottom={2} textAlign={"center"} >{t("A previous subscription is overwritten when a new one is created") + ""}</Typography>
                         <SubscriptionForm
                             optionalGroups={groups}
                             onSubmit={async (subscription) => onSubscribtion(subscription)}

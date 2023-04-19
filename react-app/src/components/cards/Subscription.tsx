@@ -103,7 +103,7 @@ export function SubscriptionsCard(props: SubscriptionsCardProps) {
 }
 
 
-function SubscriptionItem(props: { subscription: Subscription }) {
+export function SubscriptionItem(props: { subscription: Subscription }) {
     const user = useContext(UserContext)!
     const keycloak = useKeycloak()
 
@@ -137,6 +137,41 @@ function SubscriptionItem(props: { subscription: Subscription }) {
                     <ListItemText
                         primary={props.subscription.email}
                         secondary={props.subscription.groups?.map(group => group as Group).map(group => group.name)}
+                    />
+                </ListItem>
+            </ItemWithLink>
+        </>
+    )
+}
+
+
+
+
+
+export function GroupItem(props: { group: Group, showActions?: boolean, showPath?: boolean }) {
+
+    const user = useContext(UserContext)!
+    const keycloak = useKeycloak()
+
+    const authenticated = keycloak.initialized && keycloak.keycloak.authenticated
+
+
+    const Actions = () => (
+        <>
+        
+        </>
+    )
+
+    return (
+        <>
+            <ItemWithLink disabled={!authenticated} to={"/groups/" + props.group.uuid}>
+                <ListItem
+                    key={"item_" + props.group.uuid}    
+                    secondaryAction={<Actions />}
+                >
+                    <ListItemText
+                        primary={props.group.name}
+                        secondary={props.group.description?.slice(0, 100).trim() + (props.group.description?.length! > 100 ? "..." : "")}
                     />
                 </ListItem>
             </ItemWithLink>

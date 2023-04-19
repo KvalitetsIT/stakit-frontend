@@ -51,7 +51,8 @@ const resources = {
       "You are about to delete the group": "Du er ved at slette gruppen",
       "You are about to delete the announcement": "Du er ved at slette meddelelsen",
       "Delete announcement": "Slet meddelelsen",
-      "Show on dashboard": "Vis på dashboard"
+      "Show on dashboard": "Vis på dashboard",
+      "A previous subscription is overwritten when a new one is created": "Et tidligere abbonement overskrives ved oprettelse af et nyt"
     }
   }
 };
