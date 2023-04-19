@@ -1,4 +1,4 @@
-import { FormControl, Stack, Button } from "@mui/material";
+import { FormControl, Stack, Button, Select, Checkbox } from "@mui/material";
 import { Formik, Form } from "formik";
 import { Service } from "../../models/types";
 import * as yup from 'yup';
@@ -9,6 +9,7 @@ import { Group } from "../../models/group";
 import { t } from "i18next";
 import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";
 
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 interface GroupFormProps extends FormProps<Group> {
     group?: Group
@@ -21,16 +22,16 @@ export function GroupForm(props: GroupFormProps) {
 
     const validationSchema = yup.object().shape({
         group: yup.object().shape({
-            name: yup.string().required(t("Name") +" "+ t("is required")),
-            display_order: yup.string().required(t("Display-order") +" "+ t("is required")),
-            description: yup.string().required(t("Description") +" "+ t("is required"))
+            name: yup.string().required(t("Name") + " " + t("is required")),
+            display_order: yup.string().required(t("Display-order") + " " + t("is required")),
+            description: yup.string().required(t("Description") + " " + t("is required"))
         })
     })
 
     let group: Group | undefined = structuredClone(props.group)
 
-    if(!isLoading && services && group ) group.services = services.filter(service => (props.group?.services as string[]).includes(service.uuid!))
-   
+    if (!isLoading && services && group) group.services = services.filter(service => (props.group?.services as string[]).includes(service.uuid!))
+
     const initialValues = {
         group: group ?? {
             name: "",
@@ -91,13 +92,17 @@ export function GroupForm(props: GroupFormProps) {
                                 error={touched.group?.description && errors.group?.description ? errors.group?.description : undefined}
                             />
 
+
+                            <FormControlLabel control={<Checkbox defaultChecked />} label="Vis på forsiden" />
+
+
                             <Stack spacing={2} direction={"row"}>
                                 <Button
                                     type={"submit"}
                                     variant="contained"
                                     fullWidth={true}
                                 >
-                                    {t("Save")+""}
+                                    {t("Save") + ""}
                                 </Button>
                                 <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{"" + t("Cancel")}</Button>
                             </Stack>

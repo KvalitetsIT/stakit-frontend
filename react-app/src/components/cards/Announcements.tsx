@@ -84,15 +84,8 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     secondaryAction={<Actions />}
                 >
                     <ListItemText
-                        primary={
-                            <>
-                                <Typography fontWeight={"bold"}>{announcement.subject}</Typography>
-                                <Typography style={{ whiteSpace: 'pre-line' }}>{announcement.message}</Typography>
-                            </>
-                        }
-                        secondary={<>
-                            <Typography>{dateToText(new Date(announcement.from_datetime!))} - {dateToText(new Date(announcement.to_datetime!))}</Typography>
-                        </>}
+                        primary={<Typography fontWeight={"bold"}>{announcement.subject}</Typography>}
+                        secondary={<Typography style={{ whiteSpace: 'pre-line' }}>{announcement.message}</Typography>}
                     />
 
                 </ListItem>
