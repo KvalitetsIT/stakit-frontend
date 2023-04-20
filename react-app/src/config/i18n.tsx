@@ -31,6 +31,7 @@ const resources = {
       "A list of all services": "En liste over all tjenester",
       "A list of all groups": "En liste over all grupper",
       "Save": "Gem",
+      "Copy":"Kopier",
       "Update": "Opdater",
       "Fill out the form below in order to get notified": "Udfyld nedenstående formular og bliv underrettet",
       "Check your email. You should recieve a confirmation": "Tjek din email. Du vil modtage en bekræftelse",
