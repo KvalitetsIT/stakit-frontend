@@ -4,7 +4,7 @@ export class Group extends Resource {
     name: string
     display_order: number 
     description?: string
-    show: boolean = false
+    display: boolean = false
     status?: Status
     services: string[] | Service[]
     

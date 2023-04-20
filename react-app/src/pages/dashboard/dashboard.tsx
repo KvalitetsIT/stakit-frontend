@@ -43,7 +43,7 @@ export function DashboardPage() {
                         msg={numberOfServicesDown === 0 ? successMsg : warningMsg}
                         callback={() => refetch()}
                     />
-                    {groups && groups.map((serviceGroup, index) => (
+                    {groups && groups.filter(group => group.display ).map((serviceGroup, index) => (
                         <GroupAccordion group={serviceGroup} key={"group_" + index} ></GroupAccordion>
                     ))}
                     <Can ability={user?.getAbility()} I={Operation.READ} a={"public"}>

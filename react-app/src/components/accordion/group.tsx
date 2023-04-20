@@ -18,7 +18,7 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
 
 
     let services: Service[] = props.group?.services ? props.group?.services as Service[] : []
-    
+
     const serviceWhichAreOk: number = services.filter((service: Service) => service.status === Status.OK).length
 
     const getStatusOfGroup = () => {
@@ -32,10 +32,10 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
         <Accordion
             disableGutters
             defaultExpanded={props.defaultExpanded}
-            sx={{ 
-                marginTop: 2, 
-                borderRadius: 1, 
-                "&.MuiAccordion-root:before": { backgroundColor: "rgba(0,0,0,0)" } 
+            sx={{
+                marginTop: 2,
+                borderRadius: 1,
+                "&.MuiAccordion-root:before": { backgroundColor: "rgba(0,0,0,0)" }
             }}
 
         >
@@ -51,7 +51,7 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
                         justifyContent: "center"
                     }}>
                         <Chip
-                            avatar={<Icon sx={{"": {color: "warning"}}}><StatusIcon variant="outlined" status={getStatusOfGroup()} /></Icon>}
+                            avatar={<Icon sx={{ "": { color: "warning" } }}><StatusIcon variant="outlined" status={getStatusOfGroup()} /></Icon>}
                             color={useGetColorTagByStatus(getStatusOfGroup())}
                             label={<Typography color={"white"}>{serviceWhichAreOk} / {services.length}</Typography>}
 
