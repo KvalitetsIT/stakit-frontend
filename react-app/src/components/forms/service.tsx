@@ -55,7 +55,7 @@ export function ServiceForm(props: ServiceFormProps) {
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => { props.onSubmit(values.service) }}
+                onSubmit={(values, formik) => { props.onSubmit(values.service).then(() => formik.resetForm()) }}
                 validationSchema={validationSchema}
                 enableReinitialize
             >

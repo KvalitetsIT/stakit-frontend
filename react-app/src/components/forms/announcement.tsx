@@ -1,5 +1,5 @@
 import { FormControl, Stack, Button, CircularProgress, TextField, makeStyles } from "@mui/material";
-import { Formik, Form } from "formik";
+import { Formik, Form, useFormik } from "formik";
 import { t } from "i18next";
 import { ValidatedTextField } from "../input/validatedTextField";
 import * as yup from 'yup';
@@ -37,8 +37,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
         to_datetime: new Date(),
     }
 
-
-
+    
     if (props.isLoading) return (<></>)
     return (
         <FormControl fullWidth>
@@ -46,15 +45,15 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                 initialValues={{
                     announcement: props.announcement ?? defaultValues,
                 }}
-                onSubmit={(values) => {
+                onSubmit={(values, formik) => {
                     values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!);
-                    props.onSubmit(values.announcement)
+                    props.onSubmit(values.announcement).then(() => formik.resetForm())
                 }}
                 validationSchema={validationSchema}
                 enableReinitialize
-
+                
             >
-                {({ errors, touched, values, handleChange, setFieldValue }) => {
+                {({ errors, touched, values, handleChange, setFieldValue}) => {
                     return (
                         <Form>
                             <Stack spacing={2}>

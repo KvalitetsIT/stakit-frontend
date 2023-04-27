@@ -47,13 +47,13 @@ export function GroupForm(props: GroupFormProps) {
         group: group ?? defaultValues
     }
 
-    console.log("initialValues", initialValues)
+    
     
     return (
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => props.onSubmit(values.group)}
+                onSubmit={(values, formik) => props.onSubmit(values.group).then(() => formik.resetForm())}
                 validationSchema={validationSchema}
                 enableReinitialize
             >
