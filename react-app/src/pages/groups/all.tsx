@@ -29,7 +29,7 @@ export function AllGoupsPage(props: {}) {
 }
 
 export class Mapper {
-    
+        
     static groupToModel(group: Group, services?: Service[]): Group {
         let result = structuredClone(group)
         if (typeof group.services[0] === "string") {
