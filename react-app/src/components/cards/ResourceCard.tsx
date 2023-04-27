@@ -70,17 +70,19 @@ export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
             resource={resources}
             actions={actions}
             padding={0}
-            renderContent={
-                <List>
-                    {renderItem && resources?.map((resource, index: number) => (
-                        <>
-                            {index > 0 && props.divider}
-                            {renderItem(resource)}
-                        </>
-                    )
+            renderContent={renderItem &&
+                (
+                    <List>
+                        {resources?.map((resource, index: number) => (
+                            <>
+                                {index > 0 && props.divider}
+                                {renderItem(resource)}
+                            </>
+                        )
 
-                    )}
-                </List>
+                        )}
+                    </List>
+                )
             }
 
             {...props}

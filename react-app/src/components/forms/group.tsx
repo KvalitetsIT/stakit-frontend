@@ -47,8 +47,8 @@ export function GroupForm(props: GroupFormProps) {
         group: group ?? defaultValues
     }
 
-    
-    
+
+
     return (
         <FormControl fullWidth>
             <Formik
@@ -98,18 +98,21 @@ export function GroupForm(props: GroupFormProps) {
                                 value={values.group.description}
                                 error={touched.group?.description && errors.group?.description ? errors.group?.description : undefined}
                             />
-                            <ValidatedCheck
-                                name="group.display"
-                                label={t("Show on dashboard")}
-                                value={values.group.display}
-                                error={touched.group?.display && errors.group?.display ? errors.group?.display : undefined}
-                            />
-                            <ValidatedCheck
-                                name="group.expanded"
-                                label={t("Expanded")}
-                                value={values.group.expanded}
-                                error={touched.group?.expanded && errors.group?.expanded ? errors.group?.expanded : undefined}
-                            />
+                            <Stack direction={"row"}>
+                                <ValidatedCheck
+                                    name="group.display"
+                                    label={t("Show on dashboard")}
+                                    value={values.group.display}
+                                    error={touched.group?.display && errors.group?.display ? errors.group?.display : undefined}
+                                />
+                                <ValidatedCheck
+                                    name="group.expanded"
+                                    label={t("Expanded")}
+                                    value={values.group.expanded}
+                                    error={touched.group?.expanded && errors.group?.expanded ? errors.group?.expanded : undefined}
+                                />
+                            </Stack>
+
 
 
                             <Stack spacing={2} direction={"row"}>
