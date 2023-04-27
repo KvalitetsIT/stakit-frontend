@@ -33,14 +33,22 @@ export function SubscriptionAccordion(props: { defaultExpanded?: boolean, subscr
                 borderRadius: 1,
                 "&.MuiAccordion-root:before": { backgroundColor: "rgba(0,0,0,0)" }
             }}
+            
 
         >
             <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                 <Stack direction={"row"} justifyContent="space-between" alignItems="stretch" width={"100%"}>
-                    <Stack>
-                        <Typography variant="h6">{props.subscription?.email}</Typography>
-                        <Typography >Some additional information</Typography>
-                    </Stack>
+                     
+                <Box sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center"
+                    }}>
+                    <Typography variant="h6">{props.subscription?.email}</Typography>
+                    
+                       
+                    </Box>
+                        
                     <Box sx={{
                         display: "flex",
                         flexDirection: "column",

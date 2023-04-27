@@ -3,7 +3,7 @@ import { useGetAllGroupsQuery } from "../../feature/stakit/groupsSlice";
 import { GroupAccordion } from "../../components/accordion/group";
 import { GroupsCard } from "../../components/cards/Groups";
 import { Group } from "../../models/group";
-import { Service } from "../../models/types";
+import { Service, Subscription } from "../../models/types";
 import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";
 
 export function AllGoupsPage(props: {}) {
@@ -28,7 +28,7 @@ export function AllGoupsPage(props: {}) {
     )
 }
 
-class Mapper {
+export class Mapper {
     
     static groupToModel(group: Group, services?: Service[]): Group {
         let result = structuredClone(group)
@@ -39,6 +39,13 @@ class Mapper {
         return group
     }
 
-
+    static subscriptionToModel(subscription: Subscription, groups?: Group[]): Subscription {
+        let result = structuredClone(subscription)
+        if (typeof subscription.groups[0] === "string") {
+            result.groups = groups ? groups.filter(group => (subscription.groups as string[]).includes(group?.uuid!)) : []
+            return result
+        }
+        return subscription
+    }
 }
 

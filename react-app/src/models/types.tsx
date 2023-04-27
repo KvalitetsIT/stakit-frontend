@@ -51,7 +51,7 @@ export interface Action {
 
 export interface Subscription extends Resource {
     email?: string,
-    groups?: string[] | Group[],
+    groups: string[] | Group[],
     announcements?: boolean
 }
 

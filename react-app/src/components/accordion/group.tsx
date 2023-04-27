@@ -21,9 +21,8 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
 
     const serviceWhichAreOk: number = services.filter((service: Service) => service.status === Status.OK).length
 
-    const getStatusOfGroup = () => {
-        return services.length === 0 ? Status.UKNOWN : services.every((service: Service) => service.status === Status.OK) ? Status.OK : Status.NOT_OK
-    }
+    const getStatusOfGroup = () => services.length === 0 ? Status.UKNOWN : services.every((service: Service) => service.status === Status.OK) ? Status.OK : Status.NOT_OK
+    
 
     const user = useContext(UserContext)!
 
@@ -69,7 +68,6 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
                         </Tooltip>
                     </Can>
                 </AccordionActions>
-
             </AccordionSummary>
 
             {

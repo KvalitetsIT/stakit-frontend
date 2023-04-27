@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import { Mode } from "./Mode";
 import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/stakit/announcementSlice";
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
-import { ResourceCard, ResourceCardProps, ResourcesCard } from "./ResourceCard";
+import { ResourceCard, ResourceCardProps, ResourcesCard, ResourcesCardProps } from "./ResourceCard";
 import { t } from "i18next";
 import { Action } from "./BaseCard";
 import { useKeycloak } from "@react-keycloak/web";
@@ -59,7 +59,7 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
     )
 }
 
-interface AnnouncementsCardProps {
+interface AnnouncementsCardProps extends Omit<ResourcesCardProps<Announcement>, "resources"> {
     actions?: Action[]
     divider?: JSX.Element
 }
@@ -78,20 +78,15 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     const reload = () => { refetch() }
 
 
-
-
-    const AnnouncementItem = (props: { announcement: Announcement, onCopy?: (announcement: Announcement) => void }) => {
-
-        const { announcement } = props
+    const AnnouncementActions = (props: { announcement: Announcement, onCopy?: (announcement: Announcement) => void }) => {
 
         const user = useContext(UserContext)!
-        const keycloak = useKeycloak()
 
-        const Actions = () => (
+        return (
             <>
                 <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.RESOURCE}>
                     <Tooltip title={<>{t("Copy")}</>}>
-                        <IconButton edge="end" onClick={() => props.onCopy && props.onCopy(announcement)}>
+                        <IconButton edge="end" onClick={() => props.onCopy && props.onCopy(props.announcement)}>
                             <ContentCopyIcon />
                         </IconButton>
                     </Tooltip>
@@ -99,13 +94,18 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
             </>
         )
+    }
 
+
+    const AnnouncementItem = (props: { announcement: Announcement, actions: JSX.Element }) => {
+
+        const { announcement } = props
 
         return (
             <>
                 <ListItem
                     key={"item_" + announcement.uuid}
-                    secondaryAction={<Box marginRight={1}><Actions /></Box>}
+                    secondaryAction={<Box marginRight={1}>{props.actions}</Box>}
                 >
                     <ListItemText
                         primary={<Typography fontWeight={"bold"}>{announcement.subject}</Typography>}
@@ -113,7 +113,6 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     />
 
                 </ListItem>
-
             </>
         )
     }
@@ -140,7 +139,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                 onCancel={() => {
                     setMode(Mode.NORMAL);
                 }} />}
-            renderItem={(item) => <AnnouncementItem onCopy={(announcement) => { setClipboard(announcement); setMode(Mode.EDIT) }} announcement={item}></AnnouncementItem>}
+            renderItem={(item) => <AnnouncementItem actions={ props.showItemActions ? <AnnouncementActions announcement={item} onCopy={(announcement) => { setClipboard(announcement); setMode(Mode.EDIT) }} /> : <> </>} announcement={item} /> }
             extractKey={(announcement: Announcement, index) => "announcement_" + index}
             extractPath={(announcement) => "/announcements/" + announcement.uuid}
             {...props}

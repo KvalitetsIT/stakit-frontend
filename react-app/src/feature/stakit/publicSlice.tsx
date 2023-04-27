@@ -30,12 +30,12 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
         createSubscription: builder.mutation<string, Subscription>({
             query: (request) => HandleQuery({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
-                url: `subscribe`,
+                url: `subscriptions`,
                 method: "POST",
                 body: request,
                 responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not create subscription" }),
             }),
-            invalidatesTags: ["subscription"]
+            invalidatesTags: ["subscriptions"]
         }),
         confirmSubscription: builder.query<undefined, string>({
             query: (id) => HandleQuery({

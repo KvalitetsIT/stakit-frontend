@@ -115,7 +115,7 @@ export function SubscriptionsCard(props: SubscriptionsCardProps) {
                     setMode(Mode.NORMAL);
                 }}
             />}
-            renderItem={(item) => <SubscriptionItem subscription={item} />}
+            //renderItem={(item) => <SubscriptionItem subscription={item} />}
             extractKey={(subscription, index) => "subscription_" + index}
             extractPath={(subscription) => "/subscriptions/" + subscription.uuid}
             {...props}
@@ -169,7 +169,7 @@ export function SubscriptionItem(props: { subscription: Subscription }) {
 
 
 
-export function GroupItem(props: { group: Group, showActions?: boolean, showPath?: boolean }) {
+export function GroupItem(props: { group: Group, showPath?: boolean }) {
 
     const user = useContext(UserContext)!
     const keycloak = useKeycloak()
@@ -192,7 +192,7 @@ export function GroupItem(props: { group: Group, showActions?: boolean, showPath
                 >
                     <ListItemText
                         primary={props.group.name}
-                        secondary={props.group.description?.slice(0, 100).trim() + (props.group.description?.length! > 100 ? "..." : "")}
+                        secondary={props.group.description && props.group.description?.slice(0, 100).trim() + (props.group.description?.length! > 100 ? "..." : "")}
                     />
                 </ListItem>
             </ItemWithLink>

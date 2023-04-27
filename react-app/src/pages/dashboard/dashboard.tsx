@@ -43,9 +43,11 @@ export function DashboardPage() {
                         msg={numberOfServicesDown === 0 ? successMsg : warningMsg}
                         callback={() => refetch()}
                     />
-                    {groups && groups.filter(group => group.display ).map((serviceGroup, index) => (
-                        <GroupAccordion group={serviceGroup} key={"group_" + index} ></GroupAccordion>
-                    ))}
+                    {groups && groups.filter(group => group.display ).map((serviceGroup, index) => {
+                                                console.log(serviceGroup)
+                                                return(
+                      <GroupAccordion defaultExpanded={serviceGroup.expanded} group={serviceGroup} key={"group_" + index} ></GroupAccordion>
+                    )})}
                     <Can ability={user?.getAbility()} I={Operation.READ} a={"public"}>
                         <SubscibeButton />
                     </Can>
@@ -77,7 +79,6 @@ export function SubscibeButton() {
                     }}
                 >
                 </SpeedDial>
-
             </Tooltip>
         </Link>
     )

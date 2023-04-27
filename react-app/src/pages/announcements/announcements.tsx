@@ -6,7 +6,7 @@ import { useGetAnnouncementQuery } from "../../feature/stakit/announcementSlice"
 export function AnnouncementsPage() {
     return (
         <Container>
-            <AnnouncementsCard />
+            <AnnouncementsCard showItemActions />
         </Container>
     )
 }

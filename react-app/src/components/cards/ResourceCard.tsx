@@ -13,7 +13,6 @@ export interface ResourceCardProps<T> extends BaseCardProps<T> {
     onDelete?: (resource: T) => void
     onUpdate?: (resource: T) => void
     deleteDialog?: ReactElement<typeof DeleteItemDialog>
-
 }
 
 export function ResourceCard(props: ResourceCardProps<any>) {
@@ -52,6 +51,7 @@ export interface ResourcesCardProps<T> extends Omit<BaseCardProps<T>, "resource"
     actions?: Action[]
     disableLinks?: boolean
     divider?: JSX.Element
+    showItemActions?: boolean
 }
 
 ResourcesCard.defaultProps = {

@@ -68,6 +68,9 @@ export const { useCreateSubscriptionMutation, usePutSubscriptionMutation, useGet
 export function subscriptionToDTO(subscription: Subscription): Subscription {
   let result = structuredClone(subscription)
   
+  if( typeof subscription.groups[0] === "string") return result
+
+  result.groups = (subscription.groups as Group[]).map(group => group.uuid)
   
   return result
 }

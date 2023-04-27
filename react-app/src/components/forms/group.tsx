@@ -40,6 +40,7 @@ export function GroupForm(props: GroupFormProps) {
         services: [],
         description: "",
         display: false,
+        expanded: false,
     }
 
     const initialValues = {
@@ -102,6 +103,12 @@ export function GroupForm(props: GroupFormProps) {
                                 label={t("Show on dashboard")}
                                 value={values.group.display}
                                 error={touched.group?.display && errors.group?.display ? errors.group?.display : undefined}
+                            />
+                            <ValidatedCheck
+                                name="group.expanded"
+                                label={t("Expanded")}
+                                value={values.group.expanded}
+                                error={touched.group?.expanded && errors.group?.expanded ? errors.group?.expanded : undefined}
                             />
 
 

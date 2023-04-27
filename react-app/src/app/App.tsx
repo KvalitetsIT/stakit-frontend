@@ -80,10 +80,9 @@ export default function App() {
                                 </Route>
 
                                 <Route path="/subscriptions">
-                                    <Route index element={<SubscriptionsPage />} />
-                                    <Route path=":id" element={<SubscriptionPage />} />
+                                    <Route index element={<PrivateRoute><SubscriptionsPage /></PrivateRoute>} />
+                                    <Route path=":id" element={<PrivateRoute><SubscriptionPage /></PrivateRoute>} />
                                 </Route>
-
 
                                 <Route path="/services">
                                     <Route index element={<PrivateRoute><ServicesPage /></PrivateRoute>} />
