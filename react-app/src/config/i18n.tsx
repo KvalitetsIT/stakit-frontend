@@ -36,6 +36,7 @@ const resources = {
       "Fill out the form below in order to get notified": "Udfyld nedenstående formular og bliv underrettet",
       "Check your email. You should recieve a confirmation": "Tjek din email. Du vil modtage en bekræftelse",
       "Name": "Navn",
+      "Expanded": "Udvidet",
       "Display-order": "Visningsrækkefølge",
       "Description": "Beskrivelse",
       "Identifier": "Identifikator",
