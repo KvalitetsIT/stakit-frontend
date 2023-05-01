@@ -8,7 +8,8 @@ export const stakitApiSlice = createApi({
         'groups', 'group', "group-services",
         'users', 'user',
         "announcements", "announcement",
-        "statusOfGroups", "subscription", "confirmSubscription","unsubscribe",
+        "statusOfGroups", "confirmSubscription",
+        "subscriptions", "subscription","unsubscribe"
         
     ],
     refetchOnMountOrArgChange: true,

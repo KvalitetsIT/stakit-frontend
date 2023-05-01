@@ -1,4 +1,4 @@
-import { Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea } from "@mui/material";
+import { Typography, Card, Grid, Tooltip, IconButton, SpeedDial, SpeedDialIcon, LinearProgress, Box, CardContent, CardHeader, CardActionArea, Divider } from "@mui/material";
 import { GroupAccordion } from "../../components/accordion/group";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Link } from "react-router-dom";
@@ -43,15 +43,18 @@ export function DashboardPage() {
                         msg={numberOfServicesDown === 0 ? successMsg : warningMsg}
                         callback={() => refetch()}
                     />
-                    {groups && groups.map((serviceGroup, index) => (
-                        <GroupAccordion group={serviceGroup} key={"group_" + index} ></GroupAccordion>
-                    ))}
+                    {groups && groups.filter(group => group.display).map((serviceGroup, index) => {
+                        console.log(serviceGroup)
+                        return (
+                            <GroupAccordion defaultExpanded={serviceGroup.expanded} group={serviceGroup} key={"group_" + index} ></GroupAccordion>
+                        )
+                    })}
                     <Can ability={user?.getAbility()} I={Operation.READ} a={"public"}>
                         <SubscibeButton />
                     </Can>
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <AnnouncementsCard actions={[]} />
+                    <AnnouncementsCard divider={<Divider variant={"middle"} />} actions={[]} />
                 </Grid>
             </Grid>
         </Box>
@@ -77,7 +80,6 @@ export function SubscibeButton() {
                     }}
                 >
                 </SpeedDial>
-
             </Tooltip>
         </Link>
     )
@@ -139,7 +141,7 @@ function StatusMessage(props: { msg: string, level?: "success" | "warning", refr
                 title={props.level === "success" ? <p style={{ margin: 0 }}>Perfekt &#x1F44D;</p> : <p style={{ margin: 0 }}>Advarsel &#x1F44E;</p>}
                 subheader={props.msg}
                 action={
-                    <Tooltip title={<>{t("Refresh"+"")}</>}>
+                    <Tooltip title={<>{t("Refresh" + "")}</>}>
                         <IconButton onClick={() => refresh()}>
                             <ReplayIcon></ReplayIcon>
                         </IconButton>

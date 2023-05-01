@@ -6,7 +6,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { DeleteItemDialog } from "../dialogs/DeleteDialog"
 import { Action, BaseCard, BaseCardProps } from "./BaseCard"
 import { t } from "i18next";
-import { ItemWithLink } from "../service";
 
 
 export interface ResourceCardProps<T> extends BaseCardProps<T> {
@@ -14,7 +13,6 @@ export interface ResourceCardProps<T> extends BaseCardProps<T> {
     onDelete?: (resource: T) => void
     onUpdate?: (resource: T) => void
     deleteDialog?: ReactElement<typeof DeleteItemDialog>
-    
 }
 
 export function ResourceCard(props: ResourceCardProps<any>) {
@@ -52,9 +50,11 @@ export interface ResourcesCardProps<T> extends Omit<BaseCardProps<T>, "resource"
     extractPath?: (resource: T) => string
     actions?: Action[]
     disableLinks?: boolean
+    divider?: JSX.Element
+    showItemActions?: boolean
 }
 
-ResourcesCard.defaultProps= {
+ResourcesCard.defaultProps = {
     actions: [
         { title: t("Add"), icon: <Add />, mode: Mode.ADD },
     ]
@@ -62,26 +62,27 @@ ResourcesCard.defaultProps= {
 
 export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
 
-    
-    const { actions, renderItem, resources, extractPath, extractKey, disableLinks} = props
+
+    const { actions, renderItem, resources, extractPath, extractKey, disableLinks } = props
 
     return (
         <BaseCard
             resource={resources}
             actions={actions}
             padding={0}
-            renderContent={
-                <List>
-                    {renderItem && resources?.map((resource, index: number) => extractPath ?
-                        <ItemWithLink
-                            disabled={disableLinks}
-                            key={extractKey && extractKey(resource, index)}
-                            to={extractPath(resource)}
-                        >
-                            {renderItem(resource)}
-                        </ItemWithLink>
-                        : renderItem(resource))}
-                </List>
+            renderContent={renderItem &&
+                (
+                    <List>
+                        {resources?.map((resource, index: number) => (
+                            <>
+                                {index > 0 && props.divider}
+                                {renderItem(resource)}
+                            </>
+                        )
+
+                        )}
+                    </List>
+                )
             }
 
             {...props}

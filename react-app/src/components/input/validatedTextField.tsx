@@ -5,6 +5,7 @@ export interface ValidatedTextFieldProps extends Omit<OutlinedTextFieldProps, "e
     name: string,
     label: string,
     error?: string
+    resize?: "none" | "both" | "horizontal" | "vertical" | "block" | "inline"
 }
 
 export function ValidatedTextField(props: ValidatedTextFieldProps) {
@@ -16,6 +17,11 @@ export function ValidatedTextField(props: ValidatedTextFieldProps) {
             helperText={props.error}
             as={TextField}
             fullWidth
+            sx={{
+                textarea: {
+                    resize: props.resize
+                }
+            }}
             {...props}
         />
 

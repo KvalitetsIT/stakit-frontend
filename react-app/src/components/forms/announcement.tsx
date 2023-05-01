@@ -1,19 +1,19 @@
-import { FormControl, Stack, Button, CircularProgress, Box } from "@mui/material";
-import { Formik, Form } from "formik";
+import { FormControl, Stack, Button, CircularProgress, TextField, makeStyles } from "@mui/material";
+import { Formik, Form, useFormik } from "formik";
 import { t } from "i18next";
 import { ValidatedTextField } from "../input/validatedTextField";
 import * as yup from 'yup';
 import { Announcement } from "../../models/types";
 import { FormProps } from "./subscribe";
 import { ValidatedDateTimePicker } from "../input/validatedDateTimePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import 'dayjs/locale/fr';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/de';
 import 'dayjs/locale/ar-sa';
 import 'dayjs/locale/da';
 
+import TextareaAutosize from '@mui/base/TextareaAutosize';
+import { ClassNames } from "@emotion/react";
 interface AnnouncementFormProps extends FormProps<Announcement> {
     announcement?: Announcement
     loading?: boolean
@@ -23,10 +23,10 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
 
     const validationSchema = yup.object().shape({
         announcement: yup.object().shape({
-            subject: yup.string().required(t("Subject") +" "+ t("is required")),
-            message: yup.string().required(t("Message") +" "+ t("is required")),
-            from_datetime: yup.date().required(t("From") +" "+ t("is required")),
-            to_datetime: yup.date().required(t("To") +" "+ t("is required")),
+            subject: yup.string().required(t("Subject") + " " + t("is required")),
+            message: yup.string().required(t("Message") + " " + t("is required")),
+            from_datetime: yup.date().required(t("From") + " " + t("is required")),
+            to_datetime: yup.date().required(t("To") + " " + t("is required")),
         }),
     })
 
@@ -45,43 +45,46 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
             <Formik
                 initialValues={{
                     announcement: props.announcement ?? defaultValues,
-                    checked: false
                 }}
-                onSubmit={(values) => { 
+                onSubmit={(values, formik) => {
                     values.announcement.from_datetime = new Date(values.announcement.from_datetime!); 
-                    values.announcement.to_datetime = new Date(values.announcement.to_datetime!); 
-                    props.onSubmit(values.announcement);
+                    values.announcement.to_datetime = new Date(values.announcement.to_datetime!);
+                    props.onSubmit(values.announcement).then(() => formik.resetForm())
                 }}
-
                 validationSchema={validationSchema}
                 enableReinitialize
-
+                
             >
-                {({ errors, touched, values, handleChange, setFieldValue }) => (
-                    <Form>
-                        <Stack spacing={2}>
-                            <ValidatedTextField
-                                type={"text"}
-                                error={errors.announcement?.subject && touched.announcement?.subject ? errors.announcement.subject : undefined}
-                                label={t("Subject")}
-                                name="announcement.subject"
-                                value={values.announcement?.subject}
-                                onChange={handleChange}
-                            />
+                {({ errors, touched, values, handleChange, setFieldValue}) => {
+                    return (
+                        <Form>
+                            <Stack spacing={2}>
+                                <ValidatedTextField
+                                    type={"text"}
+                                    error={errors.announcement?.subject && touched.announcement?.subject ? errors.announcement.subject : undefined}
+                                    label={t("Subject")}
+                                    name="announcement.subject"
+                                    value={values.announcement?.subject}
+                                    onChange={handleChange}
+                                />
 
-                            <ValidatedTextField
-                                type={"text"}
-                                multiline
-                                rows={3}
-                                error={errors.announcement?.message && touched.announcement?.message ? errors.announcement.message : undefined}
-                                label={t("Message")}
-                                name="announcement.message"
-                                value={values.announcement?.message}
-                                onChange={handleChange}
-                            />
+                                <ValidatedTextField
+                                    type={"text"}
+                                    multiline
+                                    rows={3}
+                                    error={errors.announcement?.message && touched.announcement?.message ? errors.announcement.message : undefined}
+                                    label={t("Message")}
+                                    name="announcement.message"
+                                    value={values.announcement?.message}
+                                    onChange={handleChange}
+                                    
+                                    resize="vertical"
+                                      
+                                    
+                                />
 
 
-                            <Stack spacing={2} direction={"row"}>
+                                <Stack spacing={2} direction={"row"}>
                                     <ValidatedDateTimePicker
                                         error={errors.announcement?.from_datetime && touched.announcement?.from_datetime ? errors.announcement.from_datetime : undefined}
                                         label={t("From")}
@@ -101,23 +104,25 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                         value={values.announcement?.to_datetime}
                                     />
 
-                            </Stack>
+                                </Stack>
 
-                            <Stack spacing={2} direction={"row"}>
-                                <Button
-                                    type={"submit"}
-                                    variant="contained"
-                                    disabled={props.loading}
-                                    fullWidth={true}
-                                >
-                                    {props.loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("Submit")}</>}
-                                </Button>
+                                <Stack spacing={2} direction={"row"}>
+                                    <Button
+                                        type={"submit"}
+                                        variant="contained"
+                                        disabled={props.loading}
+                                        fullWidth={true}
+                                    >
+                                        {props.loading ? <CircularProgress color={"inherit"} size={"1.5em"}></CircularProgress> : <>{t("Submit")}</>}
+                                    </Button>
 
-                                <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{t("Cancel")+""}</Button>
+                                    <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{t("Cancel") + ""}</Button>
+                                </Stack>
                             </Stack>
-                        </Stack>
-                    </Form>
-                )}
+                        </Form>
+                    )
+                }
+                }
 
             </Formik>
         </FormControl >

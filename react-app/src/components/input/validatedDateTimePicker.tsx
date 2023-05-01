@@ -24,17 +24,22 @@ export function ValidatedDateTimePicker(props: ValidatedDateTimePickerProps) {
 
     const availableLanguages = ["fr", "ru", "de", "en", "da"] as const
     const defaultLanguage = "da"
-    const lang = availableLanguages.find((x) => x === navigator.language) ?? defaultLanguage 
+    const lang = availableLanguages.find((x) => x === navigator.language) ?? defaultLanguage
 
+    const {error} = props
+    
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang} sx={{width: "100%"}}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang} sx={{ width: "100%" }}>
             <Field
                 as={DateTimePicker}
-                renderInput={(props: JSX.IntrinsicAttributes & TextFieldProps) => <TextField fullWidth {...props} />}
-                error={props.error}
-                helperText={props.error}
+                renderInput={(props: JSX.IntrinsicAttributes & TextFieldProps) => <TextField
+                    {...props}
+                    error={error != undefined}
+                    helperText={error}
+                    fullWidth
+                />}
                 fullWidth
-                sx={{width: "100%"}}
+                sx={{ TextField: { error: true }, width: "100%" }}
                 {...props}
             >
             </Field>

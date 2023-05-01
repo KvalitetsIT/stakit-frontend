@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Container, Divider, Typography } from "@mui/material";
 import { useState } from "react";
 import { SubscriptionForm } from "../../components/forms/subscribe";
 import { CenteredContent } from "../../components/layout/CenteredContent";
@@ -19,7 +19,7 @@ export function SubscribePage() {
     const onSubscribtion = (subscription: Subscription) => {
         setIsLoading(true)
         request(subscription).then(() => {
-            setMode(Mode.SUCCESS); 
+            setMode(Mode.SUCCESS);
         }).catch((error) => {
             console.error("error", error)
         })
@@ -42,12 +42,14 @@ export function SubscribePage() {
                 <Loading loading={isLoading}>
                     <Container maxWidth="sm">
                         <Typography variant="h3" textAlign={"center"}>{t("Subscribe") + ""}</Typography>
-                        <Typography variant="h6" marginBottom={2}>{t("Fill out the form below in order to get notified") + ""}</Typography>
+                        <Typography variant="h6" textAlign={"center"} marginBottom={2}>{t("Fill out the form below in order to get notified") + ""}</Typography>
                         <SubscriptionForm
                             optionalGroups={groups}
                             onSubmit={async (subscription) => onSubscribtion(subscription)}
                             onCancel={() => window.history.go(-1)}
                         ></SubscriptionForm>
+                        <Typography marginTop={2} marginBottom={2} textAlign={"center"}>Obs. {t("A previous subscription is overwritten when a new one is created") + ""}</Typography>
+
                     </Container>
                 </Loading>
             </CenteredContent>

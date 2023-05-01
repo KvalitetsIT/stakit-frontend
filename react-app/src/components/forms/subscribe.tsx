@@ -41,21 +41,20 @@ export function SubscriptionForm(props: SubscriptionFormProps) {
 
     const initialValues = {
         subscription: props.subscription ?? defaultValues,
-
     }
 
     return (
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => {
+                onSubmit={(values, formik) => {
                     const groups = values.subscription.groups as unknown as Group[]
                     const subscription = {
                         email: values.subscription.email!,
                         groups: groups?.map(group => group.uuid!),
                         announcements: values.subscription.announcements
                     }
-                    props.onSubmit(subscription)
+                    props.onSubmit(subscription).then(() => formik.resetForm())
                 }}
                 validationSchema={validationSchema}
                 enableReinitialize

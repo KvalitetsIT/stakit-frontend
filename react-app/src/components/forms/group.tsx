@@ -1,4 +1,4 @@
-import { FormControl, Stack, Button } from "@mui/material";
+import { FormControl, Stack, Button, Select, Checkbox } from "@mui/material";
 import { Formik, Form } from "formik";
 import { Service } from "../../models/types";
 import * as yup from 'yup';
@@ -9,6 +9,8 @@ import { Group } from "../../models/group";
 import { t } from "i18next";
 import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";
 
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { ValidatedCheck } from "../input/validatedCheck";
 
 interface GroupFormProps extends FormProps<Group> {
     group?: Group
@@ -21,31 +23,37 @@ export function GroupForm(props: GroupFormProps) {
 
     const validationSchema = yup.object().shape({
         group: yup.object().shape({
-            name: yup.string().required(t("Name") +" "+ t("is required")),
-            display_order: yup.string().required(t("Display-order") +" "+ t("is required")),
-            description: yup.string().required(t("Description") +" "+ t("is required"))
+            name: yup.string().required(t("Name") + " " + t("is required")),
+            display_order: yup.string().required(t("Display-order") + " " + t("is required")),
+            description: yup.string().required(t("Description") + " " + t("is required"))
         })
     })
 
     let group: Group | undefined = structuredClone(props.group)
 
-    if(!isLoading && services && group ) group.services = services.filter(service => (props.group?.services as string[]).includes(service.uuid!))
-   
-    const initialValues = {
-        group: group ?? {
-            name: "",
-            display_order: 1,
-            services: [],
-            description: "",
-        }
+    if (!isLoading && services && group) group.services = services.filter(service => (props.group?.services as string[]).includes(service.uuid!))
+
+
+    const defaultValues = {
+        name: "",
+        display_order: 1,
+        services: [],
+        description: "",
+        display: false,
+        expanded: false,
     }
+
+    const initialValues = {
+        group: group ?? defaultValues
+    }
+
 
 
     return (
         <FormControl fullWidth>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => props.onSubmit(values.group)}
+                onSubmit={(values, formik) => props.onSubmit(values.group).then(() => formik.resetForm())}
                 validationSchema={validationSchema}
                 enableReinitialize
             >
@@ -90,6 +98,22 @@ export function GroupForm(props: GroupFormProps) {
                                 value={values.group.description}
                                 error={touched.group?.description && errors.group?.description ? errors.group?.description : undefined}
                             />
+                            <Stack direction={"row"}>
+                                <ValidatedCheck
+                                    name="group.display"
+                                    label={t("Show on dashboard")}
+                                    value={values.group.display}
+                                    error={touched.group?.display && errors.group?.display ? errors.group?.display : undefined}
+                                />
+                                <ValidatedCheck
+                                    name="group.expanded"
+                                    label={t("Expanded")}
+                                    value={values.group.expanded}
+                                    error={touched.group?.expanded && errors.group?.expanded ? errors.group?.expanded : undefined}
+                                />
+                            </Stack>
+
+
 
                             <Stack spacing={2} direction={"row"}>
                                 <Button
@@ -97,7 +121,7 @@ export function GroupForm(props: GroupFormProps) {
                                     variant="contained"
                                     fullWidth={true}
                                 >
-                                    {t("Save")+""}
+                                    {t("Save") + ""}
                                 </Button>
                                 <Button fullWidth={true} onClick={props.onCancel} variant="outlined">{"" + t("Cancel")}</Button>
                             </Stack>

@@ -49,9 +49,9 @@ export interface Action {
     callback: () => void
 }
 
-export interface Subscription {
+export interface Subscription extends Resource {
     email?: string,
-    groups?: string[],
+    groups: string[] | Group[],
     announcements?: boolean
 }
 

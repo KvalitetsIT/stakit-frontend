@@ -24,16 +24,19 @@ const resources = {
       "Groups": "Grupper",
       "Services": "Tjenester",
       "Subscribe": "Abonner",
+      "Details": "Detajler",
       "All systems works appropriately": "Alle systemer virker hensigtsmæssigt",
       "One or more systems are experiencing problems": "Et eller flere systemer oplever problemer",
       "Last updated": "Sidst opdateret",
       "A list of all services": "En liste over all tjenester",
       "A list of all groups": "En liste over all grupper",
       "Save": "Gem",
+      "Copy":"Kopier",
       "Update": "Opdater",
       "Fill out the form below in order to get notified": "Udfyld nedenstående formular og bliv underrettet",
       "Check your email. You should recieve a confirmation": "Tjek din email. Du vil modtage en bekræftelse",
       "Name": "Navn",
+      "Expanded": "Udvidet",
       "Display-order": "Visningsrækkefølge",
       "Description": "Beskrivelse",
       "Identifier": "Identifikator",
@@ -46,8 +49,13 @@ const resources = {
       "Your subscription could unfortunately not be confirmed": "Dit abbonnement blev desværre ikke bekræftet",
       "Your subscription has been confirmed": "Dit abbonement blev bekræftet",
       "Success": "Success",
-      "Error": "Fejl" 
-
+      "Error": "Fejl" ,
+      "You are about to delete the service": "Du er ved at slette tjenesten",
+      "You are about to delete the group": "Du er ved at slette gruppen",
+      "You are about to delete the announcement": "Du er ved at slette meddelelsen",
+      "Delete announcement": "Slet meddelelsen",
+      "Show on dashboard": "Vis på dashboard",
+      "A previous subscription is overwritten when a new one is created": "Et tidligere abbonement overskrives ved oprettelse af et nyt"
     }
   }
 };

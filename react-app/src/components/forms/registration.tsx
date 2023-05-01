@@ -41,7 +41,7 @@ export function RegistrationForm(props: {
         <FormControl>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values, errors) => props.onSubmit(values.user!)}
+                onSubmit={(values, formik) => {props.onSubmit(values.user!); formik.resetForm()}}
                 validationSchema={validationSchema}
             >
                 {({ errors, touched, values, submitForm, handleChange }) => (

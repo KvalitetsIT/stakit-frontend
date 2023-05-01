@@ -35,7 +35,7 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
                 body: request,
                 responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Could not create subscription" }),
             }),
-            invalidatesTags: ["subscription"]
+            invalidatesTags: ["subscriptions"]
         }),
         confirmSubscription: builder.query<undefined, string>({
             query: (id) => HandleQuery({
