@@ -37,7 +37,8 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
         to_datetime: new Date(),
     }
 
-    
+    defaultValues.to_datetime?.setDate(defaultValues.to_datetime.getDate()+1);
+
     if (props.isLoading) return (<></>)
     return (
         <FormControl fullWidth>
@@ -46,7 +47,8 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                     announcement: props.announcement ?? defaultValues,
                 }}
                 onSubmit={(values, formik) => {
-                    values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!);
+                    values.announcement.from_datetime = new Date(values.announcement.from_datetime!); 
+                    values.announcement.to_datetime = new Date(values.announcement.to_datetime!);
                     props.onSubmit(values.announcement).then(() => formik.resetForm())
                 }}
                 validationSchema={validationSchema}
@@ -90,7 +92,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                         onChange={(newValue) => {
                                             setFieldValue("announcement.from_datetime", newValue);
                                         }}
-                                        value={values.announcement.from_datetime}
+                                        value={values.announcement?.from_datetime}
                                     />
                                     <ValidatedDateTimePicker
                                         error={errors.announcement?.to_datetime && touched.announcement?.to_datetime ? errors.announcement.to_datetime : undefined}
@@ -99,7 +101,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                         onChange={(newValue) => {
                                             setFieldValue("announcement.to_datetime", newValue);
                                         }}
-                                        value={values.announcement.to_datetime}
+                                        value={values.announcement?.to_datetime}
                                     />
 
                                 </Stack>

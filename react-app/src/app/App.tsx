@@ -25,6 +25,7 @@ import { ConfirmSubscriptionPage } from '../pages/subscription/ConfirmationPage'
 import { SubscribePage } from '../pages/subscription/SubscribePage';
 import { SubscriptionsPage } from '../pages/subscription/SubscriptionsPage';
 import { SubscriptionPage } from '../pages/subscription/subscriptionPage';
+import { UnsubscribePage } from '../pages/subscription/UnsubscribePage';
 
 
 
@@ -82,6 +83,10 @@ export default function App() {
                                 <Route path="/subscriptions">
                                     <Route index element={<PrivateRoute><SubscriptionsPage /></PrivateRoute>} />
                                     <Route path=":id" element={<PrivateRoute><SubscriptionPage /></PrivateRoute>} />
+                                </Route>
+
+                                <Route path="/unsubscribe">
+                                    <Route path=":id" element={<UnsubscribePage />} />
                                 </Route>
 
                                 <Route path="/services">
