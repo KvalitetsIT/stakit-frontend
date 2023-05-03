@@ -17,7 +17,7 @@ export function ServiceDetails() {
         <>
             <Container sx={{ paddingTop: 4 }}>
                 <ServiceCard resource={service} isLoading={isLoading} />
-                <HistorySection />
+                {/*<HistorySection />*/}
             </Container >
         </>
     )
