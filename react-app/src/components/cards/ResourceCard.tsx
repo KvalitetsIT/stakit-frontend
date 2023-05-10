@@ -52,6 +52,7 @@ export interface ResourcesCardProps<T> extends Omit<BaseCardProps<T>, "resource"
     disableLinks?: boolean
     divider?: JSX.Element
     showItemActions?: boolean
+    isLoading?: boolean
 }
 
 ResourcesCard.defaultProps = {

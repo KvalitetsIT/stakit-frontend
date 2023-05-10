@@ -1,10 +1,10 @@
 import { ListItemButton, ListItem, ListItemText, Typography, Divider, IconButton, Link, Tooltip, Box } from "@mui/material";
 import { Announcement } from "../../models/types";
-import { useGetAllAnnouncementsQuery } from "../../feature/stakit/publicSlice";
+
 import { AnnouncementForm } from "../forms/announcement";
 import { useContext, useState } from "react";
 import { Mode } from "./Mode";
-import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation } from "../../feature/stakit/announcementSlice";
+import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation, useGetAllAnnouncementsQuery } from "../../feature/stakit/announcementSlice";
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
 import { ResourceCard, ResourceCardProps, ResourcesCard, ResourcesCardProps } from "./ResourceCard";
 import { t } from "i18next";
@@ -62,6 +62,7 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
 interface AnnouncementsCardProps extends Omit<ResourcesCardProps<Announcement>, "resources"> {
     actions?: Action[]
     divider?: JSX.Element
+    announcements?: Announcement[]
 }
 
 AnnouncementsCard.defaultProps = {
@@ -71,11 +72,11 @@ AnnouncementsCard.defaultProps = {
 
 export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
-    const { isLoading, data, refetch } = useGetAllAnnouncementsQuery(undefined)
+    const { isLoading, announcements, onRefresh } = props;
     const create = useCreateAnnouncementMutation()
     const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
-    const reload = () => { refetch() }
+    const reload = () => { onRefresh && onRefresh() }
 
 
     const AnnouncementActions = (props: { announcement: Announcement, onCopy?: (announcement: Announcement) => void }) => {
@@ -129,7 +130,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
             isLoading={isLoading}
             mode={mode}
             onModeChange={(x) => setMode(x)}
-            resources={data!}
+            resources={announcements!}
             renderForm={() => <AnnouncementForm
                 announcement={clipboard}
                 onSubmit={async (sub) => {
@@ -139,7 +140,7 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                 onCancel={() => {
                     setMode(Mode.NORMAL);
                 }} />}
-            renderItem={(item) => <AnnouncementItem actions={ props.showItemActions ? <AnnouncementActions announcement={item} onCopy={(announcement) => { setClipboard(announcement); setMode(Mode.EDIT) }} /> : <> </>} announcement={item} /> }
+            renderItem={(item) => <AnnouncementItem actions={props.showItemActions ? <AnnouncementActions announcement={item} onCopy={(announcement) => { setClipboard(announcement); setMode(Mode.EDIT) }} /> : <> </>} announcement={item} />}
             extractKey={(announcement: Announcement, index) => "announcement_" + index}
             extractPath={(announcement) => "/announcements/" + announcement.uuid}
             {...props}

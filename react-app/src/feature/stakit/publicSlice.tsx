@@ -9,7 +9,7 @@ import { stakitApiSlice } from '../../redux/stakit-api-slice';
 // Define a service using a base URL and expected endpoints
 export const announcementSlice = stakitApiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getAllAnnouncements: builder.query<Announcement[], undefined>({
+        getAnnouncements: builder.query<Announcement[], undefined>({
             query: () => HandleQuery({
                 //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
                 url: `announcements-to-show`,
@@ -51,4 +51,4 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useConfirmSubscriptionQuery } = announcementSlice
+export const { useGetAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useConfirmSubscriptionQuery } = announcementSlice

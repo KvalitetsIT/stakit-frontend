@@ -11,13 +11,22 @@ import { stakitApiSlice } from '../../redux/stakit-api-slice';
 // Define a service using a base URL and expected endpoints
 export const announcementSlice = stakitApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-  
+    
+    getAllAnnouncements: builder.query<Announcement[], undefined>({
+      query: (id) => ({
+        //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
+        url: `announcements`,
+        method: "GET",
+        responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Services could not be fetched" }),
+      }),
+      providesTags: ["announcements"]
+    }),
     getAnnouncement: builder.query<Announcement, string>({
       query: (id) => ({
         //url: `${baseurl}/todos?page=${pack.pagination.page}&limit=${pack.pagination.pagesize}`,
         url: `announcements/${id}`,
         method: "GET",
-        responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Services could not be fetched" }),
+        responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Service could not be fetched" }),
       }),
       providesTags: ["announcements"]
     }),
@@ -53,4 +62,4 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAnnouncementQuery, useCreateAnnouncementMutation, useUpdateAnnouncementMutation, useDeleteAnnouncementMutation } = announcementSlice
+export const { useGetAllAnnouncementsQuery, useGetAnnouncementQuery, useCreateAnnouncementMutation, useUpdateAnnouncementMutation, useDeleteAnnouncementMutation } = announcementSlice
