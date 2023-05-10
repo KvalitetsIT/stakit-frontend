@@ -53,7 +53,6 @@ export function DashboardPage() {
                         onRefresh={() => refetch()}
                     />
                     {groups && groups.filter(group => group.display).map((serviceGroup, index) => {
-                        console.log(serviceGroup)
                         return (
                             <GroupAccordion defaultExpanded={serviceGroup.expanded} group={serviceGroup} key={"group_" + index} ></GroupAccordion>
                         )

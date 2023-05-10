@@ -10,8 +10,8 @@ export default function fetchDefaultBaseQuery() {
         mode: "cors",
         baseUrl: baseurl,
         prepareHeaders: (headers, api) => {
-            const token = keycloak.token
-            //const token = "eyJhbGciOiJSUzI1NiJ9.eyJuYmYiOjE2ODMxMTYzMzQsImV4cCI6MTY4MzEyNzEzNCwiYXVkIjoiYXVkaWVuY2UiLCJpc3MiOiJpc3N1ZXIiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20ifQ.DqOBXxMLOZpyZLbYOMe5UTRbae8tDEW0brIUc7FmRYo6eam8QxIUQXplq2G3DKbWBdX5HiyUwG-NKPDzwnb1P4qOIMUSVAKJkcy7Ik-2RROVWrL5-267qwL6BBViE7ENCmIyQaabkWYFkoU5q7jVHRADvrqjYgEv9I7dhIfWTgecstlJmFyUjDiVW9vcqrl4v-mFPZhmASOslIJAR9Zn6Ei9sfTuiy53ndWsW2rWYWjK9xBdmyvmW9osza4WlHRy5WQcW64nmxWEGHx73Xo3JJPhhQrP45XdA_TMW75UwoqWf8iohof2l5b1pebYeyYcQA-1SnY1aDtqqd-8-q75JQ" // <-- fake token
+            //const token = keycloak.token
+            const token = "eyJhbGciOiJSUzI1NiJ9.eyJuYmYiOjE2ODM3MTAxNzUsImV4cCI6MTY4MzcyMDk3NSwiYXVkIjoiYXVkaWVuY2UiLCJpc3MiOiJpc3N1ZXIiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20ifQ.aTCQj0LnS7EhpkLpCESWPwfoF2aAhVazBc3fNBHgIOzIjMSQbpItj6yPER0hDWtER-P_SsDSoXNf6JD5EBJ-7IpAeNWuj-WoWLPOqXx2oxc7NV4GzNdO2-HltTHPH34Jbq-5Pr8j7HIDuWEE3du_bh3xJxIAlM3NCeni7T1cVczUXk6V18z34oFzz5TAbGtamjGA0a4U1HKO8gi8NBVhFGPtygVak9Kg-yq9V6JqdABx4i74NbcivFyX_Si3rQ6MlV4spLsiVLWmBLaLRuS0N0-8qYgX51Zv5lRwHIyWMbjpVswOZtLM9E3DP7-FJbt4p2wiQ2QNVaS_r0rypHF0nw" // <-- fake token
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
