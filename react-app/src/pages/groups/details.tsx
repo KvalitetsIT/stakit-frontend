@@ -10,7 +10,7 @@ export function GroupDetails() {
     const id = params.id ?? "undefined" 
 
     const {data: group, isLoading} = useGetGroupQuery(id)
-
+    
 
     return (
         <Container sx={{ marginTop: 4 }}>
