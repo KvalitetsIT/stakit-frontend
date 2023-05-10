@@ -6,14 +6,29 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { useContext, useEffect, useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AnnouncementsCard } from "../../components/cards/Announcements";
-import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
-import { Service, Status } from "../../models/types";
+import {  useGetAnnouncementsQuery, useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
+import { Announcement, Service, Status } from "../../models/types";
 import { Group } from "../../models/group";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import { Can } from "../../feature/authentication/logic/Can";
 import { Operation } from "../../feature/authentication/config/ability";
 import { t } from "i18next";
+import { Email } from "@mui/icons-material";
+import { useGetAllAnnouncementsQuery } from "../../feature/stakit/announcementSlice";
 
+
+
+function getStatus(services: Service[]) : Status {
+    
+    let ok = services.filter(s => s.status == Status.OK).length;
+    let patial_not_ok = services.filter(s => s.status == Status.PARTIAL_NOT_OK).length;
+    let not_ok = services.filter(s => s.status == Status.NOT_OK).length;
+    
+    if (not_ok > 0) return Status.NOT_OK
+    if (patial_not_ok > 0) return Status.PARTIAL_NOT_OK
+
+    return Status.OK
+}
 
 export function DashboardPage() {
 
@@ -21,30 +36,23 @@ export function DashboardPage() {
     const user = useContext(UserContext)!
 
     const { data, refetch } = useGetStatusOfGroupsQuery(undefined)
-
+    const { data: announcements, refetch: refetchAnnouncements, isLoading: announcementsIsLoading } = useGetAnnouncementsQuery(undefined);
+    
     const groups: Group[] = data ?? []
 
     const services: Service[] = groups.flatMap(group => group.services.map(service => service as Service))
 
-    const numberOfServicesDown = services && services.filter((service: Service) => service.status === Status.NOT_OK).length
-
-    const level = numberOfServicesDown === 0 ? "success" : "warning"
-
-    const successMsg = t("All systems works appropriately")
-
-    const warningMsg = t("One or more systems are experiencing problems")
+    const status = getStatus(services)
 
     return (
         <Box>
             <Grid container spacing={2}>
                 <Grid item xs={12} lg={6}>
                     <StatusMessage
-                        level={level}
-                        msg={numberOfServicesDown === 0 ? successMsg : warningMsg}
-                        callback={() => refetch()}
+                        status={status}
+                        onRefresh={() => refetch()}
                     />
                     {groups && groups.filter(group => group.display).map((serviceGroup, index) => {
-                        console.log(serviceGroup)
                         return (
                             <GroupAccordion defaultExpanded={serviceGroup.expanded} group={serviceGroup} key={"group_" + index} ></GroupAccordion>
                         )
@@ -54,7 +62,7 @@ export function DashboardPage() {
                     </Can>
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <AnnouncementsCard divider={<Divider variant={"middle"} />} actions={[]} />
+                    <AnnouncementsCard announcements={announcements ?? []} onRefresh={refetchAnnouncements} isLoading={announcementsIsLoading} divider={<Divider variant={"middle"} />} actions={[]} />
                 </Grid>
             </Grid>
         </Box>
@@ -89,7 +97,52 @@ StatusMessage.defaultProps = {
     level: "info",
 }
 
-function StatusMessage(props: { msg: string, level?: "success" | "warning", refreshRate?: number, callback?: () => void }) {
+function StatusMessage(props: { status: Status, refreshRate?: number, onRefresh?: () => void }) {
+
+    const getHeading = (status: Status): JSX.Element => {
+
+        enum Heading {
+            WARNING = "Warning",
+            ERROR = "Error",
+            PERFECT = "Perfect",
+            UKNOWN = "Unknown"
+        }
+
+        enum Emoji {
+            WARNING = '\u{1F622}',
+            ERROR = '\u{1F631}',
+            PERFECT = '\u{1F973}',
+            UKNOWN = '\u{1F914}'
+        }
+
+        let msg = Heading.UKNOWN;
+        let emoji = Emoji.UKNOWN;
+
+        switch (status) {
+            case Status.NOT_OK: { msg = Heading.ERROR; emoji = Emoji.ERROR; break };
+            case Status.OK: { msg = Heading.PERFECT; emoji = Emoji.PERFECT; break };
+            case Status.PARTIAL_NOT_OK: { msg = Heading.WARNING; emoji = Emoji.WARNING; break };
+            case Status.UKNOWN: { msg = Heading.UKNOWN; emoji = Emoji.UKNOWN; break };
+            default: { msg = Heading.UKNOWN; emoji = Emoji.UKNOWN; break };
+        }
+
+        return <p style={{ margin: 0 }}>{t(msg) + ""} {emoji}</p>
+    }
+
+    const getStatusMessage = (status: Status): string => {
+
+        const successMsg = t("All systems works appropriately")
+        const warningMSg = t("One or more systems are experiencing problems")
+        const errorMsg = t("One or more systems are down")
+
+        switch (status) {
+            case Status.NOT_OK: return errorMsg
+            case Status.OK: return successMsg
+            case Status.PARTIAL_NOT_OK: return warningMSg
+            case Status.UKNOWN: return t("Something went wrong")
+        }
+
+    }
 
     const refreshRate = props.refreshRate ?? 60000
 
@@ -122,7 +175,7 @@ function StatusMessage(props: { msg: string, level?: "success" | "warning", refr
 
 
     const refresh = () => {
-        if (props.callback) props.callback()
+        if (props.onRefresh) props.onRefresh()
         setLastRefresh((prev) => {
             const last = prev
             last.setTime(new Date().getTime())
@@ -138,8 +191,8 @@ function StatusMessage(props: { msg: string, level?: "success" | "warning", refr
                 {/* </Tooltip> */}
             </CardActionArea>
             <CardHeader
-                title={props.level === "success" ? <p style={{ margin: 0 }}>Perfekt &#x1F44D;</p> : <p style={{ margin: 0 }}>Advarsel &#x1F44E;</p>}
-                subheader={props.msg}
+                title={getHeading(props.status)}
+                subheader={getStatusMessage(props.status)}
                 action={
                     <Tooltip title={<>{t("Refresh" + "")}</>}>
                         <IconButton onClick={() => refresh()}>

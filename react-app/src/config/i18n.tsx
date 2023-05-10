@@ -49,13 +49,17 @@ const resources = {
       "Your subscription could unfortunately not be confirmed": "Dit abbonnement blev desværre ikke bekræftet",
       "Your subscription has been confirmed": "Dit abbonement blev bekræftet",
       "Success": "Success",
-      "Error": "Fejl" ,
       "You are about to delete the service": "Du er ved at slette tjenesten",
       "You are about to delete the group": "Du er ved at slette gruppen",
       "You are about to delete the announcement": "Du er ved at slette meddelelsen",
       "Delete announcement": "Slet meddelelsen",
       "Show on dashboard": "Vis på dashboard",
-      "A previous subscription is overwritten when a new one is created": "Et tidligere abbonement overskrives ved oprettelse af et nyt"
+      "A previous subscription is overwritten when a new one is created": "Et tidligere abbonement overskrives ved oprettelse af et nyt",
+      "Warning": "Advarsel",
+      "Error": "Fejl",
+      "Perfect": "Perfekt",
+      "Unknown": "Ukendt",
+      "Do you want to continue": "Ønsker du at fortsætte"
     }
   }
 };

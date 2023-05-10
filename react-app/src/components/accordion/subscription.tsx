@@ -1,6 +1,6 @@
 import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Stack, Divider, Chip, Box, IconButton, Icon, Tooltip, AccordionActions, Avatar } from "@mui/material";
 import { Service, Status } from "../../models/types";
-import { Modes, ServiceItem } from "../service";
+import { Modes, ServiceItem } from "../items/service";
 import { Subscription } from "../../models/types";
 import { Edit } from "@mui/icons-material";
 import { StatusIcon, useGetColorTagByStatus } from "../status";

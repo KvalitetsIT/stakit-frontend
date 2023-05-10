@@ -40,7 +40,7 @@ export class Service extends Resource {
 }
 
 export enum Status {
-    OK = "OK", NOT_OK = "NOT_OK", UKNOWN = "UKNOWN"
+    OK = "OK", PARTIAL_NOT_OK = "PARTIAL_NOT_OK",  NOT_OK = "NOT_OK", UKNOWN = "UKNOWN"
 }
 
 export interface Action {

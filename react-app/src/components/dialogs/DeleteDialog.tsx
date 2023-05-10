@@ -65,7 +65,7 @@ export function DeleteItemDialog(props: DeleteItemDialogProps<any>) {
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     {renderMessage && renderMessage(item)}
-                    <Typography>Do you want to continue?</Typography>
+                    <Typography>{t("Do you want to continue") +""}?</Typography>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
