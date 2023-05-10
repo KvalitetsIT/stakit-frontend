@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { t } from "i18next";
-import { redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Loading } from "../../components/feedback/loading";
 import { CenteredContent } from "../../components/layout/CenteredContent";
 import { useUnsubscribeQuery } from "../../feature/stakit/publicSlice";
@@ -10,7 +10,7 @@ export function UnsubscribePage() {
 
     const id = params.id!
 
-    const { data, isLoading, isError, isSuccess } = useUnsubscribeQuery(id)
+    const { isLoading, isError, isSuccess } = useUnsubscribeQuery(id)
 
     return (
         <>

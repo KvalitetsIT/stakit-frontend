@@ -59,6 +59,6 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
     })
 })
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useConfirmSubscriptionQuery, useUnsubscribeQuery } = announcementSlice
+export const { useUnsubscribeQuery, useGetAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useConfirmSubscriptionQuery } = announcementSlice
+
+

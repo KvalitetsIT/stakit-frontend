@@ -1,4 +1,4 @@
-import { Container, Divider, Typography } from "@mui/material";
+import { Container,  Typography } from "@mui/material";
 import { useState } from "react";
 import { SubscriptionForm } from "../../components/forms/subscribe";
 import { CenteredContent } from "../../components/layout/CenteredContent";
@@ -13,12 +13,12 @@ export function SubscribePage() {
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const request = useCreateSubscriptionMutation()[0]
+    const createSubscription = useCreateSubscriptionMutation()[0]
 
 
     const onSubscribtion = (subscription: Subscription) => {
         setIsLoading(true)
-        request(subscription).then(() => {
+        createSubscription(subscription).then(() => {
             setMode(Mode.SUCCESS);
         }).catch((error) => {
             console.error("error", error)
@@ -39,7 +39,7 @@ export function SubscribePage() {
         )
         default: return (
             <CenteredContent>
-                <Loading loading={isLoading}>
+                <Loading loading={isStatusOfGroupsQueryLoading || isLoading}>
                     <Container maxWidth="sm">
                         <Typography variant="h3" textAlign={"center"}>{t("Subscribe") + ""}</Typography>
                         <Typography variant="h6" textAlign={"center"} marginBottom={2}>{t("Fill out the form below in order to get notified") + ""}</Typography>

@@ -47,7 +47,7 @@ const resources = {
       "History": "Historik",
       "The chart below shows the status corrosponding to the last 90 days": "Nedenstående graf viser status over de seneste 90 dage",
       "Your subscription could unfortunately not be confirmed": "Dit abbonnement blev desværre ikke bekræftet",
-      "Your subscription has been confirmed": "Dit abbonement blev bekræftet",
+      "Your subscription has been confirmed": "Dit abonement blev bekræftet",
       "Success": "Success",
       "You are about to delete the service": "Du er ved at slette tjenesten",
       "You are about to delete the group": "Du er ved at slette gruppen",

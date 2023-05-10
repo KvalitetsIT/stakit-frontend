@@ -1,6 +1,6 @@
-import { ListItemButton, Typography, Divider, IconButton, Link, Tooltip } from "@mui/material";
-import { Announcement } from "../../models/types";
 
+import {  Typography , IconButton, Link, Tooltip } from "@mui/material";
+import { Announcement } from "../../models/types";
 import { AnnouncementForm } from "../forms/announcement";
 import { useContext, useState } from "react";
 import { Mode } from "./Mode";
@@ -12,8 +12,6 @@ import { Action } from "./BaseCard";
 import { useKeycloak } from "@react-keycloak/web";
 import { Can } from "@casl/react";
 import { Operation, Asset } from "../../feature/authentication/config/ability";
-import { Modes } from "../items/service";
-import { ItemWithLink } from "../items/ItemWithLink";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import { AnnouncementItem } from "../items/AnnouncementItem";
@@ -101,7 +99,6 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     const { isLoading, announcements, onRefresh } = props;
     const create = useCreateAnnouncementMutation()
-    const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
     const reload = () => { onRefresh && onRefresh() }
     const keycloak = useKeycloak()
