@@ -1,12 +1,19 @@
 import { Container } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { AnnouncementCard, AnnouncementsCard } from "../../components/cards/Announcements";
-import { useGetAnnouncementQuery } from "../../feature/stakit/announcementSlice";
+import { useGetAllAnnouncementsQuery, useGetAnnouncementQuery } from "../../feature/stakit/announcementSlice";
+
+
 
 export function AnnouncementsPage() {
+
+    const { data, refetch, isLoading } = useGetAllAnnouncementsQuery(undefined);
+    
+
+
     return (
         <Container>
-            <AnnouncementsCard showItemActions />
+            <AnnouncementsCard announcements={data ?? []} isLoading={isLoading} onRefresh={refetch} showItemActions />
         </Container>
     )
 }

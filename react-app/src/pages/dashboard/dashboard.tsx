@@ -6,14 +6,15 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { useContext, useEffect, useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AnnouncementsCard } from "../../components/cards/Announcements";
-import { useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
-import { Service, Status } from "../../models/types";
+import {  useGetAnnouncementsQuery, useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
+import { Announcement, Service, Status } from "../../models/types";
 import { Group } from "../../models/group";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import { Can } from "../../feature/authentication/logic/Can";
 import { Operation } from "../../feature/authentication/config/ability";
 import { t } from "i18next";
 import { Email } from "@mui/icons-material";
+import { useGetAllAnnouncementsQuery } from "../../feature/stakit/announcementSlice";
 
 
 
@@ -35,7 +36,8 @@ export function DashboardPage() {
     const user = useContext(UserContext)!
 
     const { data, refetch } = useGetStatusOfGroupsQuery(undefined)
-
+    const { data: announcements, refetch: refetchAnnouncements, isLoading: announcementsIsLoading } = useGetAnnouncementsQuery(undefined);
+    
     const groups: Group[] = data ?? []
 
     const services: Service[] = groups.flatMap(group => group.services.map(service => service as Service))
@@ -61,7 +63,7 @@ export function DashboardPage() {
                     </Can>
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <AnnouncementsCard divider={<Divider variant={"middle"} />} actions={[]} />
+                    <AnnouncementsCard announcements={announcements ?? []} onRefresh={refetchAnnouncements} isLoading={announcementsIsLoading} divider={<Divider variant={"middle"} />} actions={[]} />
                 </Grid>
             </Grid>
         </Box>
