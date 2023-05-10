@@ -1,4 +1,4 @@
-import { ListItemButton, ListItem, ListItemText, Typography, Divider, IconButton, Link, Tooltip, Box } from "@mui/material";
+import { ListItemButton, Typography, Divider, IconButton, Link, Tooltip } from "@mui/material";
 import { Announcement } from "../../models/types";
 
 import { AnnouncementForm } from "../forms/announcement";
@@ -12,16 +12,18 @@ import { Action } from "./BaseCard";
 import { useKeycloak } from "@react-keycloak/web";
 import { Can } from "@casl/react";
 import { Operation, Asset } from "../../feature/authentication/config/ability";
-import { Modes } from "../service";
+import { Modes } from "../items/service";
+import { ItemWithLink } from "../items/ItemWithLink";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
+import { AnnouncementItem } from "../items/AnnouncementItem";
 
 interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
 
 export function AnnouncementCard(props: AnnouncementCardProps) {
     const [mode, setMode] = useState(props.mode ?? Mode.NORMAL)
     const remove = useDeleteAnnouncementMutation()[0]
-    const { resource: announcement } = props
+    const { resource: announcement , onUpdate} = props
     const { refetch } = useGetAllAnnouncementsQuery(undefined)
 
     return (
@@ -35,12 +37,16 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
             renderForm={() => (
                 <AnnouncementForm
                     onSubmit={async (submission: Announcement) => {
-                        props.onUpdate && props.onUpdate(submission)
+                        props.onUpdate && props.onUpdate(submission);
+                        setMode(Mode.NORMAL)
                     }}
                     onCancel={() => setMode(Mode.NORMAL)}
                     announcement={props.resource ?? undefined}
                 />
             )}
+
+            onUpdate={(announcement) => {onUpdate && onUpdate(announcement); setMode(Mode.NORMAL)}}
+
             deleteDialog={
                 <DeleteAnnouncementDialog
                     item={announcement}
@@ -70,21 +76,13 @@ AnnouncementsCard.defaultProps = {
     subHeader: t("A list of the latest announcenements"),
 }
 
-export function AnnouncementsCard(props: AnnouncementsCardProps) {
+export function AnnouncementActions(props: { announcement: Announcement, onCopy?: (announcement: Announcement) => void }) {
 
-    const { isLoading, announcements, onRefresh } = props;
-    const create = useCreateAnnouncementMutation()
-    const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
-    const [mode, setMode] = useState<Mode>(Mode.NORMAL)
-    const reload = () => { onRefresh && onRefresh() }
+    const user = useContext(UserContext)!
 
-
-    const AnnouncementActions = (props: { announcement: Announcement, onCopy?: (announcement: Announcement) => void }) => {
-
-        const user = useContext(UserContext)!
-
-        return (
-            <>
+    return (
+        <>
+            <Link onClick={(event) => event.preventDefault()}>
                 <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.RESOURCE}>
                     <Tooltip title={<>{t("Copy")}</>}>
                         <IconButton edge="end" onClick={() => props.onCopy && props.onCopy(props.announcement)}>
@@ -93,34 +91,21 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                     </Tooltip>
                 </Can>
 
-            </>
-        )
-    }
+            </Link>
 
+        </>
+    )
+}
 
-    const AnnouncementItem = (props: { announcement: Announcement, actions: JSX.Element }) => {
+export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
-        const { announcement } = props
-
-        return (
-            <>
-                <ListItem
-                    key={"item_" + announcement.uuid}
-                    secondaryAction={<Box marginRight={1}>{props.actions}</Box>}
-                >
-                    <ListItemText
-                        primary={<Typography fontWeight={"bold"}>{announcement.subject}</Typography>}
-                        secondary={<Typography style={{ whiteSpace: 'pre-line' }}>{announcement.message}</Typography>}
-                    />
-
-                </ListItem>
-            </>
-        )
-    }
-
+    const { isLoading, announcements, onRefresh } = props;
+    const create = useCreateAnnouncementMutation()
+    const deleteAnnouncement = useDeleteAnnouncementMutation()[0]
+    const [mode, setMode] = useState<Mode>(Mode.NORMAL)
+    const reload = () => { onRefresh && onRefresh() }
     const keycloak = useKeycloak()
     const authenticated = keycloak.initialized && keycloak.keycloak.authenticated
-
     const [clipboard, setClipboard] = useState<Announcement>()
 
     return (
@@ -131,23 +116,14 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
             mode={mode}
             onModeChange={(x) => setMode(x)}
             resources={announcements!}
-            renderForm={() => <AnnouncementForm
-                announcement={clipboard}
-                onSubmit={async (sub) => {
-                    await create[0](sub);
-                    setMode(Mode.NORMAL);
-                }}
-                onCancel={() => {
-                    setMode(Mode.NORMAL);
-                }} />}
+            renderForm={() => <AnnouncementForm announcement={clipboard} onSubmit={async (sub) => { await create[0](sub); setMode(Mode.NORMAL); }} onCancel={() => { setMode(Mode.NORMAL); }} />}
             renderItem={(item) => <AnnouncementItem actions={props.showItemActions ? <AnnouncementActions announcement={item} onCopy={(announcement) => { setClipboard(announcement); setMode(Mode.EDIT) }} /> : <> </>} announcement={item} />}
-            extractKey={(announcement: Announcement, index) => "announcement_" + index}
+            extractKey={(index) => "announcement_" + index}
             extractPath={(announcement) => "/announcements/" + announcement.uuid}
             {...props}
         />
     )
 }
-
 
 
 const dateToText = (date: Date): string => {

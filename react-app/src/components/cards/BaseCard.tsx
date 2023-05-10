@@ -30,7 +30,6 @@ export function BaseCard<T>(props: BaseCardProps<T>) {
 
     const { padding, renderContent, actions, header, subHeader, isLoading, mode, onModeChange, renderForm, resource } = props
     const isList = Array.isArray(resource)
-
     const user = useContext(UserContext)!
 
     return (

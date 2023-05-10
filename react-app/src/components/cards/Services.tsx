@@ -4,11 +4,13 @@ import { Service } from "../../models/types"
 import { Mode } from "./Mode"
 import { DeleteServiceDialog } from "../dialogs/DeleteDialog"
 import { ServiceForm } from "../forms/service"
-import { ResourceCard, ResourceCardProps, ResourcesCard } from "./ResourceCard"
-import { ServiceItem } from "../service"
+import { ResourceCard, ResourceCardProps, ResourcesCard, ResourcesCardProps } from "./ResourceCard"
+import { ServiceItem } from "../items/service"
 import { useLocation } from "react-router-dom"
 import { StatusAvatar } from "../status"
 import { t } from "i18next"
+import { Refresh } from "@mui/icons-material"
+import { useKeycloak } from "@react-keycloak/web"
 
 interface ServiceCardProps extends ResourceCardProps<Service> { }
 
@@ -57,7 +59,9 @@ export function ServiceCard(props: ServiceCardProps) {
         />
     )
 }
-interface ServicesCardProps extends Omit<ResourceCardProps<Service>, "resource"> { }
+interface ServicesCardProps extends Omit<ResourcesCardProps<Service>, "resources"> {
+    services?: Service[]
+ }
 
 ServicesCard.defaultProps = {
     header: t("Services"),
@@ -66,18 +70,22 @@ ServicesCard.defaultProps = {
 
 export function ServicesCard(props: ServicesCardProps) {
 
-    const { isLoading, data, refetch } = useGetAllServicesQuery(undefined)
+    const { isLoading, services, onRefresh } = props
     const create = useCreateServiceMutation()
-    const services = data ?? []
+    
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
+    
+    const keycloak = useKeycloak()
+    const authenticated = keycloak.initialized && keycloak.keycloak.authenticated
 
     return (
         <ResourcesCard
+            disableLinks={!authenticated}
             isLoading={isLoading}
             mode={mode}
             onModeChange={(x) => setMode(x)}
-            resources={services}
-            onRefresh={() => { refetch() }}
+            resources={services ?? []}
+            onRefresh={() => { onRefresh && onRefresh() }}
             renderForm={() => <ServiceForm
                 onSubmit={async (sub) => {
                     await create[0](sub);
