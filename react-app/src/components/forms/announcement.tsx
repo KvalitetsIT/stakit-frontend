@@ -11,9 +11,6 @@ import 'dayjs/locale/ru';
 import 'dayjs/locale/de';
 import 'dayjs/locale/ar-sa';
 import 'dayjs/locale/da';
-
-import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { ClassNames } from "@emotion/react";
 interface AnnouncementFormProps extends FormProps<Announcement> {
     announcement?: Announcement
     loading?: boolean
@@ -37,7 +34,8 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
         to_datetime: new Date(),
     }
 
-    
+    defaultValues.to_datetime?.setDate(defaultValues.to_datetime.getDate()+1);
+
     if (props.isLoading) return (<></>)
     return (
         <FormControl fullWidth>
@@ -90,7 +88,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                         onChange={(newValue) => {
                                             setFieldValue("announcement.from_datetime", newValue);
                                         }}
-                                        value={values.announcement.from_datetime}
+                                        value={values.announcement?.from_datetime}
                                     />
                                     <ValidatedDateTimePicker
                                         error={errors.announcement?.to_datetime && touched.announcement?.to_datetime ? errors.announcement.to_datetime : undefined}
@@ -99,7 +97,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                                         onChange={(newValue) => {
                                             setFieldValue("announcement.to_datetime", newValue);
                                         }}
-                                        value={values.announcement.to_datetime}
+                                        value={values.announcement?.to_datetime}
                                     />
 
                                 </Stack>

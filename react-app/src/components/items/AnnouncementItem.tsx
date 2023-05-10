@@ -62,6 +62,7 @@ export function ResourceItem(props: ResourceItemProps) {
                     primary={<Typography fontWeight={"bold"}>{primary}</Typography>}
                     secondary={<Typography style={{ whiteSpace: 'pre-line' }}>{secondary}</Typography>} />
             </ListItem>
+
         </>
     );
 }

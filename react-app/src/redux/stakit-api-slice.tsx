@@ -9,7 +9,7 @@ export const stakitApiSlice = createApi({
         'users', 'user',
         "announcements", "announcement",
         "statusOfGroups", "confirmSubscription",
-        "subscriptions", "subscription"
+        "subscriptions", "subscription","unsubscribe"
         
     ],
     refetchOnMountOrArgChange: true,
