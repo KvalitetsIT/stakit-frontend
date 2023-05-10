@@ -1,9 +1,5 @@
-import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Stack, Divider, Chip, Box, IconButton, Icon, Tooltip, AccordionActions, Avatar } from "@mui/material";
-import { Service, Status } from "../../models/types";
-import { Modes, ServiceItem } from "../items/service";
+import { Accordion, AccordionSummary, Typography, AccordionDetails, List, Stack, Divider, Chip, Box, IconButton, Icon, Tooltip, AccordionActions } from "@mui/material";
 import { Subscription } from "../../models/types";
-import { Edit } from "@mui/icons-material";
-import { StatusIcon, useGetColorTagByStatus } from "../status";
 import { Link } from "react-router-dom";
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
@@ -13,8 +9,7 @@ import { Can } from "../../feature/authentication/logic/Can";
 import { Operation } from "../../feature/authentication/config/ability";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { t } from "i18next";
-import { group } from "console";
-import { GroupItem, SubscriptionItem } from "../cards/Subscription";
+import { GroupItem } from "../cards/Subscription";
 import { Group } from "../../models/group";
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -33,29 +28,27 @@ export function SubscriptionAccordion(props: { defaultExpanded?: boolean, subscr
                 borderRadius: 1,
                 "&.MuiAccordion-root:before": { backgroundColor: "rgba(0,0,0,0)" }
             }}
-            
-
         >
             <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                 <Stack direction={"row"} justifyContent="space-between" alignItems="stretch" width={"100%"}>
-                     
-                <Box sx={{
+
+                    <Box sx={{
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "center"
                     }}>
-                    <Typography variant="h6">{props.subscription?.email}</Typography>
-                    
-                       
+                        <Typography variant="h6">{props.subscription?.email}</Typography>
+
+
                     </Box>
-                        
+
                     <Box sx={{
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "center"
                     }}>
                         <Chip
-                            avatar={<Icon sx={{"": {color: "warning"}}}><WorkspacesIcon /></Icon>}
+                            avatar={<Icon sx={{ "": { color: "warning" } }}><WorkspacesIcon /></Icon>}
                             label={<Typography color={"inherit"}>{props.subscription?.groups?.length}</Typography>}
                         />
                     </Box>

@@ -8,7 +8,7 @@ export function DeleteAnnouncementDialog(props: DeleteItemDialogProps<Announceme
     return (
         <DeleteItemDialog
             renderMessage={(announcement) => <Typography>{t("You are about to delete the announcement")}: {announcement?.subject}</Typography>}
-            renderTitle={(announcement) => <Typography>{t("Delete announcement")+""}</Typography>}
+            renderTitle={(announcement) => <Typography>{t("Delete announcement") + ""}</Typography>}
             {...props}
         />
     )
@@ -38,7 +38,7 @@ export function DeleteServiceDialog(props: DeleteItemDialogProps<Service>) {
 export function DeleteSubscriptionDialog(props: DeleteItemDialogProps<Subscription>) {
     return (
         <DeleteItemDialog
-            renderMessage={(service) => <Typography>{t("You are about to delete the subscription")+ ""}: "subscription?.name"</Typography>}
+            renderMessage={(service) => <Typography>{t("You are about to delete the subscription") + ""}: "subscription?.name"</Typography>}
             renderTitle={(service) => <Typography>{t("Delete")} {service?.name}</Typography>}
             {...props}
         />
@@ -65,7 +65,7 @@ export function DeleteItemDialog(props: DeleteItemDialogProps<any>) {
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     {renderMessage && renderMessage(item)}
-                    <Typography>{t("Do you want to continue") +""}?</Typography>
+                    <Typography>{t("Do you want to continue") + ""}?</Typography>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
