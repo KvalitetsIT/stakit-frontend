@@ -58,8 +58,8 @@ const resources = {
       "Warning": "Advarsel",
       "Error": "Fejl",
       "Perfect": "Perfekt",
-      "Unknown": "Ukendt"
-
+      "Unknown": "Ukendt",
+      "Do you want to continue": "Ønsker du at fortsætte"
     }
   }
 };

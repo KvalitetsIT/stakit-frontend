@@ -46,7 +46,7 @@ export function AnnouncementForm(props: AnnouncementFormProps) {
                     announcement: props.announcement ?? defaultValues,
                 }}
                 onSubmit={(values, formik) => {
-                    values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!);
+                    //values.announcement.from_datetime = new Date(values.announcement.from_datetime!); values.announcement.to_datetime = new Date(values.announcement.to_datetime!);
                     props.onSubmit(values.announcement).then(() => formik.resetForm())
                 }}
                 validationSchema={validationSchema}

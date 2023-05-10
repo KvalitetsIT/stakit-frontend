@@ -10,7 +10,7 @@ import { Service } from "../../models/types"
 import { DeleteGroupDialog } from "../dialogs/DeleteDialog"
 import { Loading } from "../feedback/loading"
 import { GroupForm } from "../forms/group"
-import { ServiceItem } from "../service"
+import { ServiceItem } from "../items/service"
 import { Mode } from "./Mode"
 import { ResourceCardProps, ResourceCard, ResourcesCard } from "./ResourceCard"
 
@@ -44,7 +44,7 @@ export function GroupCard(props: GroupCardProps) {
     if( isLoading ) return <Loading/> 
     
 
-    const save = (group: Group) =>{
+    const updateGroup = (group: Group) =>{
         put(group)
         refetch()
     }
@@ -56,7 +56,7 @@ export function GroupCard(props: GroupCardProps) {
             onModeChange={(x) => setMode(x)}
             onDelete={remove}
             onUpdate={(group) => {
-              save(group)
+              updateGroup(group)
             }}
             renderContent={
                 <List disablePadding>
@@ -70,7 +70,7 @@ export function GroupCard(props: GroupCardProps) {
                     group={group}
                     onCancel={() => setMode(Mode.NORMAL)}
                     onSubmit={async (group: Group) => {
-                        save(group);
+                        updateGroup(group);
                         setMode(Mode.NORMAL)
                     }}
                 />
