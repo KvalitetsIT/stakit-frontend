@@ -13,11 +13,6 @@ export function AnnouncementItem(props: { announcement: Announcement; actions: R
                 secondary={<Typography style={{ whiteSpace: 'pre-line' }}>{props.announcement.message}</Typography>}
                 resource={props.announcement} actions={props.actions} 
             />
-            <ListItem
-                key={"item_" + props.announcement.uuid}
-                secondaryAction={<Box marginRight={1}>{props.actions}</Box>}
-            
-            />
         </>
     );
 }

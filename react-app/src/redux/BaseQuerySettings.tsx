@@ -10,7 +10,7 @@ export default function fetchDefaultBaseQuery() {
         baseUrl: baseurl,
         prepareHeaders: (headers, api) => {
             const token = keycloak.token
-            //const token = "eyJhbGciOiJSUzI1NiJ9.eyJuYmYiOjE2ODM3MjQ3NTAsImV4cCI6MTY4MzczNTU1MCwiYXVkIjoiYXVkaWVuY2UiLCJpc3MiOiJpc3N1ZXIiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20ifQ.nTio4DcbSiUIrzzRw84vwXpnvD7O6y8_M0yQawpmh4lOpDKQTI8V5FyQBzrToqZDA2AHjCMH8RAw3tggAu6MpoqLokYZ8BgUiD77kHkc2llG73c9V6AOb6Dz8tClMB8_SwzMRH6buQ_mDwfnHsc1sKtmX2S2c0zZeXRniwEzADRbERVZ4K1b2riwQy8L_DTCwsfnBbGOwffrE1zick1y4z8rIRrPPRcL_MupnRiP439AVXVJVBDIpu2kPVvYrMK1T1RiuLRdB-OPucO7vZdcwB_S_5AXVZMOrhyvX02q1tCoLHjaKpRXwM8DJ_FrDCl-B9g9U61v30pdsokLaU6sEw"// <-- fake token
+            //const token = "eyJhbGciOiJSUzI1NiJ9.eyJuYmYiOjE2ODM3ODg5NTksImV4cCI6MTY4Mzc5OTc1OSwiYXVkIjoiYXVkaWVuY2UiLCJpc3MiOiJpc3N1ZXIiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20ifQ.Xqal4xa7YKe6GfoSH9BIajZsQcYInlHjS37JlrHcdXKTaKzo8IxJP9VrIVAEJNmL6vsHGIJahLwYWwpcDbU1dumuy1PsCYbno4TgU_Br3t00yv4rjNPsIG73XQG1X1iKMSVKq2QPbiPH_3KRX1Ox0RGcBlmHTwQf9TWLDFHHHMI3iF5Lnm0rDgdtFV_mnjH25cJUZegJ8AX_X-nZYgKUhp94JvrceiARn5jJEqkinl8lni-toJ9F7yVWKD6VWHr54qdMaM-MpAKM_hsa5zUhWu3OShBemtvT5v_HZhvUDokvZgOlUeObytLtIO-7--bRdMF_k-xObcXYJoQa8jEW_A" //<-- fake token
 
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
