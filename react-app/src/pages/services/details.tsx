@@ -66,7 +66,7 @@ export function Header(props: { service: Service, showPath?: boolean }) {
 }
 
 
-function HistorySection() {
+    function HistorySection() {
 
     const days = Array.from({ length: 90 }, (_, i) => Math.random() * 100)
 

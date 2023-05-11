@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { t } from "i18next";
-import { redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Loading } from "../../components/feedback/loading";
 import { CenteredContent } from "../../components/layout/CenteredContent";
 import { useConfirmSubscriptionQuery } from "../../feature/stakit/publicSlice";
@@ -12,7 +12,7 @@ export function ConfirmSubscriptionPage() {
 
     const id = params.id!
 
-    const { data, isLoading, isError, isSuccess } = useConfirmSubscriptionQuery(id)
+    const { isLoading, isError, isSuccess } = useConfirmSubscriptionQuery(id)
 
     return (
         <>

@@ -35,14 +35,24 @@ export interface ResourceCardProps<T> extends BaseCardProps<T> {
      * eg. are you sure you want to delete the resource
      */
     deleteDialog?: ReactElement<typeof DeleteItemDialog>
+
+    
+    /**
+    * The list of actions that apears in the top right corner of the card
+    */
+    actions?: Action[]
 }
 
-export function ResourceCard(props: ResourceCardProps<any>) {
-    const actions: Action[] = [
+ResourceCard.defaultProps = {
+    actions: [
         { title: t("Edit"), icon: <EditIcon />, mode: Mode.EDIT },
         { title: t("Delete"), icon: <Delete />, mode: Mode.DELETE },
     ]
-    const { mode, onModeChange, resource } = props
+}
+
+
+export function ResourceCard(props: ResourceCardProps<any>) {
+    const { actions,  mode, onModeChange, resource } = props
 
     return (
 
