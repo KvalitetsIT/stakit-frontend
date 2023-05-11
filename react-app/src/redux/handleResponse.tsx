@@ -1,5 +1,4 @@
 import { t } from "i18next";
-import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import ToastError from "../components/ToastError";
 import { ApiError } from "../models/API/Error";

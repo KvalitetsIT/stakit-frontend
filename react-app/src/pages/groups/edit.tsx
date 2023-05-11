@@ -9,14 +9,8 @@ import { Group } from "../../models/group";
 export function EditGroup() {
 
     const id = useParams().id;
-
-    const {data, isError} = useGetGroupQuery(id!) // <-- might be undefined or wrong 
-
-    // if(idIsMissing || idNotExisting) go back.. or redirect to "/groups"
-
+    const {data} = useGetGroupQuery(id!) // <-- might be undefined or wrong 
     const group: Group | undefined =  data
-
-
     const updateGroup = usePutGroupMutation()[0]
 
     return (
