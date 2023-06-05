@@ -45,7 +45,7 @@ export const Logo2 = createSvgIcon(
 
 export const Logo = () => (
     <>
-        <img width={"100"} height={"100%"} src='./assets/icons/logo.svg' />
+        <img width={"100"} height={"100%"} src='/assets/icons/logo.svg' />
     </>
 
 )

@@ -1,0 +1,28 @@
+services:
+  init:
+    environment:
+    - REACT_APP_KEYCLOAK_URL=https://keycloak.t0.hosting.kitkube.dk/auth
+    - REACT_APP_KEYCLOAK_REALM=stakit
+    - REACT_APP_KEYCLOAK_CLIENTID=stakit-ui
+    - REACT_APP_INACTIVITY_MAX_MINUTES=30
+    - REACT_APP_API_BASEURL=https://stakit.t0.hosting.kitkube.dk/api/v1/
+    build:
+      context: ../
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./init/docker-entrypoint.d:/temp/docker-entrypoint.d
+      - ./init/etc/nginx:/temp/etc/nginx
+      - ./init/var/run:/temp/var/run
+      - ./init/var/cache/nginx:/temp/var/cache/nginx
+  frontend:
+    image: nginxinc/nginx-unprivileged:alpine3.17
+    restart: always
+    volumes:
+      - ./init/docker-entrypoint.d:/docker-entrypoint.d
+      - ./init/etc/nginx:/etc/nginx
+      - ./init/var/run:/var/run
+      - ./init/var/cache/nginx:/var/cache/nginx
+    ports:
+      - "3000:80"
+    depends_on:
+      - init
