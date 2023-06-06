@@ -7,4 +7,5 @@ if [ -z "$TAG" ]; then
   exit 1
 fi
 
-docker build . -t $TAG
+docker build . -t $TAG-root -f Dockerfile
+docker build . -t $TAG -f init.Dockerfile
