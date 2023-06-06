@@ -1,3 +1,15 @@
+
+# StaKIT
+## (Recomended) How to run in kubernetes
+When running in kubernetes, the image should be created from the init.Dockerfile. This image should be run as a initContainer. The initcontainer will place static html files into /temp-folder. This should be mounted into an unprivileged nginx running nonroot and readonlyfilesystem. All requests from here wil be going through the nginx in a safe and good manner. 
+
+> All this setup is also demonstrated in the compose-folder, in the `docker-compose.yaml`-file. There are 3 services, and you should look at `nginx-after-init` and `stakit-init`. `stakit-init` will run the image from init.Dockerfile.
+
+## How to run in another container-environment
+If you dont have the option to start a initcontainer, and you are okay with running your container as root, you can use the other dockerfile `Dockerfile`. This will create a container which will run as root, with no need to have a init-container
+
+> All this setup is also demonstrated in the compose-folder, in the `docker-compose.yaml`-file. There are 3 services, and you should look at `stakit-running`. `stakit-running` will run the image from Dockerfile.
+
 # kitTyAct
 KIT TYpescript reAct : Template project for frontend projects in typescript/react. 
 

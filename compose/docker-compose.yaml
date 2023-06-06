@@ -14,7 +14,7 @@ services:
       - ./init/etc/nginx:/temp/etc/nginx
       - ./init/var/run:/temp/var/run
       - ./init/var/cache/nginx:/temp/var/cache/nginx
-  frontend:
+  nginx-after-init:
     image: nginxinc/nginx-unprivileged:alpine3.17
     restart: always
     volumes:
@@ -37,6 +37,8 @@ services:
     build:
       context: ../
       dockerfile: ./Dockerfile
+    ports:
+      - "3030:80"
     volumes:
       - ./init/docker-entrypoint.d:/temp/docker-entrypoint.d
       - ./init/etc/nginx:/temp/etc/nginx
