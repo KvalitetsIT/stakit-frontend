@@ -37,26 +37,47 @@ jobs:
     - name: Build and test
       run: ./build/build.sh ${{ env.DOCKER_SERVICE }}:latest
 
-    - name: Tag service dev docker image
+      # Push nonroot image
+    - name: nonroot-image) Tag service dev docker image
       run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:dev
-
-    - name: Push service dev docker image
+    - name: nonroot-image) Push service dev docker image
       run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:dev
-
-    - name: Tag service git id docker image
+    - name: nonroot-image) Tag service git id docker image
       run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
-
-    - name: Push service git id docker image.
+    - name: nonroot-image) Push service git id docker image.
       run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
-
-    - name: Push latest service docker image
+    - name: nonroot-image) Push latest service docker image
       if: ${{ steps.tag.conclusion != 'skipped' }}
       run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:latest
-
-    - name: Tag version service docker image
+    - name: nonroot-image) Tag version service docker image
       if: ${{ steps.tag.conclusion != 'skipped' }}
       run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
-
-    - name: Push version service docker image.
+    - name: nonroot-image) Push version service docker image.
       if: ${{ steps.tag.conclusion != 'skipped' }}
       run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
+
+      # Push root image
+    - name: root-image) Tag service dev-root docker image
+      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest-root ${{ env.DOCKER_SERVICE }}:dev-root
+    - name: root-image) Push service dev docker image
+      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:dev-root
+    - name: root-image) Tag service git id docker image
+      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest-root ${{ env.DOCKER_SERVICE }}:${{ github.sha }}-root
+    - name: root-image) Push service git id docker image.
+      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}-root
+    - name: root-image) Push latest service docker image
+      if: ${{ steps.tag.conclusion != 'skipped' }}
+      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:latest-root
+    - name: root-image) Tag version service docker image
+      if: ${{ steps.tag.conclusion != 'skipped' }}
+      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest-root ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}-root
+    - name: root-image) Push version service docker image.
+      if: ${{ steps.tag.conclusion != 'skipped' }}
+      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}-root
+
+    
+    
+
+    
+
+
