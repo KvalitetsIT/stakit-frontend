@@ -91,3 +91,15 @@ toast.info("This is a toast")
 
 We use i18Next to make it possible for us to translate to multiple languages later on. Everytime you are about to write something in the app, simply use the function t from i18next ( `import { t } from 'i18next'` ). To translate it, we go to the i18n.tsx-file (next to index.tsx) and in here, we can define translations. 
 
+## Configuration 
+
+
+| Environment variable | Description                                                                                          | Required |
+|----------------------|------------------------------------------------------------------------------------------------------|----------|
+| REACT_APP_KEYCLOAK_URL             | Base URL for Keycloak.                                                                                   | Yes      |
+| REACT_APP_KEYCLOAK_REALM            | Keycloak realm ID.                                                                                            | Yes      |
+| REACT_APP_KEYCLOAK_CLIENTID            | Keycloak client id.                                                                                        | Yes      |
+| REACT_APP_API_BASEURL            | API Base URl. | Yes       |
+| REACT_APP_INACTIVITY_MAX_MINUTES  | Inactivity minutes.                                                           | Yes       |
+| REACT_APP_FEATURE_SUBSCRIBE       | Feature toggle do enable/disable subscrib button. Defaults to true which means subscribe is enabled.  | No       |
+        
