@@ -8,6 +8,9 @@ interface env {
     REACT_APP_KEYCLOAK_REALM : string
     REACT_APP_KEYCLOAK_CLIENTID : string
     REACT_APP_INACTIVITY_MAX_MINUTES: string
+
+    // Feature toggles
+    REACT_APP_FEATURE_SUBSCRIBE: string
 }
 
 export default function getEnvironment(): env {

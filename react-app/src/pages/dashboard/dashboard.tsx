@@ -15,7 +15,7 @@ import { Operation } from "../../feature/authentication/config/ability";
 import { t } from "i18next";
 import { Email } from "@mui/icons-material";
 import { useGetAllAnnouncementsQuery } from "../../feature/stakit/announcementSlice";
-
+import getEnvironment from "../../config/env";
 
 
 function getStatus(services: Service[]) : Status {
@@ -31,8 +31,8 @@ function getStatus(services: Service[]) : Status {
 }
 
 export function DashboardPage() {
-
-
+    const subscribeFeature = getEnvironment().REACT_APP_FEATURE_SUBSCRIBE ?? "true"
+    
     const user = useContext(UserContext)!
 
     const { data, refetch } = useGetStatusOfGroupsQuery(undefined)
@@ -57,9 +57,11 @@ export function DashboardPage() {
                             <GroupAccordion defaultExpanded={serviceGroup.expanded} group={serviceGroup} key={"group_" + index} ></GroupAccordion>
                         )
                     })}
-                    <Can ability={user?.getAbility()} I={Operation.READ} a={"public"}>
-                        <SubscibeButton />
-                    </Can>
+                    { subscribeFeature == "true" ? 
+                        <Can ability={user?.getAbility()} I={Operation.READ} a={"public"}>
+                            <SubscibeButton />
+                        </Can>                
+                    : null}
                 </Grid>
                 <Grid item xs={12} lg={6}>
                     <AnnouncementsCard announcements={announcements ?? []} onRefresh={refetchAnnouncements} isLoading={announcementsIsLoading} divider={<Divider variant={"middle"} />} actions={[]} />
