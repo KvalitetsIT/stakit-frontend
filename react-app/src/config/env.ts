@@ -11,6 +11,7 @@ interface env {
 
     // Feature toggles
     REACT_APP_FEATURE_SUBSCRIBE: string
+    REACT_APP_FEATURE_MESSAGES: string
 }
 
 export default function getEnvironment(): env {

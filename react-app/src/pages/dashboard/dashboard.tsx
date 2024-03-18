@@ -32,6 +32,7 @@ function getStatus(services: Service[]) : Status {
 
 export function DashboardPage() {
     const subscribeFeature = getEnvironment().REACT_APP_FEATURE_SUBSCRIBE ?? "true"
+    const showMessage = getEnvironment().REACT_APP_FEATURE_MESSAGES ?? "true"
     
     const user = useContext(UserContext)!
 
@@ -46,7 +47,7 @@ export function DashboardPage() {
 
     return (
         <Box>
-            <Grid container spacing={2}>
+            <Grid justifyContent="center" container spacing={2}>
                 <Grid item xs={12} lg={6}>
                     <StatusMessage
                         status={status}
@@ -63,9 +64,11 @@ export function DashboardPage() {
                         </Can>                
                     : null}
                 </Grid>
+                { showMessage == "true" ?
                 <Grid item xs={12} lg={6}>
                     <AnnouncementsCard announcements={announcements ?? []} onRefresh={refetchAnnouncements} isLoading={announcementsIsLoading} divider={<Divider variant={"middle"} />} actions={[]} />
                 </Grid>
+                : null}
             </Grid>
         </Box>
     )
