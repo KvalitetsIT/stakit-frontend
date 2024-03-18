@@ -102,4 +102,4 @@ We use i18Next to make it possible for us to translate to multiple languages lat
 | REACT_APP_API_BASEURL            | API Base URl. | Yes       |
 | REACT_APP_INACTIVITY_MAX_MINUTES  | Inactivity minutes.                                                           | Yes       |
 | REACT_APP_FEATURE_SUBSCRIBE       | Feature toggle do enable/disable subscrib button. Defaults to true which means subscribe is enabled.  | No       |
-        
+| REACT_APP_FEATURE_MESSAGES | Feature toggle to enable/disable messages on the front page. Defaults to true | No |
