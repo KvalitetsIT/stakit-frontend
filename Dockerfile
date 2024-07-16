@@ -16,6 +16,9 @@ RUN go install github.com/lithictech/runtime-js-env@latest
 FROM nginx:alpine3.17
 COPY --from=build /app/build /usr/share/nginx/html
 
+# Copy package-lock for easier CVE scanning
+COPY --from=build /app/package-lock.json /opt/kvalitetsit/package-lock.json
+
 # Copy the runtime-js-env binary
 COPY --from=go-downloader /go/bin/runtime-js-env /
 
