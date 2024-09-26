@@ -1,5 +1,6 @@
 services:
   stakit-init:
+    user: "101:101"
     environment:
     - REACT_APP_KEYCLOAK_URL=https://keycloak.t0.hosting.kitkube.dk/auth
     - REACT_APP_KEYCLOAK_REALM=stakit
@@ -10,24 +11,22 @@ services:
       context: ../
       dockerfile: ./init.Dockerfile
     volumes:
-      - ./init/docker-entrypoint.d:/temp/docker-entrypoint.d
-      - ./init/etc/nginx:/temp/etc/nginx
-      - ./init/var/run:/temp/var/run
-      - ./init/var/cache/nginx:/temp/var/cache/nginx
+      - init-dockerentrypoint:/temp/docker-entrypoint.d
+      - nginx:/temp/etc/nginx
+      - run:/temp/var/run
+      - cache-nginx:/temp/var/cache/nginx
   nginx-after-init:
-    # tag: alpine3.19
     image: nginxinc/nginx-unprivileged@sha256:8f14986c54fab310b3c69186d814d6238a771f5569cf073c261e675daba88194
     restart: always
     volumes:
-      - ./init/docker-entrypoint.d:/docker-entrypoint.d
-      - ./init/etc/nginx:/etc/nginx
-      - ./init/var/run:/var/run
-      - ./init/var/cache/nginx:/var/cache/nginx
+      - init-dockerentrypoint:/docker-entrypoint.d
+      - nginx:/etc/nginx
+      - run:/var/run
+      - cache-nginx:/var/cache/nginx
     ports:
       - "3000:80"
     depends_on:
       - stakit-init
-      
   stakit-running:
     environment:
     - REACT_APP_KEYCLOAK_URL=https://keycloak.t0.hosting.kitkube.dk/auth
@@ -40,9 +39,9 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "3030:80"
-    volumes:
-      - ./init/docker-entrypoint.d:/temp/docker-entrypoint.d
-      - ./init/etc/nginx:/temp/etc/nginx
-      - ./init/var/run:/temp/var/run
-      - ./init/var/cache/nginx:/temp/var/cache/nginx
+volumes:
+  init-dockerentrypoint:
+  nginx:
+  cache-nginx:
+  run:
   
