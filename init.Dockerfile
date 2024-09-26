@@ -31,10 +31,15 @@ RUN rm /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
 
 RUN mkdir -p /var/cache/nginx/
 RUN chmod 777 /var/cache/nginx/
+RUN chmod 777 /usr/share/nginx/html/
+
+ENV TMPDIR=/usr/share/nginx/html/
+
+USER 101
 
 # Run our startup script
-CMD /runtime-js-env -i usr/share/nginx/html/index.html && \
-    chmod 777 /usr/share/nginx/html/index.html &&\
-    cp -R /usr/share/nginx/* /temp/etc/nginx/ &&\
-    cp -R -p /var/cache/nginx /temp/var/cache/ &&\
-    cp -R /docker-entrypoint.d/* /temp/docker-entrypoint.d/
+CMD echo "1" && /runtime-js-env -i usr/share/nginx/html/index.html && \
+    echo "2" && chmod 777 /usr/share/nginx/html/index.html &&\
+    echo "3" && cp -R /usr/share/nginx/* /temp/etc/nginx/ &&\
+    echo "4" && cp -R /var/cache/nginx /temp/var/cache/ &&\
+    echo "5" && cp -R /docker-entrypoint.d/* /temp/docker-entrypoint.d/
