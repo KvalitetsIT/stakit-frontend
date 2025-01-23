@@ -18,7 +18,6 @@ import { GetJWTToken, UserContext } from '../feature/authentication/logic/FetchU
 import UserFactory from '../feature/authentication/logic/UserFactory';
 import { AnnouncementsPage, DetailedAnnouncementPage } from '../pages/announcements/announcements';
 import { useKeycloak } from '@react-keycloak/web';
-import getEnvironment from '../config/env';
 import { AbilityContext } from '../feature/authentication/logic/Can';
 import PrivateRoute from '../components/PrivateRoute';
 import { ConfirmSubscriptionPage } from '../pages/subscription/ConfirmationPage';
@@ -46,21 +45,6 @@ export default function App() {
                // getUserRolesLazyTrigger();
            }
        }, [keycloak.initialized, keycloak.keycloak])
-
-       let timeInterval = setInterval(() => {
-           let lastAcivity = localStorage.getItem('lastActvity')
-           const maxInactivity = parseInt(getEnvironment().REACT_APP_INACTIVITY_MAX_MINUTES ?? 1)
-           var diffMs = Math.abs(new Date(parseInt(lastAcivity!)).getTime() - new Date().getTime()); // milliseconds between now & last activity
-           var seconds = Math.floor((diffMs / 1000));
-           var minute = Math.floor((seconds / 60));
-           if (minute >= maxInactivity) {
-               console.log(`No activity in last ${maxInactivity} minutes... Logging Out`)
-               clearInterval(timeInterval)
-               //code for logout or anything...
-               keycloak.keycloak.logout()
-           }    
-       }, 5000)
-       
 
     return (
         <Router>
