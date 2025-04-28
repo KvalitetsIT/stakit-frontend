@@ -16,7 +16,7 @@ services:
       - run:/temp/var/run
       - cache-nginx:/temp/var/cache/nginx
   nginx-after-init:
-    image: nginxinc/nginx-unprivileged@sha256:8f14986c54fab310b3c69186d814d6238a771f5569cf073c261e675daba88194
+    image: nginxinc/nginx-unprivileged@sha256:9d092c1eb75601818712e759efe19be8d4d77218aefe3673679d7b76a161ce6e
     restart: always
     volumes:
       - init-dockerentrypoint:/docker-entrypoint.d
