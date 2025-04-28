@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:23.11.0-alpine3.21
 
 RUN npm install -g @mockoon/cli@2.0.0
 COPY . .
