@@ -1,5 +1,5 @@
 # stage1 - build react app first 
-FROM node:22.12.0-alpine3.20 as build
+FROM node:23.11.0-alpine3.21 as build
 WORKDIR /app
 
 COPY ./react-app/ /app
@@ -13,7 +13,7 @@ RUN apk update && apk upgrade && \
 RUN go install github.com/lithictech/runtime-js-env@latest
 
 # Copy the built application into Nginx for serving
-FROM nginx:alpine3.20
+FROM nginx:alpine3.21
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy package-lock for easier CVE scanning
