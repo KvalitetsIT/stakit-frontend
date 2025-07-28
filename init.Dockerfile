@@ -1,5 +1,5 @@
 # stage1 - build react app first 
-FROM node:23.11.0-alpine3.21 as build
+FROM node:24.4.1-alpine3.22 as build
 WORKDIR /app
 
 COPY ./react-app /app
@@ -8,14 +8,13 @@ RUN npm install
 RUN npm run build
 
 # Download and build our environment injector
-FROM golang:1.23.4-alpine3.21 as go-downloader
+FROM golang:1.24.5-alpine3.22 as go-downloader
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
-RUN go install github.com/lithictech/runtime-js-env@latest
-
+RUN go install github.com/KvalitetsIT/runtime-js-env@83fdece6e4a6244909157ab100b091cb611ad481 
 
 # Copy the built application into Nginx for serving
-FROM nginx:alpine3.21
+FROM nginx:alpine3.22
 
 COPY --from=build /app/build /usr/share/nginx/html
 
