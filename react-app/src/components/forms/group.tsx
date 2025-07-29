@@ -1,4 +1,4 @@
-import { FormControl, Stack, Button, Select, Checkbox } from "@mui/material";
+import { FormControl, Stack, Button } from "@mui/material";
 import { Formik, Form } from "formik";
 import { Service } from "../../models/types";
 import * as yup from 'yup';
@@ -9,7 +9,6 @@ import { Group } from "../../models/group";
 import { t } from "i18next";
 import { useGetAllServicesQuery } from "../../feature/stakit/serviceSlice";
 
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { ValidatedCheck } from "../input/validatedCheck";
 
 interface GroupFormProps extends FormProps<Group> {

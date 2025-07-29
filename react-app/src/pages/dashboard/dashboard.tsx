@@ -7,20 +7,17 @@ import { useContext, useEffect, useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AnnouncementsCard } from "../../components/cards/Announcements";
 import {  useGetAnnouncementsQuery, useGetStatusOfGroupsQuery } from "../../feature/stakit/publicSlice";
-import { Announcement, Service, Status } from "../../models/types";
+import { Service, Status } from "../../models/types";
 import { Group } from "../../models/group";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import { Can } from "../../feature/authentication/logic/Can";
 import { Operation } from "../../feature/authentication/config/ability";
 import { t } from "i18next";
-import { Email } from "@mui/icons-material";
-import { useGetAllAnnouncementsQuery } from "../../feature/stakit/announcementSlice";
 import getEnvironment from "../../config/env";
 
 
 function getStatus(services: Service[]) : Status {
     
-    let ok = services.filter(s => s.status == Status.OK).length;
     let patial_not_ok = services.filter(s => s.status == Status.PARTIAL_NOT_OK).length;
     let not_ok = services.filter(s => s.status == Status.NOT_OK).length;
     

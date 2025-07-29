@@ -4,7 +4,7 @@ import { theme } from "../../config/theme";
 import MenuIcon from '@mui/icons-material/Menu';
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import keycloak from "../../feature/authentication/Keycloak";
-import { Link as Icon, LoginOutlined, Logout } from "@mui/icons-material";
+import { LoginOutlined, Logout } from "@mui/icons-material";
 import { Can } from "../../feature/authentication/logic/Can";
 import { Asset, Operation } from "../../feature/authentication/config/ability";
 import Menu from '@mui/material/Menu';

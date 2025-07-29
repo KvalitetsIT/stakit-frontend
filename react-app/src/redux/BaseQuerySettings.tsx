@@ -1,4 +1,4 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import getEnvironment from "../config/env";
 import keycloak from "../feature/authentication/Keycloak";
 

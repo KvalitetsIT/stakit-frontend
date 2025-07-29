@@ -131,7 +131,7 @@ ResourcesCard.defaultProps = {
 export function ResourcesCard<T extends any>(props: ResourcesCardProps<T>) {
 
 
-    const { actions, renderItem, resources, extractPath, extractKey, disableLinks } = props
+    const { actions, renderItem, resources, extractPath, disableLinks } = props
 
     return (
         <BaseCard

@@ -1,10 +1,9 @@
-import { Breadcrumbs, Card, CardContent, CardHeader, Container, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Breadcrumbs, Container, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Service } from "../../models/types";
 import { useGetServiceQuery } from "../../feature/stakit/serviceSlice";
 import { ServiceCard } from "../../components/cards/Services";
-import { t } from "i18next";
 
 
 export function ServiceDetails() {
@@ -66,26 +65,12 @@ export function Header(props: { service: Service, showPath?: boolean }) {
 }
 
 
-    function HistorySection() {
-
-    const days = Array.from({ length: 90 }, (_, i) => Math.random() * 100)
-
-    return (
-        <Card sx={{ marginTop: 2 }}>
-            <CardHeader title={<>{t("History")}</>} subheader={<Typography>{t("The chart below shows the status corrosponding to the last 90 days")+""}</Typography>}>
-            </CardHeader>
-            <CardContent>
-                <History days={days.map(day => ({ date: new Date(), percentage: day }))}></History>
-            </CardContent >
-        </Card >
-    )
-}
 
 interface Day { percentage: number, date: Date }
 
 export function History(props: { days: Day[]}) {
 
-    const Pill = (props: Day, key?: string) => {
+    const Pill = (props: Day) => {
 
         const GREEN = "#00e6c8"
         const BLUE = "#122A4C"

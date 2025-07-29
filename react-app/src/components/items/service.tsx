@@ -8,7 +8,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Can } from "@casl/react";
 import { Operation, Asset } from "../../feature/authentication/config/ability";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
-import { useKeycloak } from "@react-keycloak/web";
 import { t } from "i18next";
 
 
