@@ -9,7 +9,6 @@ import { ServiceItem } from "../items/service"
 import { useLocation } from "react-router-dom"
 import { StatusAvatar } from "../status"
 import { t } from "i18next"
-import { Refresh } from "@mui/icons-material"
 import { useKeycloak } from "@react-keycloak/web"
 
 interface ServiceCardProps extends ResourceCardProps<Service> { }

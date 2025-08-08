@@ -1,5 +1,5 @@
 import { Status } from "../models/types"
-import { Avatar, Icon, useTheme } from "@mui/material";
+import { Avatar, useTheme } from "@mui/material";
 
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import DoneIcon from '@mui/icons-material/Done';

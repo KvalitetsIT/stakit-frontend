@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { createSvgIcon } from '@mui/material/utils';
 
 export const Bell = createSvgIcon(

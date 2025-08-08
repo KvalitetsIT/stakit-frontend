@@ -1,5 +1,4 @@
 import { Ability, AbilityBuilder } from "@casl/ability";
-import { Announcement } from "../../../models/types";
 import { Role, User } from "../../../models/User";
 
 export enum Operation {
@@ -19,7 +18,7 @@ export enum Asset {
 }
 
 const defineAbility = (user: User) => {
-    const { can, cannot, build } = new AbilityBuilder(Ability);
+    const { can, build } = new AbilityBuilder(Ability);
 
     user.roles.forEach(role => {
         switch (role) {

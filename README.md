@@ -23,7 +23,7 @@ KIT TYpescript reAct : Template project for frontend projects in typescript/reac
 The project is installed using `npx create-react-app my-template-app --template typescript` 
 
 With:
-- Node : `23.11.0`
+- Node : `24.4.1`
 
 # Get started
 1. Clone repo to your own machine

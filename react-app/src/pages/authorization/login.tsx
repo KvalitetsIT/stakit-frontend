@@ -1,6 +1,6 @@
 import { Container, Typography } from "@mui/material";
 import { wait } from "@testing-library/user-event/dist/utils";
-import { Ability, AbilityBuilder } from "casl";
+import { Ability, AbilityBuilder } from "@casl/ability";
 import { t } from "i18next";
 import { toast } from "react-toastify";
 import { LoginForm } from "../../components/forms/login";
