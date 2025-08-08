@@ -42,7 +42,7 @@ export default function App() {
                const jwt = await GetJWTToken(keycloak.keycloak!)
                const userFactory = new UserFactory()
                if(jwt) {
-                    setUser(userFactory.createUserFromJWT(jwt!))
+                    setUser(userFactory.createUserFromJWT(jwt))
                }
                // getUserRolesLazyTrigger();
            }
