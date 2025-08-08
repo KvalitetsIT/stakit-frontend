@@ -32,8 +32,6 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "stopapi": "mockoon-cli stop",
-    "startapi": "mockoon-cli start -d ./mockoon/env.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
