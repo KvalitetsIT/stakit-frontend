@@ -1,5 +1,5 @@
 # stage1 - build react app first 
-FROM node:24.4.1-alpine3.22 as build
+FROM node:24.4.1-alpine3.22 AS build
 WORKDIR /app
 
 COPY ./react-app/ /app
@@ -7,7 +7,7 @@ RUN npm install
 RUN npm run build
 
 # Download and build our environment injector
-FROM golang:1.24.5-alpine3.22 as go-downloader
+FROM golang:1.25.5-alpine3.22@sha256:3587db7cc96576822c606d119729370dbf581931c5f43ac6d3fa03ab4ed85a10 AS go-downloader
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 RUN go install github.com/KvalitetsIT/runtime-js-env@83fdece6e4a6244909157ab100b091cb611ad481 
