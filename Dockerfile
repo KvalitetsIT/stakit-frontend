@@ -7,13 +7,13 @@ RUN npm install
 RUN npm run build
 
 # Download and build our environment injector
-FROM golang:1.25.5-alpine3.22@sha256:3587db7cc96576822c606d119729370dbf581931c5f43ac6d3fa03ab4ed85a10 AS go-downloader
+FROM golang:1.26.1-alpine3.22@sha256:07e91d24f6330432729082bb580983181809e0a48f0f38ecde26868d4568c6ac AS go-downloader
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 RUN go install github.com/KvalitetsIT/runtime-js-env@83fdece6e4a6244909157ab100b091cb611ad481 
 
 # Copy the built application into Nginx for serving
-FROM nginx:alpine3.22
+FROM nginx:1.28.3-alpine3.23@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy package-lock for easier CVE scanning
