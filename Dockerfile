@@ -13,7 +13,7 @@ RUN apk update && apk upgrade && \
 RUN go install github.com/KvalitetsIT/runtime-js-env@83fdece6e4a6244909157ab100b091cb611ad481 
 
 # Copy the built application into Nginx for serving
-FROM nginx:alpine3.22
+FROM nginx:1.28.3-alpine3.23@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy package-lock for easier CVE scanning
