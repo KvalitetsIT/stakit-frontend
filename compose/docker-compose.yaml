@@ -16,8 +16,8 @@ services:
       - run:/temp/var/run
       - cache-nginx:/temp/var/cache/nginx
   nginx-after-init:
-    # tag: 1.29-alpine3.22
-    image: nginxinc/nginx-unprivileged@sha256:ab9ff735860df864a690b87f8c1d4e2be988df3c1b925cf4759577f065215a8d
+    # tag: 1.31.2-alpine3.23
+    image: nginxinc/nginx-unprivileged@sha256:a8d5564c3354241473c1e152d5dd3281ab4224edb61b23c291e0bfd9854687a1
     restart: always
     volumes:
       - init-dockerentrypoint:/docker-entrypoint.d
