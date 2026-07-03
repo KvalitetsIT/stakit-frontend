@@ -7,7 +7,7 @@ RUN npm install
 RUN npm run build
 
 # Download and build our environment injector
-FROM golang:1.26.1-alpine3.22@sha256:07e91d24f6330432729082bb580983181809e0a48f0f38ecde26868d4568c6ac AS go-downloader
+FROM golang:1.26.4-alpine3.23@sha256:18b460dd17542c2ba43299a633cf6ebfc1115101509531471d7cfce1019af083 AS go-downloader
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 RUN go install github.com/KvalitetsIT/runtime-js-env@83fdece6e4a6244909157ab100b091cb611ad481 
