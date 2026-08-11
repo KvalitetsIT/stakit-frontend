@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline, Toolbar, Typography, useTheme } from '@mui/material';
+import { Box, Chip, Container, CssBaseline, Toolbar, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import { theme } from '../../config/theme';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
@@ -13,6 +13,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { Stack } from '@mui/system';
 import { t } from 'i18next';
 import GroupIcon from '@mui/icons-material/Group';
+import getEnvironment from '../../config/env';
 
 type LayoutProps = {
   children: JSX.Element
@@ -72,6 +73,10 @@ export default function Layout(props: LayoutProps) {
 
 
 function Title(props: { color?: string }) {
+
+  const env = getEnvironment()
+  const envName = (env.REACT_APP_NODE_ENV ?? '').trim()
+
   return (
 
     <Stack direction={"row"}>
@@ -94,8 +99,21 @@ function Title(props: { color?: string }) {
       >
         <span style={{ color: props.color ?? theme.palette.primary.main }}>STA</span><Logo />
       </Typography>
+      {envName &&
+        <Chip
+          label={envName.toUpperCase()}
+          size="small"
+          sx={{
+            alignSelf: 'center',
+            ml: 1,
+            backgroundColor: theme.palette.warning.main,
+            color: theme.palette.warning.contrastText,
+            fontWeight: 700,
+            letterSpacing: '.05rem'
+          }}
+        />
+      }
     </Stack>
   
   )
 }
-
