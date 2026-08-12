@@ -74,40 +74,46 @@ export default function Layout(props: LayoutProps) {
 
 function Title(props: { color?: string }) {
 
-    const env = getEnvironment()
-    const envName = (env.REACT_APP_NODE_ENV ?? '').trim()
+  const env = getEnvironment()
+  const envName = (env.REACT_APP_NODE_ENV ?? '').trim()
 
-    return (
+  return (
 
-        <Stack direction={"row"} flexWrap="wrap" justifyContent="center" sx={{ maxWidth: '100%' }}>
+    <Stack direction={"row"}>
 
-            <Typography
-                noWrap
-                component="a"
-                sx={{
-                    display: { xs: 'flex', md: 'flex' },
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    color: 'inherit',
-                    textDecoration: 'none',
-                    fontSize: 40
-                }}
-            >
-                <span style={{ color: props.color ?? theme.palette.primary.main }}>STA</span><Logo />
-            </Typography>
-            {envName &&
-                <Chip
-                    label={envName.toUpperCase()}
-                    size="small"
-                    sx={{
-                        alignSelf: 'center',
-                        backgroundColor: theme.palette.warning.main,
-                        color: theme.palette.warning.contrastText,
-                        fontWeight: 700,
-                        letterSpacing: '.05rem'
-                    }}
-                />
-            }
-        </Stack>
-    )
+    <Typography
+        
+        noWrap
+        component="a"
+        sx={{
+          //mr: 2,
+          display: { xs: 'flex', md: 'flex' },
+          fontFamily: 'monospace',
+          fontWeight: 700,
+          //letterSpacing: '.3rem',
+          color: 'inherit',
+          textDecoration: 'none',
+          fontSize: 40
+
+        }}
+      >
+        <span style={{ color: props.color ?? theme.palette.primary.main }}>STA</span><Logo />
+      </Typography>
+      {envName &&
+        <Chip
+          label={envName.toUpperCase()}
+          size="small"
+          sx={{
+            alignSelf: 'center',
+            ml: 1,
+            backgroundColor: theme.palette.warning.main,
+            color: theme.palette.warning.contrastText,
+            fontWeight: 700,
+            letterSpacing: '.05rem'
+          }}
+        />
+      }
+    </Stack>
+  
+  )
 }
