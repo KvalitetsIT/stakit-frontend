@@ -1,4 +1,4 @@
-import { Typography, IconButton, Link, Tooltip, Card, CardContent, Stack, Box, Collapse, LinearProgress } from "@mui/material";
+import { Typography, IconButton, Link, Tooltip, Card, CardContent, CardHeader, Stack, Box, Collapse, LinearProgress } from "@mui/material";
 import { Announcement } from "../../models/types";
 import { AnnouncementForm } from "../forms/announcement";
 import { useContext, useState } from "react";
@@ -98,25 +98,31 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
     return (
         <Box>
-            <Stack direction="row" justifyContent="flex-end" spacing={0} sx={{ mb: 1 }}>
-                <Tooltip title={<>{t("Add")}</>}>
-                    <IconButton onClick={() => setMode(mode === Mode.ADD ? Mode.NORMAL : Mode.ADD)}>
-                        <AddIcon />
-                    </IconButton>
-                </Tooltip>
-                {onRefresh && (
-                    <Tooltip title={<>{t("Refresh")}</>}>
-                        <IconButton onClick={() => onRefresh()}>
-                            <ReplayIcon />
-                        </IconButton>
-                    </Tooltip>
-                )}
-            </Stack>
-
-            {isLoading && <LinearProgress sx={{ mb: 2 }} />}
+            <Card sx={{ borderRadius: 1 }}>
+                <CardActionAreaWithProgress isLoading={isLoading} />
+                <CardHeader
+                    title={<Typography variant="h6">{t("Announcements")}</Typography>}
+                    action={
+                        <Stack direction="row" spacing={0}>
+                            <Tooltip title={<>{t("Add")}</>}>
+                                <IconButton onClick={() => setMode(mode === Mode.ADD ? Mode.NORMAL : Mode.ADD)}>
+                                    <AddIcon />
+                                </IconButton>
+                            </Tooltip>
+                            {onRefresh && (
+                                <Tooltip title={<>{t("Refresh")}</>}>
+                                    <IconButton onClick={() => onRefresh()}>
+                                        <ReplayIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                        </Stack>
+                    }
+                />
+            </Card>
 
             <Collapse in={mode === Mode.ADD}>
-                <Card sx={{ mb: 2, borderRadius: 1 }}>
+                <Card sx={{ mt: 2, borderRadius: 1 }}>
                     <CardContent>
                         <AnnouncementForm
                             announcement={clipboard}
@@ -136,6 +142,16 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                 />
             ))}
         </Box>
+    )
+}
+
+function CardActionAreaWithProgress(props: { isLoading?: boolean }) {
+    return (
+        <LinearProgress
+            color="secondary"
+            variant={props.isLoading ? "indeterminate" : "determinate"}
+            value={props.isLoading ? 0 : 100}
+        />
     )
 }
 
