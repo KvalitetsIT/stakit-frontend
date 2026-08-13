@@ -7,13 +7,13 @@ import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation, useGetAll
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
 import { ResourceCard, ResourceCardProps } from "./ResourceCard";
 import { t } from "i18next";
-import { useKeycloak } from "@react-keycloak/web";
 import { Can } from "@casl/react";
 import { Operation, Asset } from "../../feature/authentication/config/ability";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AddIcon from '@mui/icons-material/Add';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
+import { AnnouncementItemCard } from "./AnnouncementItemCard";
 
 interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
 
@@ -94,8 +94,6 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
     const { isLoading, announcements, onRefresh, showItemActions } = props;
     const create = useCreateAnnouncementMutation()
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
-    const keycloak = useKeycloak()
-    const authenticated = keycloak.initialized && keycloak.keycloak.authenticated
     const [clipboard, setClipboard] = useState<Announcement>()
 
     return (
@@ -129,27 +127,14 @@ export function AnnouncementsCard(props: AnnouncementsCardProps) {
                 </Card>
             </Collapse>
 
-           {announcements?.map((announcement, index) => (
-    <Card key={"announcement_" + index} sx={{ mt: 2, borderRadius: 1 }}>
-        <CardContent>
-            <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                <Box>
-                    <Typography variant="h6" fontWeight="bold">{announcement.subject}</Typography>
-                    <Typography variant="h6" color="text.secondary" fontWeight="bold">
-                        {new Date(announcement.from_datetime).toLocaleDateString()}
-                    </Typography>
-                    <Typography color="text.secondary" style={{ whiteSpace: 'pre-line' }}>{announcement.message}</Typography>
-                </Box>
-                {showItemActions && (
-                    <AnnouncementActions
-                        announcement={announcement}
-                        onCopy={(a) => { setClipboard(a); setMode(Mode.ADD) }}
-                    />
-                )}
-            </Stack>
-        </CardContent>
-    </Card>
-))}
+            {announcements?.map((announcement, index) => (
+                <AnnouncementItemCard
+                    key={"announcement_" + index}
+                    announcement={announcement}
+                    showItemActions={showItemActions}
+                    onCopy={(a) => { setClipboard(a); setMode(Mode.ADD) }}
+                />
+            ))}
         </Box>
     )
 }
