@@ -1,27 +1,26 @@
-
-import {  Typography , IconButton, Link, Tooltip } from "@mui/material";
+import { Typography, IconButton, Link, Tooltip, Card, CardContent, CardHeader, Stack, Box, Collapse, LinearProgress } from "@mui/material";
 import { Announcement } from "../../models/types";
 import { AnnouncementForm } from "../forms/announcement";
 import { useContext, useState } from "react";
 import { Mode } from "./Mode";
 import { useCreateAnnouncementMutation, useDeleteAnnouncementMutation, useGetAllAnnouncementsQuery } from "../../feature/stakit/announcementSlice";
 import { DeleteAnnouncementDialog } from "../dialogs/DeleteDialog";
-import { ResourceCard, ResourceCardProps, ResourcesCard, ResourcesCardProps } from "./ResourceCard";
+import { ResourceCard, ResourceCardProps } from "./ResourceCard";
 import { t } from "i18next";
-import { Action } from "./BaseCard";
-import { useKeycloak } from "@react-keycloak/web";
 import { Can } from "@casl/react";
 import { Operation, Asset } from "../../feature/authentication/config/ability";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import AddIcon from '@mui/icons-material/Add';
+import ReplayIcon from '@mui/icons-material/Replay';
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
-import { AnnouncementItem } from "../items/AnnouncementItem";
+import { AnnouncementItemCard } from "./AnnouncementItemCard";
 
 interface AnnouncementCardProps extends ResourceCardProps<Announcement> { }
 
 export function AnnouncementCard(props: AnnouncementCardProps) {
     const [mode, setMode] = useState(props.mode ?? Mode.NORMAL)
     const remove = useDeleteAnnouncementMutation()[0]
-    const { resource: announcement , onUpdate} = props
+    const { resource: announcement, onUpdate } = props
     const { refetch } = useGetAllAnnouncementsQuery(undefined)
 
     return (
@@ -43,7 +42,7 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
                 />
             )}
 
-            onUpdate={(announcement) => {onUpdate && onUpdate(announcement); setMode(Mode.NORMAL)}}
+            onUpdate={(announcement) => { onUpdate && onUpdate(announcement); setMode(Mode.NORMAL) }}
 
             deleteDialog={
                 <DeleteAnnouncementDialog
@@ -63,15 +62,14 @@ export function AnnouncementCard(props: AnnouncementCardProps) {
     )
 }
 
-interface AnnouncementsCardProps extends Omit<ResourcesCardProps<Announcement>, "resources"> {
-    actions?: Action[]
-    divider?: JSX.Element
+interface AnnouncementsCardProps {
     announcements?: Announcement[]
-}
-
-AnnouncementsCard.defaultProps = {
-    header: t("Announcements"),
-    subHeader: t("A list of the latest announcenements"),
+    isLoading?: boolean
+    onRefresh?: () => void
+    showItemActions?: boolean
+    disableLinks?: boolean
+    divider?: JSX.Element
+    actions?: any[]
 }
 
 export function AnnouncementActions(props: { announcement: Announcement, onCopy?: (announcement: Announcement) => void }) {
@@ -79,45 +77,80 @@ export function AnnouncementActions(props: { announcement: Announcement, onCopy?
     const user = useContext(UserContext)!
 
     return (
-        <>
-            <Link onClick={(event) => event.preventDefault()}>
-                <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.RESOURCE}>
-                    <Tooltip title={<>{t("Copy")}</>}>
-                        <IconButton edge="end" onClick={() => props.onCopy && props.onCopy(props.announcement)}>
-                            <ContentCopyIcon />
-                        </IconButton>
-                    </Tooltip>
-                </Can>
-
-            </Link>
-
-        </>
+        <Link onClick={(event) => event.preventDefault()}>
+            <Can ability={user?.getAbility()} I={Operation.READ} a={Asset.RESOURCE}>
+                <Tooltip title={<>{t("Copy")}</>}>
+                    <IconButton edge="end" onClick={() => props.onCopy && props.onCopy(props.announcement)}>
+                        <ContentCopyIcon />
+                    </IconButton>
+                </Tooltip>
+            </Can>
+        </Link>
     )
 }
 
 export function AnnouncementsCard(props: AnnouncementsCardProps) {
 
-    const { isLoading, announcements, onRefresh } = props;
+    const { isLoading, announcements, onRefresh, showItemActions } = props;
     const create = useCreateAnnouncementMutation()
     const [mode, setMode] = useState<Mode>(Mode.NORMAL)
-    const reload = () => { onRefresh && onRefresh() }
-    const keycloak = useKeycloak()
-    const authenticated = keycloak.initialized && keycloak.keycloak.authenticated
     const [clipboard, setClipboard] = useState<Announcement>()
 
     return (
-        <ResourcesCard
-            disableLinks={!authenticated}
-            onRefresh={() => reload()}
-            isLoading={isLoading}
-            mode={mode}
-            onModeChange={(x) => setMode(x)}
-            resources={announcements!}
-            renderForm={() => <AnnouncementForm announcement={clipboard} onSubmit={async (sub) => { await create[0](sub); setMode(Mode.NORMAL); }} onCancel={() => { setMode(Mode.NORMAL); }} />}
-            renderItem={(item) => <AnnouncementItem actions={props.showItemActions ? <AnnouncementActions announcement={item} onCopy={(announcement) => { setClipboard(announcement); setMode(Mode.EDIT) }} /> : <> </>} announcement={item} />}
-            extractKey={(index) => "announcement_" + index}
-            extractPath={(announcement) => "/announcements/" + announcement.uuid}
-            {...props}
+        <Box>
+            <Card sx={{ borderRadius: 1 }}>
+                <CardActionAreaWithProgress isLoading={isLoading} />
+                <CardHeader
+                    title={<Typography variant="h6">{t("Announcements")}</Typography>}
+                    action={
+                        <Stack direction="row" spacing={0}>
+                            <Tooltip title={<>{t("Add")}</>}>
+                                <IconButton onClick={() => setMode(mode === Mode.ADD ? Mode.NORMAL : Mode.ADD)}>
+                                    <AddIcon />
+                                </IconButton>
+                            </Tooltip>
+                            {onRefresh && (
+                                <Tooltip title={<>{t("Refresh")}</>}>
+                                    <IconButton onClick={() => onRefresh()}>
+                                        <ReplayIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                        </Stack>
+                    }
+                />
+            </Card>
+
+            <Collapse in={mode === Mode.ADD}>
+                <Card sx={{ mt: 2, borderRadius: 1 }}>
+                    <CardContent>
+                        <AnnouncementForm
+                            announcement={clipboard}
+                            onSubmit={async (sub) => { await create[0](sub); setClipboard(undefined); setMode(Mode.NORMAL); }}
+                            onCancel={() => { setClipboard(undefined); setMode(Mode.NORMAL); }}
+                        />
+                    </CardContent>
+                </Card>
+            </Collapse>
+
+            {announcements?.map((announcement, index) => (
+                <AnnouncementItemCard
+                    key={"announcement_" + index}
+                    announcement={announcement}
+                    showItemActions={showItemActions}
+                    onCopy={(a) => { setClipboard(a); setMode(Mode.ADD) }}
+                />
+            ))}
+        </Box>
+    )
+}
+
+function CardActionAreaWithProgress(props: { isLoading?: boolean }) {
+    return (
+        <LinearProgress
+            color="secondary"
+            variant={props.isLoading ? "indeterminate" : "determinate"}
+            value={props.isLoading ? 0 : 100}
         />
     )
 }
