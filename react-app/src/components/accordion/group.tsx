@@ -12,9 +12,10 @@ import { Can } from "../../feature/authentication/logic/Can";
 import { Operation } from "../../feature/authentication/config/ability";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { t } from "i18next";
+import { HistoryRange } from "../../feature/stakit/statusHistory";
 
 
-export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group, key?: string }) {
+export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group, key?: string, historyRange?: HistoryRange }) {
 
 
     let services: Service[] = props.group?.services ? props.group?.services as Service[] : []
@@ -78,7 +79,9 @@ export function GroupAccordion(props: { defaultExpanded?: boolean, group?: Group
                             <List>
                                 {services.map(service => (
                                     <ServiceItem
+                                        key={service.uuid}
                                         service={service}
+                                        historyRange={props.historyRange}
                                     ></ServiceItem>
                                 ))}
                             </List>

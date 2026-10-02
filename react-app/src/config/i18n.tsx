@@ -59,7 +59,18 @@ const resources = {
       "Error": "Fejl",
       "Perfect": "Perfekt",
       "Unknown": "Ukendt",
-      "Do you want to continue": "Ønsker du at fortsætte"
+      "Do you want to continue": "Ønsker du at fortsætte",
+      "Today": "I dag",
+      "Last 7 days": "Sidste 7 dage",
+      "Last 30 days": "Sidste 30 dage",
+      "Last 90 days": "Sidste 90 dage",
+      "Uptime": "Oppetid",
+      "No data": "Ingen data",
+      "Incidents": "Hændelser",
+      "No incidents in the selected period": "Ingen hændelser i den valgte periode",
+      "Ongoing": "Igangværende",
+      "Partially down": "Delvist nede",
+      "Down": "Nede"
     }
   }
 };

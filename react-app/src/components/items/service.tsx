@@ -9,13 +9,15 @@ import { Can } from "@casl/react";
 import { Operation, Asset } from "../../feature/authentication/config/ability";
 import { UserContext } from "../../feature/authentication/logic/FetchUser";
 import { t } from "i18next";
+import { HistoryRange } from "../../feature/stakit/statusHistory";
+import { StatusHistoryBar } from "../history/StatusHistory";
 
 
 export enum Modes {
     NORMAL, DELETE, EDIT
 }
 
-export function ServiceItem(props: { service: Service, showActions?: boolean, showPath?: boolean }) {
+export function ServiceItem(props: { service: Service, showActions?: boolean, showPath?: boolean, historyRange?: HistoryRange }) {
 
     const user = useContext(UserContext)!
     const Actions = () => (
@@ -46,7 +48,13 @@ export function ServiceItem(props: { service: Service, showActions?: boolean, sh
                     secondary={props.service.description?.slice(0, 100).trim() + (props.service.description?.length! > 100 ? "..." : "")}
                 />
             </ListItem>
-
+            {props.historyRange && (
+                <ListItem key={"history_" + props.service.uuid} sx={{ paddingTop: 0 }}>
+                    <Box width="100%" paddingLeft={7}>
+                        <StatusHistoryBar uuid={props.service.uuid} range={props.historyRange} />
+                    </Box>
+                </ListItem>
+            )}
         </>
     )
 }

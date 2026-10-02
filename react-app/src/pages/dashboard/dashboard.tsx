@@ -14,6 +14,7 @@ import { Can } from "../../feature/authentication/logic/Can";
 import { Operation } from "../../feature/authentication/config/ability";
 import { t } from "i18next";
 import getEnvironment from "../../config/env";
+import { HistoryRangeSelector, useHistoryRange } from "../../components/history/StatusHistory";
 
 
 function getStatus(services: Service[]) : Status {
@@ -32,6 +33,7 @@ export function DashboardPage() {
     const showMessage = getEnvironment().REACT_APP_FEATURE_MESSAGES ?? "true"
     
     const user = useContext(UserContext)!
+    const [historyRange, setHistoryRange] = useHistoryRange()
 
     const { data, refetch } = useGetStatusOfGroupsQuery(undefined)
     const { data: announcements, refetch: refetchAnnouncements, isLoading: announcementsIsLoading } = useGetAnnouncementsQuery(undefined);
@@ -50,9 +52,12 @@ export function DashboardPage() {
                         status={status}
                         onRefresh={() => refetch()}
                     />
+                    <Box display="flex" justifyContent="flex-end" marginTop={2}>
+                        <HistoryRangeSelector value={historyRange} onChange={setHistoryRange} />
+                    </Box>
                     {groups && groups.filter(group => group.display).map((serviceGroup, index) => {
                         return (
-                            <GroupAccordion defaultExpanded={serviceGroup.expanded} group={serviceGroup} key={"group_" + index} ></GroupAccordion>
+                            <GroupAccordion defaultExpanded={serviceGroup.expanded} group={serviceGroup} key={"group_" + index} historyRange={historyRange} ></GroupAccordion>
                         )
                     })}
                     { subscribeFeature == "true" ? 
