@@ -1,9 +1,10 @@
-import { Breadcrumbs, Container, Grid, Stack, Tooltip, Typography } from "@mui/material";
-import { useState } from "react";
+import { Breadcrumbs, Card, CardContent, CardHeader, Container, Divider, Stack, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
+import { t } from "i18next";
 import { Service } from "../../models/types";
 import { useGetServiceQuery } from "../../feature/stakit/serviceSlice";
 import { ServiceCard } from "../../components/cards/Services";
+import { HistoryRangeSelector, StatusHistoryBar, StatusHistoryIncidents, useHistoryRange } from "../../components/history/StatusHistory";
 
 
 export function ServiceDetails() {
@@ -16,13 +17,36 @@ export function ServiceDetails() {
         <>
             <Container sx={{ paddingTop: 4 }}>
                 <ServiceCard resource={service} isLoading={isLoading} />
-                {/*<HistorySection />*/}
+                <HistorySection uuid={service?.uuid} />
             </Container >
         </>
     )
 }
 
 
+function HistorySection(props: { uuid?: string }) {
+
+    const [range, setRange] = useHistoryRange()
+
+    return (
+        <Card sx={{ marginTop: 2 }}>
+            <CardHeader
+                title={t("History") as string}
+                action={<HistoryRangeSelector value={range} onChange={setRange} />}
+            />
+            <Divider />
+            <CardContent>
+                <Stack spacing={3}>
+                    <StatusHistoryBar uuid={props.uuid} range={range} />
+                    <Stack spacing={1}>
+                        <Typography variant="h6">{t("Incidents") as string}</Typography>
+                        <StatusHistoryIncidents uuid={props.uuid} range={range} />
+                    </Stack>
+                </Stack>
+            </CardContent>
+        </Card>
+    )
+}
 
 
 export function Header(props: { service: Service, showPath?: boolean }) {
@@ -62,63 +86,4 @@ export function Header(props: { service: Service, showPath?: boolean }) {
             }
         </>
     )
-}
-
-
-
-interface Day { percentage: number, date: Date }
-
-export function History(props: { days: Day[]}) {
-
-    const Pill = (props: Day) => {
-
-        const GREEN = "#00e6c8"
-        const BLUE = "#122A4C"
-
-        const [isMouseOver, setMouseOver] = useState(false)
-
-        const date = props.date;
-
-        return (
-            <Tooltip {...props} title={
-                <>
-                    <Typography>{date.toLocaleDateString()}</Typography>
-                    <Typography variant="h6">{props.percentage + "%"}</Typography>
-                </>} arrow >
-                <svg
-                    onMouseLeave={() => setMouseOver(false)}
-                    onMouseOver={() => setMouseOver(true)}
-                    width={12}
-                    height={25}
-                    fillOpacity={isMouseOver ? 0.5 : props.percentage / 100}
-                    fill={isMouseOver ? BLUE : GREEN}
-                >
-                    <rect x={1} rx="4" ry="4" width={8} height={25} fill="inherit" />
-                </svg>
-            </Tooltip >
-        )
-    }
-
-    return (
-
-        <Grid container>
-            <Grid item xs={0.5} alignContent={"center"}>
-                <Typography>{props.days.length} %</Typography>
-            </Grid>
-            <Grid item xs={11.5}>
-                <Stack direction={"row"}>
-                    {props.days.map((day, index) => {
-                        return (
-                            <Pill percentage={day.percentage} date={day.date} key={"pill_"+index}></Pill>
-                        )
-                    })}
-                </Stack>
-            </Grid>
-        </Grid>
-
-
-    )
-
-
-
 }

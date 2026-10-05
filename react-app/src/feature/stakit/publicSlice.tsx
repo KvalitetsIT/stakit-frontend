@@ -1,6 +1,6 @@
 
 import {  Group } from '../../models/group';
-import { Announcement, Subscription } from '../../models/types';
+import { Announcement, StatusPeriod, Subscription } from '../../models/types';
 import HandleQuery from '../../redux/EndpointQueryHandler';
 import handleResponse from '../../redux/handleResponse';
 import { stakitApiSlice } from '../../redux/stakit-api-slice';
@@ -26,6 +26,14 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
                 responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Groups could not be fetched" }),
             }),
             providesTags: ["statusOfGroups"]
+        }),
+        getStatusHistory: builder.query<StatusPeriod[], { uuid: string, from: string }>({
+            query: ({ uuid, from }) => HandleQuery({
+                url: `service-status-history/${uuid}?from=${encodeURIComponent(from)}`,
+                method: "GET",
+                responseHandler: (res) => handleResponse({ response: res, toastWithResult: false, toastErrorText: "Status history could not be fetched" }),
+            }),
+            providesTags: ["statusHistory"]
         }),
         createSubscription: builder.mutation<string, Subscription>({
             query: (request) => HandleQuery({
@@ -59,6 +67,6 @@ export const announcementSlice = stakitApiSlice.injectEndpoints({
     })
 })
 
-export const { useUnsubscribeQuery, useGetAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useConfirmSubscriptionQuery } = announcementSlice
+export const { useUnsubscribeQuery, useGetAnnouncementsQuery, useCreateSubscriptionMutation, useGetStatusOfGroupsQuery, useGetStatusHistoryQuery, useConfirmSubscriptionQuery } = announcementSlice
 
 

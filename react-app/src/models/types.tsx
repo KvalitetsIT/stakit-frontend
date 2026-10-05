@@ -61,3 +61,10 @@ export class Announcement extends Resource {
     message?: string
     subject?: string
 }
+
+export interface StatusPeriod {
+    status: Status
+    from: string
+    to?: string
+    message?: string
+}
